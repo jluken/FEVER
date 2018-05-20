@@ -1,0 +1,236 @@
+Erroneous retrieved wiki articles:
+
+Claim: "Fox 2000 Pictures released the film Soul Food."
+Found Document: "Food"
+Correct Document: "Soul_Food_-LRB-film-RRB-"
+Constituency Tree: (ROOT (S (NP (NNP Fox) (CD 2000) (NNP Pictures)) (VP (VBD released) (NP (DT the) (NN film) (NN Soul) (NN Food))) (. .)))
+Dependency Graph: -> released/VBD (root)
+  -> Pictures/NNP (nsubj)
+    -> Fox/NNP (compound)
+    -> 2000/CD (nummod)
+  -> Food/NN (dobj)
+    -> the/DT (det)
+    -> film/NN (compound)
+    -> Soul/NN (compound)
+  -> ./. (punct)
+
+
+Claim: "Savages was exclusively a German film."
+Found Document: "Savages"
+Correct Document: "Savages_-LRB-2012_film-RRB-"
+Constituency Tree: (ROOT (S (NP (NNP Savages)) (VP (VBD was) (ADVP (RB exclusively)) (NP (DT a) (JJ German) (NN film))) (. .)))
+Dependency Graph: -> film/NN (root)
+  -> Savages/NNP (nsubj)
+  -> was/VBD (cop)
+  -> exclusively/RB (advmod)
+  -> a/DT (det)
+  -> German/JJ (amod)
+  -> ./. (punct)
+
+
+Claim: "CBS is the network that aired The Millers."
+Found Document: "CBS"
+Correct Document: "The_Millers"
+Constituency Tree: (ROOT (S (NP (NNP CBS)) (VP (VBZ is) (NP (NP (DT the) (NN network)) (SBAR (WHNP (WDT that)) (S (VP (VBD aired) (NP (DT The) (NNPS Millers))))))) (. .)))
+Dependency Graph: -> network/NN (root)
+  -> CBS/NNP (nsubj)
+  -> is/VBZ (cop)
+  -> the/DT (det)
+  -> that/WDT (ref)
+  -> aired/VBD (acl:relcl)
+    -> network/NN (nsubj)
+    -> Millers/NNPS (dobj)
+      -> The/DT (det)
+  -> ./. (punct)
+
+
+Claim: "Simón Bolívar is only known as Simón Bolívar."
+Found Document: "Simón_Bolívar"
+Correct Document: "Simo?n_Boli?var"
+Constituency Tree: (ROOT (S (NP (NNP Simón) (NNP Bolívar)) (VP (VBZ is) (ADVP (RB only)) (VP (VBN known) (PP (IN as) (NP (NNP Simón) (NNP Bolívar))))) (. .)))
+Dependency Graph: -> known/VBN (root)
+  -> Bolívar/NNP (nsubjpass)
+    -> Simón/NNP (compound)
+  -> is/VBZ (auxpass)
+  -> only/RB (advmod)
+  -> Bolívar/NNP (nmod:as)
+    -> as/IN (case)
+    -> Simón/NNP (compound)
+  -> ./. (punct)
+
+
+Claim: "Hourglass is performed by a Russian singer-songwriter."
+Found Document: "Hourglass"
+Correct Document: "Hourglass_-LRB-James_Taylor_album-RRB-"
+Constituency Tree: (ROOT (S (NP (NNP Hourglass)) (VP (VBZ is) (VP (VBN performed) (PP (IN by) (NP (DT a) (JJ Russian) (NN singer-songwriter))))) (. .)))
+Dependency Graph: -> performed/VBN (root)
+  -> Hourglass/NNP (nsubjpass)
+  -> is/VBZ (auxpass)
+  -> singer-songwriter/NN (nmod:agent)
+    -> by/IN (case)
+    -> a/DT (det)
+    -> Russian/JJ (amod)
+  -> ./. (punct)
+
+
+Claim: "There are not rumors that Augustus' wife, Livia, poisoned him."
+Found Document: "Livia"
+Correct Document: "Augustus"
+Constituency Tree: (ROOT (S (NP (EX There)) (VP (VBP are) (RB not) (NP (NNS rumors)) (SBAR (IN that) (S (NP (NP (NP (NNP Augustus) (POS ')) (NN wife)) (, ,) (NP (NNP Livia)) (, ,)) (VP (VBD poisoned) (NP (PRP him)))))) (. .)))
+Dependency Graph: -> are/VBP (root)
+  -> There/EX (expl)
+  -> not/RB (neg)
+  -> rumors/NNS (nsubj)
+    -> poisoned/VBD (ccomp)
+      -> that/IN (mark)
+      -> wife/NN (nsubj)
+        -> Augustus/NNP (nmod:poss)
+          -> '/POS (case)
+        -> ,/, (punct)
+        -> Livia/NNP (appos)
+        -> ,/, (punct)
+      -> him/PRP (dobj)
+  -> ./. (punct)
+
+
+Claim: "Vedam was written and directed by Christopher Nolan."
+Found Document: "Vedam"
+Correct Document: "Vedam_-LRB-film-RRB-"
+Constituency Tree: (ROOT (S (NP (NNP Vedam)) (VP (VBD was) (VP (VBN written) (CC and) (VBN directed) (PP (IN by) (NP (NNP Christopher) (NNP Nolan))))) (. .)))
+Dependency Graph: -> written/VBN (root)
+  -> Vedam/NNP (nsubjpass)
+  -> was/VBD (auxpass)
+  -> and/CC (cc)
+  -> directed/VBN (conj:and)
+    -> Vedam/NNP (nsubjpass)
+  -> Nolan/NNP (nmod:agent)
+    -> by/IN (case)
+    -> Christopher/NNP (compound)
+  -> ./. (punct)
+
+
+Claim: "A&E is a cable and satellite television network."
+Found Document: "A&E"
+Correct Document: "A&E_-LRB-TV_channel-RRB-"
+Constituency Tree: (ROOT (S (NP (NNP A&E)) (VP (VBZ is) (NP (DT a) (NN cable) (CC and) (NN satellite) (NN television) (NN network))) (. .)))
+Dependency Graph: -> cable/NN (root)
+  -> A&E/NNP (nsubj)
+  -> is/VBZ (cop)
+  -> a/DT (det)
+  -> and/CC (cc)
+  -> network/NN (conj:and)
+    -> satellite/NN (compound)
+    -> television/NN (compound)
+  -> ./. (punct)
+
+
+Claim: "Veeram is something other than an Indian Tamil film."
+Found Document: "Veeram"
+Correct Document: "Veeram_-LRB-2014_film-RRB-"
+Constituency Tree: (ROOT (S (NP (NNP Veeram)) (VP (VBZ is) (NP (NP (NN something) (JJ other)) (PP (IN than) (NP (DT an) (JJ Indian) (NN Tamil) (NN film))))) (. .)))
+Dependency Graph: -> something/NN (root)
+  -> Veeram/NNP (nsubj)
+  -> is/VBZ (cop)
+  -> other/JJ (amod)
+    -> film/NN (nmod:than)
+      -> than/IN (case)
+      -> an/DT (det)
+      -> Indian/JJ (amod)
+      -> Tamil/NN (compound)
+  -> ./. (punct)
+
+
+Claim: "Home for the Holidays stars an American actress."
+Found Document: "Home_for_the_Holidays"
+Correct Document: "Home_for_the_Holidays_-LRB-1995_film-RRB-"
+Constituency Tree: (ROOT (S (NP (NP (NN Home)) (PP (IN for) (NP (DT the) (NNPS Holidays)))) (VP (VBZ stars) (NP (DT an) (JJ American) (NN actress))) (. .)))
+Dependency Graph: -> stars/VBZ (root)
+  -> Home/NN (nsubj)
+    -> Holidays/NNPS (nmod:for)
+      -> for/IN (case)
+      -> the/DT (det)
+  -> actress/NN (dobj)
+    -> an/DT (det)
+    -> American/JJ (amod)
+  -> ./. (punct)
+
+
+Claim: "Jayasudha is an actor that stars in Daag."
+Found Document: "Jayasudha"
+Correct Document: "Daag_-LRB-1973_film-RRB-"
+Constituency Tree: (ROOT (S (NP (NNP Jayasudha)) (VP (VBZ is) (NP (NP (DT an) (NN actor)) (SBAR (WHNP (WDT that)) (S (VP (VBZ stars) (PP (IN in) (NP (NNP Daag)))))))) (. .)))
+Dependency Graph: -> actor/NN (root)
+  -> Jayasudha/NNP (nsubj)
+  -> is/VBZ (cop)
+  -> an/DT (det)
+  -> that/WDT (ref)
+  -> stars/VBZ (acl:relcl)
+    -> actor/NN (nsubj)
+    -> Daag/NNP (nmod:in)
+      -> in/IN (case)
+  -> ./. (punct)
+
+
+Claim: "Reign Over Me was released in 2017."
+Found Document: "Me"
+Correct Document: "Reign_Over_Me"
+Constituency Tree: (ROOT (S (VP (VB Reign) (FRAG (S (PP (IN Over) (NP (PRP Me))) (VP (VBD was) (VP (VBN released) (PP (IN in) (NP (CD 2017)))))))) (. .)))
+Dependency Graph: -> Reign/VB (root)
+  -> released/VBN (advcl:over)
+    -> Over/IN (mark)
+    -> Me/PRP (nsubjpass)
+    -> was/VBD (auxpass)
+    -> 2017/CD (nmod:in)
+      -> in/IN (case)
+  -> ./. (punct)
+
+
+Claim: "The highest point of the Hindu Kush is Everest."
+Found Document: "Unable to find any wiki"
+Correct Document: "Hindu_Kush"
+Constituency Tree: (ROOT (S (NP (NP (DT The) (JJS highest) (NN point)) (PP (IN of) (NP (DT the) (NNP Hindu) (NNP Kush)))) (VP (VBZ is) (NP (NNP Everest))) (. .)))
+Dependency Graph: -> Everest/NNP (root)
+  -> point/NN (nsubj)
+    -> The/DT (det)
+    -> highest/JJS (amod)
+    -> Kush/NNP (nmod:of)
+      -> of/IN (case)
+      -> the/DT (det)
+      -> Hindu/NNP (compound)
+  -> is/VBZ (cop)
+  -> ./. (punct)
+
+
+Claim: "The heart beats at a resting rate close to 22 beats per minute."
+Found Document: "The_Heart"
+Correct Document: "Heart"
+Constituency Tree: (ROOT (S (NP (DT The) (NN heart)) (VP (VBZ beats) (PP (IN at) (NP (NP (DT a) (VBG resting) (NN rate)) (ADVP (RB close) (PP (TO to) (NP (NP (CD 22) (NNS beats)) (PP (IN per) (NP (NN minute))))))))) (. .)))
+Dependency Graph: -> beats/VBZ (root)
+  -> heart/NN (nsubj)
+    -> The/DT (det)
+  -> rate/NN (nmod:at)
+    -> at/IN (case)
+    -> a/DT (det)
+    -> resting/VBG (amod)
+    -> beats/NNS (dep)
+      -> 22/CD (nummod)
+        -> close/RB (advmod)
+        -> to/TO (dep)
+      -> minute/NN (nmod:per)
+        -> per/IN (case)
+  -> ./. (punct)
+
+
+Claim: "Tool has won three Oscars."
+Found Document: "Tool"
+Correct Document: "Tool_-LRB-band-RRB-"
+Constituency Tree: (ROOT (S (NP (NNP Tool)) (VP (VBZ has) (VP (VBN won) (NP (CD three)) (NP (NNP Oscars)))) (. .)))
+Dependency Graph: -> won/VBN (root)
+  -> Tool/NNP (nsubj)
+  -> has/VBZ (aux)
+  -> Oscars/NNP (dobj)
+    -> three/CD (nummod)
+  -> ./. (punct)
+
+
+Correctly found wikis (omit null correct answer): 59/74
