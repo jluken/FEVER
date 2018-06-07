@@ -4,12 +4,25 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.HashMap;
+//import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+//import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+//import com.google.common;
+//import com.google.common.reflect.TypeToken;
+import java.lang.reflect.Type;
 
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreSentence;
@@ -45,26 +58,44 @@ public class DocFinderTester {
 				String answer = answersReader.nextLine();
 				JSONObject resultJson = new JSONObject(result);
 				JSONObject answerJson = new JSONObject(answer);
-				String resultWiki = (String) resultJson.get("found doc");
+				//JSONObject wikiJson = (JSONObject) resultJson.get("wiki info");
+				String wikiJson = resultJson.get("wiki info").toString();
+				Type wikiMapType = new TypeToken<Map<String, Map<String, Object>>>(){}.getType();  
+				Map<String, Object> wikiInfo = new Gson().fromJson(wikiJson, wikiMapType);
+				JSONArray backupWikiJSON = (JSONArray) resultJson.get("backup wikis");
+				
+				//Set<String> docsFound = new HashSet<String>();
+//				for(String wiki: wikiJson.keySet()) {
+//					
+//				}
+//				
+//				 = wikiJson.keys();
 				String claim = (String) resultJson.get("claim");
 				JSONArray answerEvidence = (JSONArray) answerJson.get("evidence");
 				JSONArray answerEvidence1 = (JSONArray) answerEvidence.get(0);
 				JSONArray answerEvidence2 = (JSONArray) answerEvidence1.get(0);
 				Object answerWiki =  answerEvidence2.get(2);
+				ArrayList<String> backupWikis = new ArrayList<String>();
+				for(int i = 0; i < backupWikiJSON.length(); i++){
+					backupWikis.add(backupWikiJSON.getString(i));
+				}
 				if(answerWiki.equals(null)) {
 					countNull++;
 				}
-				else if(answerWiki.equals(resultWiki)) {
+				else if(wikiInfo.keySet().contains(answerWiki) || backupWikis.contains(answerWiki.toString().toLowerCase())) {
 					countCorrect++;
 				}
 				else {
-					if(resultWiki.equals("no subject found")) {
-						resultWiki = "Unable to find any wiki";
-					};
 					writer.append("Claim: \"" + claim+"\"\n");
-					writer.append("Found Document: \"" + resultWiki+"\"\n");
-					writer.append("Correct Document: \"" + answerWiki+"\"\n");
-					
+					writer.append("Correct document: " + answerWiki + "\n");
+					writer.append("Found Documents: \n");
+					for(String wiki: wikiInfo.keySet()) {
+						writer.append(wiki + "\n");
+					}
+					writer.append("Backup Documents: \n");
+					for(int i = 0; i < backupWikis.size(); i++) {
+						writer.append(backupWikis.get(i) + "\n");
+					}
 					
 					String claimSentence = claim;
 					CoreDocument document = new CoreDocument(claimSentence);
@@ -79,7 +110,7 @@ public class DocFinderTester {
 				
 
 			}
-			writer.append("Correctly found wikis (omit null correct answer): " + countCorrect+"/"+(numClaimsTested-countNull)+"\n");
+			writer.append("Correct documents found: " + countCorrect+"/"+(numClaimsTested-countNull)+"\n");
 			answersReader.close();
 			resultsReader.close();
 			writer.close();
