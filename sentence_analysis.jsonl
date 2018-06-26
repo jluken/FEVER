@@ -1,0 +1,1499 @@
+
+
+
+
+Claim: Colin Kaepernick became a starting quarterback during the 49ers 63rd season in the National Football League.
+Label: NOT ENOUGH INFO
+Relevant words: ["colin","kaepernick","quarterback","49ers","season","national","football","league"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Tilda Swinton is a vegan.
+Label: NOT ENOUGH INFO
+Relevant words: ["tilda","swinton","vegan"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Fox 2000 Pictures released the film Soul Food.
+Label: SUPPORTS
+Relevant words: ["fox","pictures"]
+Wiki title: Soul_Food_-LRB-film-RRB-
+
+Correct sentences in training set: 
+0	Soul Food is a 1997 American comedy-drama film produced by Kenneth `` Babyface '' Edmonds , Tracey Edmonds and Robert Teitel and released by Fox 2000 Pictures .	Robert Teitel	Robert Teitel	comedy-drama film	comedy-drama film	Tracey Edmonds	Tracey Edmonds	Fox 2000 Pictures	Fox 2000 Pictures
+
+Correctly found sentences: 
+0	Soul Food is a 1997 American comedy-drama film produced by Kenneth `` Babyface '' Edmonds , Tracey Edmonds and Robert Teitel and released by Fox 2000 Pictures .	Robert Teitel	Robert Teitel	comedy-drama film	comedy-drama film	Tracey Edmonds	Tracey Edmonds	Fox 2000 Pictures	Fox 2000 Pictures
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Anne Rice was born in New Jersey.
+Label: NOT ENOUGH INFO
+Relevant words: []
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Telemundo is a English-language television network.
+Label: REFUTES
+Relevant words: ["television","network"]
+Wiki title: Telemundo
+
+Correct sentences in training set: 
+0	Telemundo -LRB- -LSB- tele?mundo -RSB- -RRB- is an American Spanish-language terrestrial television network owned by Comcast through the NBCUniversal division NBCUniversal Telemundo Enterprises .	NBCUniversal	NBCUniversal	Spanish	Spanish language	American	United States	Spanish-language	Spanish language	terrestrial	Terrestrial television	television network	television network	Comcast	Comcast
+It is the second largest provider of Spanish content nationwide behind American competitor Univision , with programming syndicated worldwide to more than 100 countries in over 35 languages .	Spanish	Spanish language	American	United States	Univision	Univision
+The channel broadcasts programs and original content aimed at Hispanic and Latino American audiences in the United States and worldwide , consisting of telenovelas , sports , reality television , news programming , and films -- either imported or Spanish-dubbed .	United States	United States	Spanish	Spanish language	American	United States	Hispanic and Latino American	Hispanic and Latino Americans	sports	sports	reality television	reality television
+In addition , Telemundo operates NBC Universo , a separate channel directed towards young Hispanic audiences ; Telemundo Digital Media , which distributes original programming content across mass media , the Telemundo and NBC Universo websites ; Puerto Rico telestation WKAQ-TV ; and international distribution arm Telemundo Internacional .	Puerto Rico	Puerto Rico	NBC	NBC	NBC Universo	NBC Universo	mass media	mass media	telestation	Television station	WKAQ-TV	WKAQ-TV
+
+Correctly found sentences: 
+0	Telemundo -LRB- -LSB- tele?mundo -RSB- -RRB- is an American Spanish-language terrestrial television network owned by Comcast through the NBCUniversal division NBCUniversal Telemundo Enterprises .	NBCUniversal	NBCUniversal	Spanish	Spanish language	American	United States	Spanish-language	Spanish language	terrestrial	Terrestrial television	television network	television network	Comcast	Comcast
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Damon Albarn's debut album was released in 2011.
+Label: REFUTES
+Relevant words: ["debut","album"]
+Wiki title: Damon_Albarn
+
+Correct sentences in training set: 
+His debut solo studio album Everyday Robots -- co-produced by XL Recordings CEO Richard Russell -- was released on 28 April 2014 and featured collaborations with Brian Eno , Natasha Khan and the Leytonstone City Pentecostal Mission Church Choir as well as sampling several rants by Lord Buckley .	XL	XL Recordings	Everyday Robots	Everyday Robots	XL Recordings	XL Recordings	Richard Russell	Richard Russell (XL Recordings)	Brian Eno	Brian Eno	Natasha Khan	Bat for Lashes	Lord Buckley	Lord Buckley
+
+Correctly found sentences: 
+His debut solo studio album Everyday Robots -- co-produced by XL Recordings CEO Richard Russell -- was released on 28 April 2014 and featured collaborations with Brian Eno , Natasha Khan and the Leytonstone City Pentecostal Mission Church Choir as well as sampling several rants by Lord Buckley .	XL	XL Recordings	Everyday Robots	Everyday Robots	XL Recordings	XL Recordings	Richard Russell	Richard Russell (XL Recordings)	Brian Eno	Brian Eno	Natasha Khan	Bat for Lashes	Lord Buckley	Lord Buckley
+
+Incorrectly found sentences: 
+Raised in Leytonstone , East London and around Colchester , Essex , Albarn attended the Stanway School , where he met Graham Coxon and eventually formed Blur , whose debut album Leisure was released in 1991 to mixed reviews .	Blur	Blur (Blur album)	Stanway School	The Stanway School	Graham Coxon	Graham Coxon	Leisure	Leisure (album)
+Drawing influences from alternative rock , trip hop , hip hop , electronica , dub , reggae and pop music , the band released their self-titled debut album in 2001 to worldwide success .	alternative rock	alternative rock	hip hop	hip hop music	trip hop	trip hop	electronica	electronica	dub	dub music	reggae	reggae	their self-titled debut album	Gorillaz (album)
+
+
+
+
+Claim: There is a capital called Mogadishu.
+Label: SUPPORTS
+Relevant words: ["capital"]
+Wiki title: Mogadishu
+
+Correct sentences in training set: 
+0	Mogadishu -LRB- -LSB- ?m?????di??u? -RSB- Muqdisho -LSB- m?qd??? -RSB- ; ?????? -LSB- maqadi??u? -RSB- -RRB- , known locally as Hamar , is the capital and most populous city of Somalia .	capital	capital city	most populous city	List of cities in Somalia by population	Somalia	Somalia
+
+Correctly found sentences: 
+0	Mogadishu -LRB- -LSB- ?m?????di??u? -RSB- Muqdisho -LSB- m?qd??? -RSB- ; ?????? -LSB- maqadi??u? -RSB- -RRB- , known locally as Hamar , is the capital and most populous city of Somalia .	capital	capital city	most populous city	List of cities in Somalia by population	Somalia	Somalia
+
+Incorrectly found sentences: 
+The city later became the capital of Italian Somaliland -LRB- 1889 -- 1936 -RRB- in the colonial period .	capital	capital city	Italian Somaliland	Italian Somaliland
+As Somalia 's capital city , many important national institutions are based in Mogadishu .	capital	capital city	Somalia	Somalia
+In May 2012 , the First Somali Bank was established in the capital , which organized Mogadishu 's first ever Technology , Entertainment , Design -LRB- TEDx -RRB- conference .	Somali	Somali language	capital	capital city	First Somali Bank	First Somali Bank
+Arba'a Rukun Mosque is one of the oldest Islamic places of worship in the capital , built circa 667 -LRB- 1268/9 AD -RRB- .	capital	capital city	Arba'a Rukun Mosque	Arba'a Rukun Mosque
+As part of the municipality 's urban renewal program , 100 schools across the capital are scheduled to be refurbished and reopened .	capital	capital city
+Mogadishu International Airport , the capital 's main airport , is the hub of the national carrier Somali Airlines .	Somali	Somali language	capital	capital city	Mogadishu International Airport	Aden Adde International Airport	Somali Airlines	Somali Airlines
+
+
+
+
+Claim: Savages was exclusively a German film.
+Label: REFUTES
+Relevant words: []
+Wiki title: Savages_-LRB-2012_film-RRB-
+
+Correct sentences in training set: 
+Savages is a 2012 American crime thriller film directed by Oliver Stone .	Oliver Stone	Oliver Stone	Savages	Savages (2010 novel)	crime	Crime film	thriller	Thriller (genre)
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Happiness in Slavery is a gospel song by Nine Inch Nails.
+Label: NOT ENOUGH INFO
+Relevant words: ["happiness","slavery","gospel","song","inch","nails"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Andrew Kevin Walker is only Chinese.
+Label: REFUTES
+Relevant words: []
+Wiki title: Andrew_Kevin_Walker
+
+Correct sentences in training set: 
+0	Andrew Kevin Walker -LRB- born August 14 , 1964 -RRB- is an American BAFTA-nominated screenwriter .	American	United States	BAFTA	British Academy of Film and Television Arts	screenwriter	screenwriter
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Shooter is about an expert marksman who tries to stop the assassination of the president.
+Label: NOT ENOUGH INFO
+Relevant words: ["shooter","expert","marksman","assassination","president"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: House is a sitcom.
+Label: NOT ENOUGH INFO
+Relevant words: ["house","sitcom"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: The Cretaceous ended.
+Label: SUPPORTS
+Relevant words: []
+Wiki title: Cretaceous
+
+Correct sentences in training set: 
+The Cretaceous ended with a large mass extinction , the Cretaceous -- Paleogene extinction event , in which many groups , including non-avian dinosaurs , pterosaurs and large marine reptiles died out .	Paleogene	Paleogene	mass extinction	mass extinction
+The end of the Cretaceous is defined by the abrupt Cretaceous -- Paleogene boundary -LRB- K -- Pg boundary -RRB- , a geologic signature associated with the mass extinction which lies between the Mesozoic and Cenozoic eras .	Paleogene	Paleogene	mass extinction	mass extinction	Cenozoic	Cenozoic	eras	era (geology)
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Murda Beatz's real name is Marshall Mathers.
+Label: REFUTES
+Relevant words: ["name","marshall","mathers"]
+Wiki title: Murda_Beatz
+
+Correct sentences in training set: 
+0	Shane Lee Lindstrom -LRB- born February 11 , 1994 -RRB- , professionally known as Murda Beatz , is a Canadian hip hop record producer from Fort Erie , Ontario .	Fort Erie	Fort Erie, Ontario	Ontario	Ontario	hip hop	Hip hop music	record producer	record producer
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Nicholas Brody is a character on Homeland.
+Label: SUPPORTS
+Relevant words: ["character","homeland"]
+Wiki title: Nicholas_Brody
+
+Correct sentences in training set: 
+Nicholas `` Nick '' Brody , played by actor Damian Lewis , is a fictional character on the American television series Homeland on Showtime , created by Alex Gansa and Howard Gordon .	Homeland	Homeland (TV series)	Alex Gansa	Alex Gansa	Howard Gordon	Howard Gordon	Damian Lewis	Damian Lewis	fictional character	fictional character	Showtime	Showtime (TV network)
+However , a CIA officer , Carrie Mathison , suspects that Brody was turned by al-Qaeda , and tries to stop him from potentially committing a terrorist act .	Carrie Mathison	Carrie Mathison	al-Qaeda	al-Qaeda	CIA	Central Intelligence Agency
+
+Correctly found sentences: 
+Nicholas `` Nick '' Brody , played by actor Damian Lewis , is a fictional character on the American television series Homeland on Showtime , created by Alex Gansa and Howard Gordon .	Homeland	Homeland (TV series)	Alex Gansa	Alex Gansa	Howard Gordon	Howard Gordon	Damian Lewis	Damian Lewis	fictional character	fictional character	Showtime	Showtime (TV network)
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Charles Manson has been proven innocent of all crimes.
+Label: REFUTES
+Relevant words: ["crimes"]
+Wiki title: Charles_Manson
+
+Correct sentences in training set: 
+After Manson was charged with the crimes of which he was later convicted , recordings of songs written and performed by him were released commercially .
+
+Correctly found sentences: 
+After Manson was charged with the crimes of which he was later convicted , recordings of songs written and performed by him were released commercially .
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Sean Penn is only ever a stage actor.
+Label: REFUTES
+Relevant words: ["stage","actor"]
+Wiki title: Sean_Penn
+
+Correct sentences in training set: 
+Following his film debut in the drama Taps -LRB- 1981 -RRB- and a diverse range of film roles in the 1980s , including Fast Times at Ridgemont High -LRB- 1982 -RRB- , Penn garnered critical attention for his roles in the crime dramas At Close Range -LRB- 1986 -RRB- , State of Grace -LRB- 1990 -RRB- , and Carlito 's Way -LRB- 1993 -RRB- .	Taps	Taps (film)	Fast Times at Ridgemont High	Fast Times at Ridgemont High	At Close Range	At Close Range	State of Grace	State of Grace (film)
+Penn received another two Oscar nominations for Woody Allen 's comedy-drama Sweet and Lowdown -LRB- 1999 -RRB- and the drama I Am Sam -LRB- 2001 -RRB- , before winning his first Academy Award for Best Actor in 2003 for Mystic River and a second one in 2008 for Milk .	Academy Award	Academy Award for Best Actor	Mystic River	Mystic River (film)	Milk	Milk (film)	Woody Allen	Woody Allen	Sweet and Lowdown	Sweet and Lowdown	I Am Sam	I Am Sam
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Don Bradman retired from soccer.
+Label: NOT ENOUGH INFO
+Relevant words: ["don","bradman","soccer"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: L.A. Reid has served as the CEO of Arista Records for four years.
+Label: NOT ENOUGH INFO
+Relevant words: ["l.a.","reid","ceo","arista","records","years"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Brad Wilk helped co-found Rage in 1962.
+Label: REFUTES
+Relevant words: ["rage"]
+Wiki title: Brad_Wilk
+
+Correct sentences in training set: 
+Wilk started his career as a drummer for Greta in 1990 , and helped co-found Rage with Tom Morello and Zack de la Rocha in August 1991 .	Greta	Greta (band)	Tom Morello	Tom Morello	Zack de la Rocha	Zack de la Rocha
+
+Correctly found sentences: 
+Wilk started his career as a drummer for Greta in 1990 , and helped co-found Rage with Tom Morello and Zack de la Rocha in August 1991 .	Greta	Greta (band)	Tom Morello	Tom Morello	Zack de la Rocha	Zack de la Rocha
+
+Incorrectly found sentences: 
+He is best known as the drummer of the rock bands Rage Against the Machine -LRB- 1991 -- 2000 ; 2007 -- 11 -RRB- and Audioslave -LRB- 2001 -- 07 -RRB- .	Rage Against the Machine	Rage Against the Machine	Audioslave	Audioslave
+Following that band 's breakup in October 2000 Wilk , Morello , Rage Against the Machine bassist Tim Commerford , and Soundgarden front man Chris Cornell formed the supergroup Audioslave , which broke up in 2007 .	Rage Against the Machine	Rage Against the Machine	Audioslave	Audioslave	Tim Commerford	Tim Commerford	Soundgarden	Soundgarden	Chris Cornell	Chris Cornell	supergroup	Supergroup (music)
+As of 2016 , he is playing in the band Prophets of Rage , with Commerford , Morello , Chuck D , B-Real and DJ Lord .	Prophets of Rage	Prophets of Rage	Chuck D	Chuck D	B-Real	B-Real	DJ Lord	DJ Lord
+
+
+
+
+Claim: CBS is the network that aired The Millers.
+Label: SUPPORTS
+Relevant words: ["cbs","network"]
+Wiki title: The_Millers
+
+Correct sentences in training set: 
+The multi-camera series aired from October 3 , 2013 to July 18 , 2015 and ran 34 episodes over two seasons on CBS .	CBS	CBS	multi-camera	Multiple-camera setup
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Annette Badland was in the 2015 NBA Finals.
+Label: NOT ENOUGH INFO
+Relevant words: ["annette","badland","nba","finals"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Edgar Wright is a person.
+Label: SUPPORTS
+Relevant words: ["person"]
+Wiki title: Edgar_Wright
+
+Correct sentences in training set: 
+0	Edgar Howard Wright -LRB- born 18 April 1974 -RRB- is an English director , screenwriter , producer , and actor .
+He is best known for his comedic Three Flavours Cornetto film trilogy consisting of Shaun of the Dead -LRB- 2004 -RRB- , Hot Fuzz -LRB- 2007 -RRB- , and The World 's End -LRB- 2013 -RRB- , made with recurrent collaborators Simon Pegg , Nira Park and Nick Frost .	Shaun of the Dead	Shaun of the Dead	Hot Fuzz	Hot Fuzz	Simon Pegg	Simon Pegg	Nira Park	Nira Park	Nick Frost	Nick Frost
+He also collaborated with them as the director of the television series Spaced .	Spaced	Spaced
+He also co-wrote , produced and directed the 2010 film Scott Pilgrim vs. the World .	Scott Pilgrim vs. the World	Scott Pilgrim vs. the World
+Along with his friends Joe Cornish and Steven Moffat , he co-wrote Steven Spielberg 's The Adventures of Tintin : The Secret of the Unicorn .	Joe Cornish	Joe Cornish (filmmaker)	Steven Moffat	Steven Moffat	Steven Spielberg	Steven Spielberg
+Wright and Cornish co-wrote the screenplay for the Marvel Studios film Ant-Man , which Wright was intended to direct before departing the project .	Ant-Man	Ant-Man (film)
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Ann Richards was professionally involved in politics.
+Label: SUPPORTS
+Relevant words: ["politics"]
+Wiki title: Ann_Richards
+
+Correct sentences in training set: 
+0	Dorothy Ann Willis Richards -LRB- September 1 , 1933 -- September 13 , 2006 -RRB- was an American politician and the 45th Governor of Texas from 1991 to 1995 .	45th	List of Governors of Texas	Governor of Texas	Governor of Texas	45th Governor of Texas	List of Governors of Texas
+A Democrat , she first came to national attention as the state treasurer of Texas , when she delivered the keynote address at the 1988 Democratic National Convention .	Democratic	Democratic Party (United States)	treasurer	treasurer	1988 Democratic National Convention	1988 Democratic National Convention
+Richards served as the 45th Governor of Texas from 1991 to 1995 and was defeated for re-election in 1994 by George W. Bush .	45th	List of Governors of Texas	Governor of Texas	Governor of Texas	George W. Bush	George W. Bush	45th Governor of Texas	List of Governors of Texas
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Drake Bell put out an EP.
+Label: SUPPORTS
+Relevant words: ["ep"]
+Wiki title: Drake_Bell
+
+Correct sentences in training set: 
+Bell released an EP in 2011 called A Reminder independently .	A Reminder	A Reminder
+
+Correctly found sentences: 
+Bell released an EP in 2011 called A Reminder independently .	A Reminder	A Reminder
+
+Incorrectly found sentences: 
+In 2005 he independently released his debut album , Telegraph , released under Bell 's own name .	Telegraph	Telegraph (album)
+
+
+
+
+Claim: Janet Leigh was incapable of writing.
+Label: REFUTES
+Relevant words: []
+Wiki title: Janet_Leigh
+
+Correct sentences in training set: 
+0	Janet Leigh -LRB- born Jeanette Helen Morrison ; July 6 , 1927 -- October 3 , 2004 -RRB- was an American actress , singer , dancer and author .
+She also wrote four books between 1984 and 2002 , including two novels .
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Simón Bolívar is only known as Simón Bolívar.
+Label: REFUTES
+Relevant words: []
+Read error in text 
+
+
+
+
+Claim: Bermuda Triangle is in the western part of the Himalayas.
+Label: REFUTES
+Relevant words: ["part","himalayas"]
+Wiki title: Bermuda_Triangle
+
+Correct sentences in training set: 
+0	The Bermuda Triangle , also known as the Devil 's Triangle , is a loosely-defined region in the western part of the North Atlantic Ocean , where a number of aircraft and ships are said to have disappeared under mysterious circumstances .	Atlantic Ocean	Atlantic Ocean	aircraft	aircraft	ships	Surface ship
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Colin Kaepernick became a starter during the 49ers 63rd season in the Republican Party.
+Label: NOT ENOUGH INFO
+Relevant words: ["colin","kaepernick","49ers","season","republican","party"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Marnie was directed by someone who was "The Master of Nothing".
+Label: NOT ENOUGH INFO
+Relevant words: ["marnie","someone","master","nothing"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Advertising is a personal message.
+Label: REFUTES
+Relevant words: ["message"]
+Wiki title: Advertising
+
+Correct sentences in training set: 
+It is differentiated from personal selling in that the message is nonpersonal , i.e. , not directed to a particular individual .
+0	Advertising is an audio or visual form of marketing communication that employs an openly sponsored , nonpersonal message to promote or sell a product , service or idea .	marketing	marketing	communication	communication	promote	promotion (marketing)
+
+Correctly found sentences: 
+0	Advertising is an audio or visual form of marketing communication that employs an openly sponsored , nonpersonal message to promote or sell a product , service or idea .	marketing	marketing	communication	communication	promote	promotion (marketing)
+It is differentiated from personal selling in that the message is nonpersonal , i.e. , not directed to a particular individual .
+
+Incorrectly found sentences: 
+Advertising is differentiated from public relations in that an advertiser usually pays for and has control over the message .
+Advertising is communicated through various mass media , including old media such as newspapers , magazines , Television , Radio , outdoor advertising or direct mail ; or new media such as search results , blogs , websites or text messages .	old media	old media	Television	television advertisement	Radio	radio advertisement	outdoor advertising	outdoor advertising	direct mail	direct mail	new media	new media	search results	Online advertising#Search ads
+The actual presentation of the message in a medium is referred to as an advertisement or `` ad '' .
+
+
+
+
+Claim: Hot Right Now is mistakenly attributed to DJ Fresh.
+Label: REFUTES
+Relevant words: ["dj","fresh"]
+Wiki title: Hot_Right_Now
+
+Correct sentences in training set: 
+0	`` Hot Right Now '' is a single by British drum and bass producer DJ Fresh , released as the second single from his third studio album , Nextlevelism .	DJ Fresh	DJ Fresh	Nextlevelism	Nextlevelism	drum and bass	drum and bass
+
+Correctly found sentences: 
+0	`` Hot Right Now '' is a single by British drum and bass producer DJ Fresh , released as the second single from his third studio album , Nextlevelism .	DJ Fresh	DJ Fresh	Nextlevelism	Nextlevelism	drum and bass	drum and bass
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Private Lives is a three act play from 1930.
+Label: NOT ENOUGH INFO
+Relevant words: ["lives","act","play"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Giada at Home was only available on DVD.
+Label: REFUTES
+Relevant words: []
+Read error in text 
+
+
+
+
+Claim: Harold Macmillan was born on February 20, 1894.
+Label: REFUTES
+Relevant words: ["february"]
+Wiki title: Harold_Macmillan
+
+Correct sentences in training set: 
+0	Maurice Harold Macmillan , 1st Earl of Stockton , -LRB- 10 February 1894 -- 29 December 1986 -RRB- was a British Conservative politician and statesman who served as the Prime Minister of the United Kingdom from 10 January 1957 to 19 October 1963 .	Prime Minister of the United Kingdom	Prime Minister of the United Kingdom	Conservative	Conservative Party (UK)	United Kingdom	United Kingdom	statesman	Politician
+
+Correctly found sentences: 
+0	Maurice Harold Macmillan , 1st Earl of Stockton , -LRB- 10 February 1894 -- 29 December 1986 -RRB- was a British Conservative politician and statesman who served as the Prime Minister of the United Kingdom from 10 January 1957 to 19 October 1963 .	Prime Minister of the United Kingdom	Prime Minister of the United Kingdom	Conservative	Conservative Party (UK)	United Kingdom	United Kingdom	statesman	Politician
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Aristotle spent time in Athens.
+Label: SUPPORTS
+Relevant words: ["time","athens"]
+Wiki title: Aristotle
+
+Correct sentences in training set: 
+At seventeen or eighteen years of age , he joined Plato 's Academy in Athens and remained there until the age of thirty-seven -LRB- c. 347 BC -RRB- .	Plato	Plato	Academy	Plato's Academy
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: David Packouz refused to be an entrepreneur.
+Label: REFUTES
+Relevant words: ["entrepreneur"]
+Wiki title: David_Packouz
+
+Correct sentences in training set: 
+0	David Mordechai Packouz -LRB- -LSB- pækha?s -RSB- born February 16 , 1982 -RRB- is an American former arms dealer , musician , inventor and entrepreneur .
+
+Correctly found sentences: 
+0	David Mordechai Packouz -LRB- -LSB- pækha?s -RSB- born February 16 , 1982 -RRB- is an American former arms dealer , musician , inventor and entrepreneur .
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Magic Johnson did not play for the Lakers.
+Label: REFUTES
+Relevant words: ["lakers"]
+Wiki title: Magic_Johnson
+
+Correct sentences in training set: 
+He played point guard for the Lakers for 13 seasons .	point guard	point guard
+He won a championship and an NBA Finals Most Valuable Player Award in his rookie season , and won four more championships with the Lakers during the 1980s .	NBA	National Basketball Association	NBA Finals Most Valuable Player Award	Bill Russell NBA Finals Most Valuable Player Award	NBA Finals	NBA Finals
+After protests from his fellow players , he retired again for four years , but returned in 1996 , at age 36 , to play 32 games for the Lakers before retiring for the third and final time .
+
+Correctly found sentences: 
+He played point guard for the Lakers for 13 seasons .	point guard	point guard
+He won a championship and an NBA Finals Most Valuable Player Award in his rookie season , and won four more championships with the Lakers during the 1980s .	NBA	National Basketball Association	NBA Finals Most Valuable Player Award	Bill Russell NBA Finals Most Valuable Player Award	NBA Finals	NBA Finals
+After protests from his fellow players , he retired again for four years , but returned in 1996 , at age 36 , to play 32 games for the Lakers before retiring for the third and final time .
+
+Incorrectly found sentences: 
+0	Earvin `` Magic '' Johnson Jr. -LRB- born August 14 , 1959 -RRB- is an American retired professional basketball player and current president of basketball operations of the Los Angeles Lakers of the National Basketball Association -LRB- NBA -RRB- .	Los Angeles Lakers	Los Angeles Lakers	NBA	National Basketball Association	basketball	basketball	National Basketball Association	National Basketball Association
+After winning championships in high school and college , Johnson was selected first overall in the 1979 NBA draft by the Lakers .	NBA	National Basketball Association	1979	1979 NCAA Men's Basketball All-Americans	high school	High school basketball#U.S. high school basketball	college	College basketball	1979 NBA draft	1979 NBA draft
+Named by Ebony magazine as one of America 's most influential black businessmen in 2009 , Johnson has numerous business interests , and was a part-owner of the Lakers for several years .	Ebony	Ebony (magazine)
+
+
+
+
+Claim: Tenacious D started in 1997.
+Label: REFUTES
+Relevant words: []
+Wiki title: Tenacious_D
+
+Correct sentences in training set: 
+0	Tenacious D is an American comedy rock duo that was formed in Los Angeles , California in 1994 .	Los Angeles	Los Angeles	California	California	American	United States	comedy rock	comedy rock	duo	double act	Tenacious D	Tenacious D (album)
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: James VI and I was a major advocate of a single parliament for Scotland and England.
+Label: SUPPORTS
+Relevant words: ["advocate","parliament","scotland","england"]
+Wiki title: James_VI_and_I
+
+Correct sentences in training set: 
+He was a major advocate of a single parliament for England and Scotland .	Scotland	Kingdom of Scotland	England	Kingdom of England
+
+Correctly found sentences: 
+He was a major advocate of a single parliament for England and Scotland .	Scotland	Kingdom of Scotland	England	Kingdom of England
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Marcus Bentley is a broadcaster.
+Label: SUPPORTS
+Relevant words: ["broadcaster"]
+Wiki title: Marcus_Bentley
+
+Correct sentences in training set: 
+0	Marcus Morgan Bentley -LRB- born 4 October 1967 -RRB- is a British actor , broadcaster and voice-over artist .	British	British nationality law	voice-over artist	voice-over	broadcaster	presenter	actor	actor	voice-over	voice-over
+
+Correctly found sentences: 
+0	Marcus Morgan Bentley -LRB- born 4 October 1967 -RRB- is a British actor , broadcaster and voice-over artist .	British	British nationality law	voice-over artist	voice-over	broadcaster	presenter	actor	actor	voice-over	voice-over
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Saxony is in Ireland.
+Label: REFUTES
+Relevant words: ["ireland"]
+Wiki title: Saxony
+
+Correct sentences in training set: 
+0	The Free State of Saxony -LRB- der Freistaat Sachsen -LSB- ?f?a???ta?t ?zaksn? -RSB- Swobodny stat Sakska -RRB- is a landlocked federal state of Germany , bordering the federal states of Brandenburg , Saxony Anhalt , Thuringia , and Bavaria , as well as the countries of Poland -LRB- Lower Silesian and Lubusz Voivodeships -RRB- and the Czech Republic -LRB- Karlovy Vary , Liberec and Ústí nad Labem Regions -RRB- .	state	States of Germany	Germany	Germany	Brandenburg	Brandenburg	Saxony Anhalt	Saxony Anhalt	Thuringia	Thuringia	Bavaria	Bavaria	countries	countries	Poland	Poland	Lower Silesian	Lower Silesian Voivodeship	Czech Republic	Czech Republic	Karlovy Vary	Karlovy Vary Region	Liberec	Liberec Region
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: In the End has baseball in it.
+Label: NOT ENOUGH INFO
+Relevant words: []
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Mel B released a song on Virgin Records in 2007.
+Label: SUPPORTS
+Relevant words: ["song","virgin","records"]
+Wiki title: Mel_B
+
+Correct sentences in training set: 
+Brown began her solo career when she released `` I Want You Back '' with Missy Elliott on Virgin Records .	Virgin	Virgin Records	I Want You Back	I Want You Back (Mel B song)	Missy Elliott	Missy Elliott	Virgin Records	Virgin Records
+
+Correctly found sentences: 
+Brown began her solo career when she released `` I Want You Back '' with Missy Elliott on Virgin Records .	Virgin	Virgin Records	I Want You Back	I Want You Back (Mel B song)	Missy Elliott	Missy Elliott	Virgin Records	Virgin Records
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Noah Cyrus is a younger sister of Macy Grey.
+Label: REFUTES
+Relevant words: ["sister","macy","grey"]
+Wiki title: Noah_Cyrus
+
+Correct sentences in training set: 
+She is the youngest daughter of Billy Ray Cyrus and younger sister of Miley Cyrus and Trace Cyrus .	Billy Ray Cyrus	Billy Ray Cyrus	Trace Cyrus	Trace Cyrus	Miley Cyrus	Miley Cyrus
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Mohra is a truck.
+Label: REFUTES
+Relevant words: ["truck"]
+Wiki title: Mohra
+
+Correct sentences in training set: 
+0	Mohra -LRB- Pawn -RRB- is a 1994 Indian action thriller film directed by Rajiv Rai starring Akshay Kumar , Sunil Shetty , Raveena Tandon and Naseeruddin Shah in the lead roles with Paresh Rawal , Gulshan Grover , Raza Murad and Sadashiv Amrapurkar in supporting roles .	Rajiv Rai	Rajiv Rai	Akshay Kumar	Akshay Kumar	Raveena Tandon	Raveena Tandon	Naseeruddin Shah	Naseeruddin Shah	Paresh Rawal	Paresh Rawal	Gulshan Grover	Gulshan Grover	action thriller	action thriller	Sunil Shetty	Sunil Shetty	Raza Murad	Raza Murad	Sadashiv Amrapurkar	Sadashiv Amrapurkar
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Hourglass is performed by a Russian singer-songwriter.
+Label: REFUTES
+Relevant words: []
+Read error in text 
+
+
+
+
+Claim: Shane Black was born in 1961.
+Label: SUPPORTS
+Relevant words: []
+Wiki title: Shane_Black
+
+Correct sentences in training set: 
+0	Shane Black -LRB- born December 16 , 1961 -RRB- is an American screenwriter , director , producer and actor , known for writing the 1987 action film hit Lethal Weapon , and his directorial debut with the film Kiss Kiss Bang Bang in 2005 .	action film	action film	Lethal Weapon	Lethal Weapon	Kiss Kiss Bang Bang	Kiss Kiss Bang Bang
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: A View to a Kill is an action movie.
+Label: NOT ENOUGH INFO
+Relevant words: ["view","action","movie"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Papua comprised all of Indonesia.
+Label: NOT ENOUGH INFO
+Relevant words: ["papua","indonesia"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: There are not rumors that Augustus' wife, Livia, poisoned him.
+Label: REFUTES
+Relevant words: ["rumors","wife","livia"]
+Wiki title: Augustus
+
+Correct sentences in training set: 
+He probably died from natural causes , although there were unconfirmed rumors that his wife Livia poisoned him .	Livia	Livia
+
+Correctly found sentences: 
+He probably died from natural causes , although there were unconfirmed rumors that his wife Livia poisoned him .	Livia	Livia
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Jennifer Lopez made a single.
+Label: SUPPORTS
+Relevant words: []
+Wiki title: Jennifer_Lopez
+
+Correct sentences in training set: 
+She ventured into the music industry in 1999 with her debut studio album On the 6 , preceded by the number-one single `` If You Had My Love '' .	On the 6	On the 6	If You Had My Love	If You Had My Love
+With the simultaneous release of her second studio album J.Lo and her film The Wedding Planner in 2001 , Lopez became the first woman to have a number one album and film in the same week .	J.Lo	J.Lo (album)	The Wedding Planner	The Wedding Planner
+Her fifth studio album , Como Ama una Mujer -LRB- 2007 -RRB- , received the highest first-week sales for a debut Spanish album in the United States .	Como Ama una Mujer	Como Ama una Mujer
+Lopez gave birth to twins in 2008 , and after a relatively unsuccessful period , returned to prominence in 2011 with her appearance as a judge on American Idol and most commercially successful single to date , `` On the Floor '' , which is one of the best-selling singles of all time .	American Idol	American Idol	On the Floor	On the Floor	best-selling singles of all time	List of best-selling singles
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: A working animal is trained to perform life saving tasks.
+Label: NOT ENOUGH INFO
+Relevant words: ["animal","life","saving","tasks"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Billboard Dad is a genre of music.
+Label: NOT ENOUGH INFO
+Relevant words: ["billboard","dad","genre","music"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Vedam was written and directed by Christopher Nolan.
+Label: REFUTES
+Relevant words: ["christopher","nolan"]
+Wiki title: Vedam_-LRB-film-RRB-
+
+Correct sentences in training set: 
+0	Vedam -LRB- English : Chant -RRB- is a 2010 Telugu language Indian drama film written and directed by Radhakrishna Jagarlamudi , starring Allu Arjun , Manoj Manchu , Anushka Shetty , Manoj Bajpayee , Saranya Ponvannan , Deeksha Seth , Lekha Washington , and Siya Gautham .	Radhakrishna Jagarlamudi	Radhakrishna Jagarlamudi	Anushka Shetty	Anushka Shetty	Allu Arjun	Allu Arjun	Manoj Manchu	Manoj Manchu	Deeksha Seth	Deeksha Seth	Manoj Bajpayee	Manoj Bajpayee	Saranya Ponvannan	Saranya Ponvannan	Lekha Washington	Lekha Washington	Telugu language	Telugu language	drama film	drama film
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Men in Black II stars eight children.
+Label: NOT ENOUGH INFO
+Relevant words: ["men","black","ii","children"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Sancho Panza is a character in Don Quixote.
+Label: SUPPORTS
+Relevant words: ["character","don","quixote"]
+Wiki title: Sancho_Panza
+
+Correct sentences in training set: 
+0	Sancho Panza -LSB- ?sant?o ?pan?a -RSB- is a fictional character in the novel Don Quixote written by Spanish author Don Miguel de Cervantes Saavedra in 1605 .	Don Quixote	Don Quixote	Miguel de Cervantes	Miguel de Cervantes	Spanish	Spain	fictional character	fictional character	Don Miguel de Cervantes Saavedra	Miguel de Cervantes
+
+Correctly found sentences: 
+0	Sancho Panza -LSB- ?sant?o ?pan?a -RSB- is a fictional character in the novel Don Quixote written by Spanish author Don Miguel de Cervantes Saavedra in 1605 .	Don Quixote	Don Quixote	Miguel de Cervantes	Miguel de Cervantes	Spanish	Spain	fictional character	fictional character	Don Miguel de Cervantes Saavedra	Miguel de Cervantes
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Magic Johnson was a tap dancer.
+Label: REFUTES
+Relevant words: ["tap","dancer"]
+Wiki title: Magic_Johnson
+
+Correct sentences in training set: 
+0	Earvin `` Magic '' Johnson Jr. -LRB- born August 14 , 1959 -RRB- is an American retired professional basketball player and current president of basketball operations of the Los Angeles Lakers of the National Basketball Association -LRB- NBA -RRB- .	Los Angeles Lakers	Los Angeles Lakers	NBA	National Basketball Association	basketball	basketball	National Basketball Association	National Basketball Association
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: The Adventures of Pluto Nash was reviewed by Ron Underwood.
+Label: REFUTES
+Relevant words: ["ron","underwood"]
+Wiki title: The_Adventures_of_Pluto_Nash
+
+Correct sentences in training set: 
+0	The Adventures of Pluto Nash is a 2002 Australian-American science fiction action comedy film starring Eddie Murphy -LRB- in a dual role -RRB- and directed by Ron Underwood .	Ron Underwood	Ron Underwood	Eddie Murphy	Eddie Murphy	science fiction	science fiction film	action	action film	comedy film	comedy film
+
+Correctly found sentences: 
+0	The Adventures of Pluto Nash is a 2002 Australian-American science fiction action comedy film starring Eddie Murphy -LRB- in a dual role -RRB- and directed by Ron Underwood .	Ron Underwood	Ron Underwood	Eddie Murphy	Eddie Murphy	science fiction	science fiction film	action	action film	comedy film	comedy film
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Hedda Gabler's world premiere took place at the Battle of Hastings.
+Label: REFUTES
+Relevant words: ["world","premiere","place","battle","hastings"]
+Wiki title: Hedda_Gabler
+
+Correct sentences in training set: 
+Ibsen was present at the world premiere , which took place on 31 January 1891 at the Residenztheater in Munich .	Munich	Munich
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Brazzers is a company.
+Label: SUPPORTS
+Relevant words: ["company"]
+Wiki title: Brazzers
+
+Correct sentences in training set: 
+0	Brazzers -LRB- -LSB- ?bræz?rz -RSB- -RRB- is a pornographic production company based in Montreal , Canada .	Montreal	Montreal	pornographic	Pornography	production company	production company
+
+Correctly found sentences: 
+0	Brazzers -LRB- -LSB- ?bræz?rz -RSB- -RRB- is a pornographic production company based in Montreal , Canada .	Montreal	Montreal	pornographic	Pornography	production company	production company
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Tim Roth is an English actor.
+Label: SUPPORTS
+Relevant words: ["actor"]
+Wiki title: Tim_Roth
+
+Correct sentences in training set: 
+0	Timothy Simon Roth -LRB- born 14 May 1961 -RRB- is an English actor and director .
+
+Correctly found sentences: 
+0	Timothy Simon Roth -LRB- born 14 May 1961 -RRB- is an English actor and director .
+
+Incorrectly found sentences: 
+For the historical drama Rob Roy -LRB- 1995 -RRB- , Roth won the BAFTA Award for Best Actor in a Supporting Role and was nominated for the Academy Award for Best Supporting Actor .	BAFTA Award	BAFTA Award	Rob Roy	Rob Roy (1995 film)	BAFTA Award for Best Actor in a Supporting Role	BAFTA Award for Best Actor in a Supporting Role	Academy Award for Best Supporting Actor	Academy Award for Best Supporting Actor
+
+
+
+
+Claim: Juventus F.C. rejected their traditional black-and-white-striped home uniform in 1903.
+Label: REFUTES
+Relevant words: ["f.c.","home","uniform"]
+Wiki title: Juventus_F.C.
+
+Correct sentences in training set: 
+The club is the second oldest of its kind still active in the country after Genoa 's football section -LRB- 1893 -RRB- , has traditionally worn a black and white striped home kit since 1903 and has played its home matches in several grounds , being the latest the 41,507-capacity Juventus Stadium .	Juventus Stadium	Juventus Stadium	club	List of football clubs in Italy	Genoa	Genoa C.F.C.
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Ernest Medina participated in the My Lai Massacre.
+Label: SUPPORTS
+Relevant words: ["lai","massacre"]
+Wiki title: Ernest_Medina
+
+Correct sentences in training set: 
+He was court martialed in 1971 for his role in the My Lai Massacre , but acquitted the same year .	My Lai Massacre	My Lai Massacre
+
+Correctly found sentences: 
+He was court martialed in 1971 for his role in the My Lai Massacre , but acquitted the same year .	My Lai Massacre	My Lai Massacre
+
+Incorrectly found sentences: 
+He was the commanding officer of Company C , 1st Battalion , 20th Infantry of the 11th Brigade , Americal Division , the unit responsible for the My Lai Massacre of 16 March 1968 .	Company	Company (military unit)	Battalion	Battalion	20th Infantry	20th Infantry Regiment (United States)	Americal Division	Americal Division	11th Brigade	11th Infantry Brigade (United States)	My Lai Massacre	My Lai Massacre
+
+
+
+
+Claim: Viola Davis appeared in Kate & Leopold as Darth Maul.
+Label: NOT ENOUGH INFO
+Relevant words: ["viola","davis","kate","leopold","darth","maul"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Jenna Jameson worked as a glamor model and a stripper.
+Label: SUPPORTS
+Relevant words: ["glamor","model","stripper"]
+Wiki title: Jenna_Jameson
+
+Correct sentences in training set: 
+She started acting in erotic videos in 1993 after having worked as a stripper and glamor model .	stripper	Striptease	glamor model	Glamour photography
+
+Correctly found sentences: 
+She started acting in erotic videos in 1993 after having worked as a stripper and glamor model .	stripper	Striptease	glamor model	Glamour photography
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: New Orleans Pelicans compete in the National Football Association.
+Label: REFUTES
+Relevant words: []
+Read error in text 
+
+
+
+
+Claim: Caroline Kennedy is a Catholic.
+Label: NOT ENOUGH INFO
+Relevant words: ["caroline","kennedy","catholic"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Starrcade was an annual professional wrestling event that began in 1988.
+Label: REFUTES
+Relevant words: ["wrestling","event"]
+Wiki title: Starrcade
+
+Correct sentences in training set: 
+0	Starrcade was an annual professional wrestling event , originally broadcast via closed-circuit television and eventually broadcast via pay-per-view television , held from 1983 to 2000 by the National Wrestling Alliance -LRB- NWA -RRB- and later World Championship Wrestling -LRB- WCW -RRB- .	professional wrestling	professional wrestling	National Wrestling Alliance	National Wrestling Alliance	World Championship Wrestling	World Championship Wrestling	closed-circuit television	closed-circuit television	pay-per-view	pay-per-view
+From 1983 to 1987 , Starrcade was produced by Jim Crockett Promotions -LRB- JCP -RRB- , the dominant promotion of the NWA , and aired on Thanksgiving Day .	Jim Crockett Promotions	Jim Crockett Promotions	Thanksgiving Day	Thanksgiving (United States)
+
+Correctly found sentences: 
+0	Starrcade was an annual professional wrestling event , originally broadcast via closed-circuit television and eventually broadcast via pay-per-view television , held from 1983 to 2000 by the National Wrestling Alliance -LRB- NWA -RRB- and later World Championship Wrestling -LRB- WCW -RRB- .	professional wrestling	professional wrestling	National Wrestling Alliance	National Wrestling Alliance	World Championship Wrestling	World Championship Wrestling	closed-circuit television	closed-circuit television	pay-per-view	pay-per-view
+
+Incorrectly found sentences: 
+Starrcade was regarded by the NWA and WCW as their flagship event of the year , much in the same vein that its rival , the World Wrestling Entertainment , regards WrestleMania .	World Wrestling Entertainment	WWE	WrestleMania	WrestleMania
+From the 1960s to the 1980s , it was tradition for JCP to hold major professional wrestling events on Thanksgiving and Christmas , mostly at Greensboro Coliseum .	professional wrestling	professional wrestling	Christmas	Christmas	Greensboro Coliseum	Greensboro Coliseum
+The rights to the event now belong to WWE -LRB- formerly the World Wrestling Federation -RRB- .
+
+
+
+
+Claim: Jack Falahee is a person who acts.
+Label: SUPPORTS
+Relevant words: ["person"]
+Wiki title: Jack_Falahee
+
+Correct sentences in training set: 
+0	Jack Ryan Falahee -LRB- born February 20 , 1989 -RRB- is an American actor .
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Seohyun is a dog.
+Label: REFUTES
+Relevant words: ["dog"]
+Wiki title: Seohyun
+
+Correct sentences in training set: 
+0	Seo Ju-hyun -LRB- born June 28 , 1991 -RRB- , known professionally as Seohyun , is a South Korean singer and actress .
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Steve Wozniak was born after the Apple II came out.
+Label: REFUTES
+Relevant words: ["apple","ii"]
+Wiki title: Steve_Wozniak
+
+Correct sentences in training set: 
+He primarily designed the 1977 Apple II , known as one of the first highly successful mass-produced microcomputers , while Jobs oversaw the development of its unusual case and Rod Holt developed the unique power supply .	Apple II	Apple II	Rod Holt	Rod Holt
+
+Correctly found sentences: 
+He primarily designed the 1977 Apple II , known as one of the first highly successful mass-produced microcomputers , while Jobs oversaw the development of its unusual case and Rod Holt developed the unique power supply .	Apple II	Apple II	Rod Holt	Rod Holt
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: A&E is a cable and satellite television network.
+Label: SUPPORTS
+Relevant words: ["cable","satellite","television","network"]
+Wiki title: A&E_-LRB-TV_channel-RRB-
+
+Correct sentences in training set: 
+0	A&E -LRB- previously Arts & Entertainment Network -RRB- is an American cable and satellite television channel that serves as the flagship television property of A&E Networks , a joint venture between the Hearst Corporation and Disney -- ABC Television Group subsidiary of the Walt Disney Company -LRB- both of which maintain a 50 % ownership interest -RRB- .	A&E Networks	A&E Networks	Hearst Corporation	Hearst Corporation	cable	cable television	satellite television	satellite television	the Walt Disney Company	the Walt Disney Company
+
+Correctly found sentences: 
+0	A&E -LRB- previously Arts & Entertainment Network -RRB- is an American cable and satellite television channel that serves as the flagship television property of A&E Networks , a joint venture between the Hearst Corporation and Disney -- ABC Television Group subsidiary of the Walt Disney Company -LRB- both of which maintain a 50 % ownership interest -RRB- .	A&E Networks	A&E Networks	Hearst Corporation	Hearst Corporation	cable	cable television	satellite television	satellite television	the Walt Disney Company	the Walt Disney Company
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: L.A. Reid has served as the president of a record label.
+Label: SUPPORTS
+Relevant words: []
+Read error in text 
+
+
+
+
+Claim: Veeram is something other than an Indian Tamil film.
+Label: REFUTES
+Relevant words: ["something","tamil"]
+Wiki title: Veeram_-LRB-2014_film-RRB-
+
+Correct sentences in training set: 
+0	Veeram -LRB- Valour -RRB- is a 2014 Indian Tamil action film directed by Siva and produced by Vijaya Productions .	Siva	Siva (director)	Vijaya Productions	Vijaya Pictures	action film	action film
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Home for the Holidays stars an American actress.
+Label: SUPPORTS
+Relevant words: []
+Read error in text 
+
+
+
+
+Claim: Taran Killam is an American writer.
+Label: SUPPORTS
+Relevant words: ["writer"]
+Wiki title: Taran_Killam
+
+Correct sentences in training set: 
+0	Taran Hourie Killam -LRB- born April 1 , 1982 -RRB- is an American actor , comedian , and writer .
+
+Correctly found sentences: 
+0	Taran Hourie Killam -LRB- born April 1 , 1982 -RRB- is an American actor , comedian , and writer .
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Jayasudha is an actor that stars in Daag.
+Label: REFUTES
+Relevant words: ["jayasudha","actor"]
+Wiki title: Daag_-LRB-1973_film-RRB-
+
+Correct sentences in training set: 
+The film was later remade into the Telugu film Vichitra Jeevitham -LRB- 1978 -RRB- starring Akkineni Nageswara Rao , Vanisri , and Jayasudha .	Telugu	Cinema of Andhra Pradesh	Vichitra Jeevitham	Vichitra Jeevitham	Akkineni Nageswara Rao	Akkineni Nageswara Rao	Vanisri	Vanisri	Jayasudha	Jayasudha
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: XHamster's The Sex Factor forces eight men and eight women to battle to become a porn star.
+Label: NOT ENOUGH INFO
+Relevant words: []
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: John Dolmayan was born on July 15, 1873.
+Label: REFUTES
+Relevant words: ["july","1873"]
+Wiki title: John_Dolmayan
+
+Correct sentences in training set: 
+0	John Hovig Dolmayan -LRB- ??? ???????? , born July 15 , 1973 -RRB- is a Lebanese-born Armenian -- American songwriter and drummer .	American	American Recordings (US)
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Despicable Me 2 was directed by a lake.
+Label: REFUTES
+Relevant words: []
+Read error in text 
+
+
+
+
+Claim: Island Records is a music school.
+Label: NOT ENOUGH INFO
+Relevant words: ["island","records","music","school"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Sikkim is a part of the World Bank.
+Label: NOT ENOUGH INFO
+Relevant words: ["sikkim","part","world","bank"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Christa McAuliffe taught social studies at Concord High School.
+Label: SUPPORTS
+Relevant words: ["studies","concord","high","school"]
+Wiki title: Christa_McAuliffe
+
+Correct sentences in training set: 
+She took a teaching position as a social studies teacher at Concord High School in New Hampshire in 1983 .	Concord High School	Concord High School (New Hampshire)	New Hampshire	New Hampshire
+
+Correctly found sentences: 
+She took a teaching position as a social studies teacher at Concord High School in New Hampshire in 1983 .	Concord High School	Concord High School (New Hampshire)	New Hampshire	New Hampshire
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Ron Weasley is a President.
+Label: NOT ENOUGH INFO
+Relevant words: ["ron","weasley","president"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Reign Over Me was released in 2017.
+Label: REFUTES
+Relevant words: []
+Wiki title: Reign_Over_Me
+
+Correct sentences in training set: 
+Distributed by Columbia Pictures , the film was released on March 23 , 2007 .	Columbia Pictures	Columbia Pictures
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Colin Kaepernick is a poker player.
+Label: REFUTES
+Relevant words: ["poker","player"]
+Wiki title: Colin_Kaepernick
+
+Correct sentences in training set: 
+0	Colin Rand Kaepernick -LRB- -LSB- ` kæp?rn?k -RSB- ; born November 3 , 1987 -RRB- is an American football quarterback who is currently a free agent .	American football	American football	quarterback	quarterback
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Sheryl Lee has yet to appear in a film as of 2016.
+Label: REFUTES
+Relevant words: ["film"]
+Wiki title: Sheryl_Lee
+
+Correct sentences in training set: 
+After studying acting in college , Lee relocated to Seattle , Washington to work in theater , where she was cast by David Lynch as Laura Palmer and Maddy Ferguson on the 1990 cult TV series Twin Peaks and in the 1992 film Twin Peaks : Fire Walk with Me .	David Lynch	David Lynch	Laura Palmer	Laura Palmer	Maddy Ferguson	List of Twin Peaks characters#Maddy Ferguson	cult	cult television	TV series	TV series	Twin Peaks	Twin Peaks (2017 TV series)
+Notable film roles include as Astrid Kirchherr in Backbeat -LRB- 1994 -RRB- , as well as a lead role in the drama Mother Night -LRB- 1996 -RRB- , based on the novel by Kurt Vonnegut .	Astrid Kirchherr	Astrid Kirchherr	Backbeat	Backbeat (movie)	Mother Night	Mother Night (film)	Kurt Vonnegut	Kurt Vonnegut
+From 2000 to 2009 , Lee only appeared in four films before having a supporting part in the drama Winter 's Bone -LRB- 2010 -RRB- .
+In 2016 , she appeared in Café Society , and also completed the Showtime revival of Twin Peaks -LRB- 2017 -RRB- , reprising her role of Laura Palmer .	Laura Palmer	Laura Palmer	Twin Peaks	Twin Peaks (2017 TV series)	Café Society	Café Society (film)	Showtime	Showtime (network)
+
+Correctly found sentences: 
+After studying acting in college , Lee relocated to Seattle , Washington to work in theater , where she was cast by David Lynch as Laura Palmer and Maddy Ferguson on the 1990 cult TV series Twin Peaks and in the 1992 film Twin Peaks : Fire Walk with Me .	David Lynch	David Lynch	Laura Palmer	Laura Palmer	Maddy Ferguson	List of Twin Peaks characters#Maddy Ferguson	cult	cult television	TV series	TV series	Twin Peaks	Twin Peaks (2017 TV series)
+Notable film roles include as Astrid Kirchherr in Backbeat -LRB- 1994 -RRB- , as well as a lead role in the drama Mother Night -LRB- 1996 -RRB- , based on the novel by Kurt Vonnegut .	Astrid Kirchherr	Astrid Kirchherr	Backbeat	Backbeat (movie)	Mother Night	Mother Night (film)	Kurt Vonnegut	Kurt Vonnegut
+From 2000 to 2009 , Lee only appeared in four films before having a supporting part in the drama Winter 's Bone -LRB- 2010 -RRB- .
+In 2016 , she appeared in Café Society , and also completed the Showtime revival of Twin Peaks -LRB- 2017 -RRB- , reprising her role of Laura Palmer .	Laura Palmer	Laura Palmer	Twin Peaks	Twin Peaks (2017 TV series)	Café Society	Café Society (film)	Showtime	Showtime (network)
+
+Incorrectly found sentences: 
+0	Sheryl Lynn Lee -LRB- born April 22 , 1967 -RRB- is a German-born film , stage , and television actress .	German	Germany
+
+
+
+
+Claim: Matteo Renzi is German.
+Label: REFUTES
+Relevant words: []
+Wiki title: Matteo_Renzi
+
+Correct sentences in training set: 
+0	Matteo Renzi -LRB- -LSB- mat?t??o ?r?ntsi -RSB- ; born 11 January 1975 -RRB- is an Italian politician who served as the Prime Minister of Italy from February 2014 until December 2016 .	Prime Minister of Italy	Prime Minister of Italy	Italy	Italy	Italian politician	Politics of Italy
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: The Road to El Dorado stars Tim Allen.
+Label: NOT ENOUGH INFO
+Relevant words: []
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: The highest point of the Hindu Kush is Everest.
+Label: REFUTES
+Relevant words: ["point","everest"]
+Wiki title: Hindu_Kush
+
+Correct sentences in training set: 
+The Hindu Kush range has numerous high snow-capped peaks , with the highest point in the Hindu Kush being Tirich Mir or Terichmir at 7708 m in the Chitral District of Khyber Pakhtunkhwa , Pakistan .	Pakistan	Pakistan	Tirich Mir	Tirich Mir	Chitral District	Chitral District	Khyber Pakhtunkhwa	Khyber Pakhtunkhwa
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Same Old Love is disassociated from Selena Gomez.
+Label: REFUTES
+Relevant words: ["selena","gomez"]
+Wiki title: Same_Old_Love
+
+Correct sentences in training set: 
+0	`` Same Old Love '' is a song by American singer Selena Gomez from her second studio album , Revival -LRB- 2015 -RRB- .	Selena Gomez	Selena Gomez	Revival	Revival (Selena Gomez album)
+Gomez promoted `` Same Old Love '' with several televised performances , including on The Ellen DeGeneres Show , The Tonight Show Starring Jimmy Fallon , and at the 2015 American Music Awards .	The Ellen DeGeneres Show	The Ellen DeGeneres Show	The Tonight Show Starring Jimmy Fallon	The Tonight Show Starring Jimmy Fallon	2015 American Music Awards	2015 American Music Awards
+
+Correctly found sentences: 
+0	`` Same Old Love '' is a song by American singer Selena Gomez from her second studio album , Revival -LRB- 2015 -RRB- .	Selena Gomez	Selena Gomez	Revival	Revival (Selena Gomez album)
+
+Incorrectly found sentences: 
+`` Same Old Love '' was released as the second single from Revival on September 10 , 2015 .	Revival	Revival (Selena Gomez album)
+
+
+
+
+Claim: The heart beats at a resting rate close to 22 beats per minute.
+Label: REFUTES
+Relevant words: ["rate","beats","minute"]
+Wiki title: Heart
+
+Correct sentences in training set: 
+The heart beats at a resting rate close to 72 beats per minute .	rate	heart rate
+
+Correctly found sentences: 
+The heart beats at a resting rate close to 72 beats per minute .	rate	heart rate
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Weekly Idol is hosted by Yoo Jae Suk.
+Label: REFUTES
+Relevant words: ["yoo","jae","suk"]
+Wiki title: Weekly_Idol
+
+Correct sentences in training set: 
+The show is hosted by comedian Jeong Hyeong-don and rapper Defconn .	Jeong Hyeong-don	Jeong Hyeong-don	Defconn	Defconn
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Heavy Metal music was developed in the early 1970's.
+Label: SUPPORTS
+Relevant words: []
+Wiki title: Heavy_metal_music
+
+Correct sentences in training set: 
+0	Heavy metal -LRB- or simply metal -RRB- is a genre of rock music that developed in the late 1960s and early 1970s , largely in the United Kingdom and the United States .	United Kingdom	United Kingdom	United States	United States	rock music	rock music
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Bermuda Triangle is also known by another name.
+Label: SUPPORTS
+Relevant words: ["name"]
+Wiki title: Bermuda_Triangle
+
+Correct sentences in training set: 
+0	The Bermuda Triangle , also known as the Devil 's Triangle , is a loosely-defined region in the western part of the North Atlantic Ocean , where a number of aircraft and ships are said to have disappeared under mysterious circumstances .	Atlantic Ocean	Atlantic Ocean	aircraft	aircraft	ships	Surface ship
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Ashton Kutcher was directed by George Clooney.
+Label: NOT ENOUGH INFO
+Relevant words: ["ashton","kutcher","george","clooney"]
+
+Correct sentences in training set: 
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Topman has clothing outlets in six Irish cities and towns.
+Label: SUPPORTS
+Relevant words: ["clothing","outlets","cities","towns"]
+Wiki title: Topman
+
+Correct sentences in training set: 
+A part of the Arcadia Group , which also owns Burton , Miss Selfridge , Wallis , Evans and Dorothy Perkins , Topman has a chain of high-street men 's clothing stores located throughout the United Kingdom and has a presence on just about every UK High Street , and in Ireland main street outlets in six cities and towns .	United Kingdom	United Kingdom	Ireland	Republic of Ireland	Arcadia Group	Arcadia Group	Burton	Burton (clothes retailer)	Miss Selfridge	Miss Selfridge	Wallis	Wallis (retailer)	Evans	Evans (clothing)	Dorothy Perkins	Dorothy Perkins	high-street	high-street
+
+Correctly found sentences: 
+A part of the Arcadia Group , which also owns Burton , Miss Selfridge , Wallis , Evans and Dorothy Perkins , Topman has a chain of high-street men 's clothing stores located throughout the United Kingdom and has a presence on just about every UK High Street , and in Ireland main street outlets in six cities and towns .	United Kingdom	United Kingdom	Ireland	Republic of Ireland	Arcadia Group	Arcadia Group	Burton	Burton (clothes retailer)	Miss Selfridge	Miss Selfridge	Wallis	Wallis (retailer)	Evans	Evans (clothing)	Dorothy Perkins	Dorothy Perkins	high-street	high-street
+
+Incorrectly found sentences: 
+
+
+
+
+Claim: Wales' population changed.
+Label: SUPPORTS
+Relevant words: ["population"]
+Wiki title: Wales
+
+Correct sentences in training set: 
+At the dawn of the Industrial Revolution , development of the mining and metallurgical industries transformed the country from an agricultural society into an industrial nation ; the South Wales Coalfield 's exploitation caused a rapid expansion of Wales ' population .	country	country	Industrial Revolution	Industrial Revolution	mining	mining in Wales	metallurgical	metallurgy	South Wales Coalfield	South Wales Coalfield
+
+Correctly found sentences: 
+At the dawn of the Industrial Revolution , development of the mining and metallurgical industries transformed the country from an agricultural society into an industrial nation ; the South Wales Coalfield 's exploitation caused a rapid expansion of Wales ' population .	country	country	Industrial Revolution	Industrial Revolution	mining	mining in Wales	metallurgical	metallurgy	South Wales Coalfield	South Wales Coalfield
+
+Incorrectly found sentences: 
+It had a population in 2011 of 3,063,456 and has a total area of 20779 km2 .
+Two-thirds of the population live in south Wales , mainly in and around Cardiff -LRB- the capital -RRB- , Swansea and Newport , and in the nearby valleys .	Cardiff	Cardiff	south Wales	south Wales	Swansea	Swansea	Newport	Newport, Wales	valleys	South Wales valleys
+Although Wales closely shares its political and social history with the rest of Great Britain , and the vast majority of the population speaks English , the country has retained a distinct cultural identity and is officially bilingual .	English	English language	country	country	Great Britain	Great Britain	cultural identity	Welsh culture	bilingual	bilingual
+Over 560,000 Welsh language speakers live in Wales , and the language is spoken by a majority of the population in parts of the north and west .	Welsh	Welsh people	Welsh language	Welsh language
+
+
+
+
+Claim: Tool has won three Oscars.
+Label: REFUTES
+Relevant words: ["oscars"]
+Wiki title: Tool_-LRB-band-RRB-
+
+Correct sentences in training set: 
+Tool has won three Grammy Awards , performed worldwide tours , and produced albums topping the charts in several countries .
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+
+
+
+
+Number of claims with a correct sentence found (or it correctly found none): 59/100
+Number of incorrect sentences found: 29
+Number of sentences where none of the correct sentences were found: 41/100

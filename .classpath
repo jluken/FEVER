@@ -21,5 +21,8 @@
 	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/java-json.jar"/>
 	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/gson-2.3.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/google-common.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/stanford-english-corenlp-2018-02-27-models.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/stanford-corenlp-3.9.1-models.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/commons-lang3-3.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

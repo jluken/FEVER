@@ -1,0 +1,1086 @@
+Claim: "Nikolaj Coster-Waldau worked with the Fox Broadcasting Company."
+Label: "SUPPORTS"
+Wiki article: "Nikolaj_Coster-Waldau"
+Primary supporting sentences: 
+Matching words: 
+{}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Nikolaj Coster-Waldau, Fox Broadcasting Company]
+Noun phrases: 
+[nikolaj coster-waldau, fox broadcasting company]
+
+Claim: "Roman Atwood is a content creator."
+Label: "SUPPORTS"
+Wiki article: "Roman_Atwood"
+Primary supporting sentences: 
+He is best known for his vlogs , where he posts updates about his life on a daily basis
+He also has another YouTube channel called `` RomanAtwood '' , where he posts pranks
+Matching words: 
+{a=1, is=1, on=1}
+Missing words (not counting article topic): 
+{creator=2, is=1, content=2}
+Named entities: 
+[Roman Atwood, creator]
+Noun phrases: 
+[roman atwood, content creator]
+
+Claim: "History of art includes architecture, dance, sculpture, music, painting, poetry literature, theatre, narrative, film, photography and graphic arts."
+Label: "SUPPORTS"
+Wiki article: "History_of_art"
+Primary supporting sentences: 
+The subsequent expansion of the list of principal arts in the 20th century reached to nine : architecture , dance , sculpture , music , painting , poetry -LRB- described broadly as a form of literature with aesthetic purpose or function , which also includes the distinct genres of theatre and narrative -RRB- , film , photography and graphic arts
+Matching words: 
+{a=1, or=1, in=1, narrative=1, sculpture=1, includes=1, film=1, ,=8, the=4, theatre=1, literature=1, music=1, painting=1, and=2, of=4, to=1, arts=2, dance=1, graphic=1, photography=1, architecture=1, poetry=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[]
+Noun phrases: 
+[history of art, architecture , dance , sculpture , music , painting , poetry literature , theatre , narrative , film , photography and graphic arts]
+
+Claim: "Adrienne Bailon is an accountant."
+Label: "REFUTES"
+Wiki article: "Adrienne_Bailon"
+Primary supporting sentences: 
+Adrienne Eliza Houghton -LRB- née Bailon ; born October 24 , 1983 -RRB- is an American singer-songwriter , recording artist , actress , dancer and television personality
+Matching words: 
+{bailon=1, adrienne=1, is=1, an=1}
+Missing words (not counting article topic): 
+{accountant=1}
+Named entities: 
+[Adrienne Bailon, accountant]
+Noun phrases: 
+[adrienne bailon, accountant]
+
+Claim: "Homeland is an American television spy thriller based on the Israeli television series Prisoners of War."
+Label: "SUPPORTS"
+Wiki article: "Homeland_-LRB-TV_series-RRB-"
+Primary supporting sentences: 
+Matching words: 
+{}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[American, Israeli, War]
+Noun phrases: 
+[homeland, american television spy thriller based on the israeli television series prisoners of war]
+
+Claim: "The Boston Celtics play their home games at TD Garden."
+Label: "SUPPORTS"
+Wiki article: "Boston_Celtics"
+Primary supporting sentences: 
+The Celtics play their home games at the TD Garden , which they share with the National Hockey League -LRB- NHL -RRB- 's Boston Bruins
+Matching words: 
+{the=3, play=1, td=1, boston=1, at=1, celtics=1, games=1, their=1, garden=1, home=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Boston Celtics, TD Garden]
+Noun phrases: 
+[boston celtics, their home games, td garden]
+
+Claim: "The Ten Commandments is an epic film."
+Label: "SUPPORTS"
+Wiki article: "The_Ten_Commandments_-LRB-1956_film-RRB-"
+Primary supporting sentences: 
+The Ten Commandments is a 1956 American biblical epic film produced , directed , and narrated by Cecil B. DeMille , shot in VistaVision -LRB- color by Technicolor -RRB- , and released by Paramount Pictures
+The film was listed as the tenth best film in the epic genre
+Matching words: 
+{the=4, a=1, commandments=1, and=2, is=1, epic=2, film=3, ten=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Ten Commandments]
+Noun phrases: 
+[ten commandments, epic film]
+
+Claim: "Tetris has sold millions of physical copies."
+Label: "SUPPORTS"
+Wiki article: "Tetris"
+Primary supporting sentences: 
+In January 2010 , it was announced that the Tetris franchise had sold more than 170 million copies , approximately 70 million physical copies and over 100 million copies for cell phones , making it the best selling paid-downloaded game of all time
+Matching words: 
+{sold=1, copies=3, million=3, of=1, physical=1, tetris=1}
+Missing words (not counting article topic): 
+{millions=1, has=1}
+Named entities: 
+[Tetris]
+Noun phrases: 
+[tetris, millions of physical copies]
+
+Claim: "Cyndi Lauper won the Best New Artist award at the 27th Grammy Awards in 1985."
+Label: "SUPPORTS"
+Wiki article: "Cyndi_Lauper"
+Primary supporting sentences: 
+Her debut solo album She 's So Unusual -LRB- 1983 -RRB- was the first debut female album to chart four top-five hits on the Billboard Hot 100 -- `` Girls Just Want to Have Fun '' , `` Time After Time '' , `` She Bop '' , and `` All Through the Night '' -- and earned Lauper the Best New Artist award at the 27th Grammy Awards in 1985
+Matching words: 
+{new=1, lauper=1, artist=1, in=1, best=1, 27th=1, the=5, 1985=1, award=1, at=1, grammy=1, awards=1, on=1}
+Missing words (not counting article topic): 
+{won=1}
+Named entities: 
+[Cyndi Lauper, Best New Artist, 27th Grammy Awards, 1985]
+Noun phrases: 
+[cyndi lauper, best new artist award at the 27th grammy awards, 1985]
+
+Claim: "There is a movie called The Hunger Games."
+Label: "SUPPORTS"
+Wiki article: "The_Hunger_Games_-LRB-film-RRB-"
+Primary supporting sentences: 
+The Hunger Games is a 2012 American dystopian science fiction adventure film directed by Gary Ross and based on the novel of the same name by Suzanne Collins
+It is the first installment in The Hunger Games film series and was produced by Nina Jacobson and Jon Kilik , with a screenplay by Ross , Collins , and Billy Ray
+The film stars Jennifer Lawrence , Josh Hutcherson , Liam Hemsworth , Woody Harrelson , Elizabeth Banks , Lenny Kravitz , Stanley Tucci , and Donald Sutherland
+The film was released on March 21 , 2012 , in some European countries and in the US on March 23 , 2012 , in both conventional theaters and digital IMAX theaters
+Matching words: 
+{the=8, a=2, games=2, is=2, hunger=2}
+Missing words (not counting article topic): 
+{movie=4, called=4, there=4, is=2}
+Named entities: 
+[Hunger Games]
+Noun phrases: 
+[there, movie called the hunger games]
+
+Claim: "Ryan Gosling has been to a country in Africa."
+Label: "SUPPORTS"
+Wiki article: "Ryan_Gosling"
+Primary supporting sentences: 
+Matching words: 
+{}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Ryan Gosling, Africa]
+Noun phrases: 
+[ryan gosling, country, africa]
+
+Claim: "Stranger Things is set in Bloomington, Indiana."
+Label: "REFUTES"
+Wiki article: "Stranger_Things"
+Primary supporting sentences: 
+Set in the fictional town of Hawkins , Indiana in the 1980s , the first season focuses on the investigation into the disappearance of a young boy by his friends , older brother and traumatized mother and the local police chief , amid supernatural events occurring around the town including the appearance of a psychokinetic girl who helps the missing boy 's friends in their own search
+Matching words: 
+{a=2, set=1, in=3, ,=4, indiana=1, on=1}
+Missing words (not counting article topic): 
+{bloomington=1}
+Named entities: 
+[Stranger Things, Bloomington, Indiana]
+Noun phrases: 
+[stranger things, bloomington , indiana]
+
+Claim: "Ryan Seacrest is a person."
+Label: "SUPPORTS"
+Wiki article: "Ryan_Seacrest"
+Primary supporting sentences: 
+Ryan John Seacrest -LRB- born December 24 , 1974 -RRB- is an American radio personality , television host and producer
+He is best known for hosting the talent competition show American Idol , as well as the syndicated countdown program American Top 40 and the KIIS-FM morning radio show On Air with Ryan Seacrest
+Seacrest began co-hosting Live with Kelly and Ryan on a permanent basis May 1 , 2017
+He received Emmy Award nominations for American Idol , and won an Emmy for producing Jamie Oliver 's Food Revolution
+Matching words: 
+{ryan=3, a=1, seacrest=3, is=2, an=2, on=2}
+Missing words (not counting article topic): 
+{person=3, is=1}
+Named entities: 
+[Ryan Seacrest]
+Noun phrases: 
+[ryan seacrest, person]
+
+Claim: "Puerto Rico is not an unincorporated territory of the United States."
+Label: "REFUTES"
+Wiki article: "Puerto_Rico"
+Primary supporting sentences: 
+Puerto Rico -LRB- Spanish for `` Rich Port '' -RRB- , officially the Commonwealth of Puerto Rico -LRB- Estado Libre Asociado de Puerto Rico , `` Free Associated State of Puerto Rico '' -RRB- and briefly called Porto Rico , is an unincorporated territory of the United States located in the northeast Caribbean Sea
+Matching words: 
+{the=3, unincorporated=1, puerto=4, united=1, in=1, rico=5, of=3, is=1, state=1, an=1, territory=1, states=1}
+Missing words (not counting article topic): 
+{not=1}
+Named entities: 
+[Puerto Rico, United States]
+Noun phrases: 
+[puerto rico, unincorporated territory of the united states]
+
+Claim: "Michael Giacchino composed the score for Doctor Strange."
+Label: "SUPPORTS"
+Wiki article: "Michael_Giacchino"
+Primary supporting sentences: 
+He composed the scores to the television series Lost , Alias and Fringe , the video ' game series Medal of Honor and Call of Duty and many films such as The Incredibles , Ratatouille , Up , Mission : Impossible - Ghost Protocol , Dawn of the Planet of the Apes , Jurassic World , Inside Out , Star Trek Beyond , Doctor Strange , Rogue One and Spider-Man : Homecoming
+Matching words: 
+{the=6, doctor=1, composed=1, to=1, he=1, strange=1}
+Missing words (not counting article topic): 
+{for=1}
+Named entities: 
+[Michael Giacchino, Doctor Strange]
+Noun phrases: 
+[michael giacchino, score for doctor strange]
+
+Claim: "Stranger than Fiction is a film."
+Label: "SUPPORTS"
+Wiki article: "Stranger_than_Fiction_-LRB-2006_film-RRB-"
+Primary supporting sentences: 
+Stranger than Fiction is a 2006 American fantasy comedy-drama film directed by Marc Forster , produced by Lindsay Doran , and written by Zach Helm
+Matching words: 
+{a=1, fiction=1, than=1, stranger=1, is=1, film=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Fiction]
+Noun phrases: 
+[stranger than fiction, film]
+
+Claim: "Chris Hemsworth appeared in A Perfect Getaway."
+Label: "SUPPORTS"
+Wiki article: "Chris_Hemsworth"
+Primary supporting sentences: 
+Hemsworth has also appeared in the science fiction action film Star Trek -LRB- 2009 -RRB- , the thriller adventure A Perfect Getaway -LRB- 2009 -RRB- , the horror comedy The Cabin in the Woods -LRB- 2012 -RRB- , the dark-fantasy action film Snow White and the Huntsman -LRB- 2012 -RRB- , the war film Red Dawn -LRB- 2012 -RRB- , and the biographical sports drama film Rush -LRB- 2013 -RRB-
+Matching words: 
+{red=1, a=1, hemsworth=1, appeared=1, perfect=1, in=2, getaway=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Chris Hemsworth]
+Noun phrases: 
+[chris hemsworth, perfect getaway]
+
+Claim: "Selena recorded music."
+Label: "SUPPORTS"
+Wiki article: "Selena"
+Primary supporting sentences: 
+Selena began recording professionally in 1982
+Selena Quintanilla-Pérez -LRB- -LSB- se?lena kinta?ni?a ?pe?es -RSB- or -LSB- se?lena kinta?ni?a ?pe?e? -RSB- April 16 , 1971 -- March 31 , 1995 -RRB- was an American singer , songwriter , spokesperson , model , actress , and fashion designer
+Billboard magazine named her the `` top Latin artist of the '90s '' and the `` best selling Latin artist of the decade ''
+She also ranks among the most influential Latin artists of all-time and is credited for catapulting a music genre into the mainstream market
+Selena began recording English-language songs for her crossover album
+In the 1980s , she was often criticized and was refused bookings at venues across Texas for performing Tejano music -- a male-dominated music genre
+However , her popularity grew after she won the Tejano Music Award for Female Vocalist of the Year in 1987 , which she won nine consecutive times
+Selena signed with EMI Latin in 1989 and released her self-titled debut album the same year , while her brother became her principal music producer and songwriter
+Selena released Entre a Mi Mundo -LRB- 1992 -RRB- , which peaked at number one on the U.S. Billboard Regional Mexican Albums chart for 19 nonconsecutive weeks
+One of its singles , `` Como La Flor '' , became one of her most popular signature songs
+-LRB- 1993 -RRB- won Best Mexican/American Album at the 1994 Grammy Awards , becoming the first recording by a Tejano artist to do so
+In 1994 , Selena released Amor Prohibido , which became one of the best-selling Latin albums in the United States
+Her posthumous crossover album , Dreaming of You -LRB- 1995 -RRB- , debuted atop the Billboard 200 , making Selena the first Latin artist to accomplish this feat
+Matching words: 
+{selena=7, a=4, or=1, music=5}
+Missing words (not counting article topic): 
+{music=9, recorded=13}
+Named entities: 
+[Selena]
+Noun phrases: 
+[selena, music]
+
+Claim: "Robert J. O'Neill was born April 10, 1976."
+Label: "SUPPORTS"
+Wiki article: "Robert_J._O'Neill_-LRB-U.S._Navy_SEAL-RRB-"
+Primary supporting sentences: 
+Robert J. `` Rob '' O'Neill -LRB- born April 10 , 1976 -RRB- is a former United States Navy sailor
+Matching words: 
+{robert=1, 1976=1, a=1, rob=1, o'neill=1, born=1, ,=1, april=1, 10=1}
+Missing words (not counting article topic): 
+{was=1}
+Named entities: 
+[Robert J. O'Neill, April 10 , 1976]
+Noun phrases: 
+[robert j. o'neill, april]
+
+Claim: "The Silence of the Lambs was a film starring Scott Glenn."
+Label: "SUPPORTS"
+Wiki article: "The_Silence_of_the_Lambs_-LRB-film-RRB-"
+Primary supporting sentences: 
+The Silence of the Lambs is a 1991 American horror-thriller film directed by Jonathan Demme and starring Jodie Foster , Anthony Hopkins , and Scott Glenn
+Matching words: 
+{the=2, a=1, lambs=1, of=1, starring=1, silence=1, film=1, scott=1, glenn=1}
+Missing words (not counting article topic): 
+{was=1}
+Named entities: 
+[Silence of the Lambs, Scott Glenn]
+Noun phrases: 
+[silence of the lambs, film starring scott glenn]
+
+Claim: "Peggy Sue Got Married is a Egyptian film released in 1986."
+Label: "REFUTES"
+Wiki article: "Peggy_Sue_Got_Married"
+Primary supporting sentences: 
+Peggy Sue Got Married is a 1986 American comedy-drama film directed by Francis Ford Coppola starring Kathleen Turner as a woman on the verge of a divorce , who finds herself transported back to the days of her senior year in high school in 1960
+Matching words: 
+{a=3, 1986=1, sue=1, as=1, in=2, is=1, film=1, peggy=1, got=1, married=1}
+Missing words (not counting article topic): 
+{egyptian=1, released=1}
+Named entities: 
+[Peggy Sue Got Married, Egyptian, 1986]
+Noun phrases: 
+[peggy sue got married, egyptian film released in 1986]
+
+Claim: "Andy Roddick lost 5 Master Series between 2002 and 2010."
+Label: "REFUTES"
+Wiki article: "Andy_Roddick"
+Primary supporting sentences: 
+Roddick was ranked in the top 10 for nine consecutive years between 2002 and 2010 , at year 's end , and won five Masters Series in that period
+Matching words: 
+{roddick=1, and=2, series=1, 2002=1, 2010=1, between=1, 10=1}
+Missing words (not counting article topic): 
+{5=1, lost=1}
+Named entities: 
+[Andy Roddick, 5, 2002 and 2010]
+Noun phrases: 
+[andy roddick, 5 master series between 2002 and 2010]
+
+Claim: "As the Vietnam War raged in 1969, Yoko Ono and her husband John Lennon did not have two week-long Bed-Ins for Peace."
+Label: "REFUTES"
+Wiki article: "Bed-In"
+Primary supporting sentences: 
+As the Vietnam War raged in 1969 , Yoko Ono and her husband John Lennon held two week-long Bed-Ins for Peace , one at the Hilton Hotel in Amsterdam and one at Fairmont The Queen Elizabeth in Montreal , each of which were intended to be non-violent protests against wars , and experimental tests of new ways to promote peace
+Matching words: 
+{yoko=1, raged=1, be=1, in=3, for=1, vietnam=1, war=1, husband=1, week-long=1, ,=4, two=1, the=3, ono=1, bed-ins=1, as=1, her=1, and=3, lennon=1, peace=2, john=1, 1969=1}
+Missing words (not counting article topic): 
+{not=1, have=1, did=1}
+Named entities: 
+[Vietnam War, 1969, Yoko Ono, John Lennon, two]
+Noun phrases: 
+[vietnam war, 1969, yoko ono and her husband john lennon, two, week-long bed-ins, peace]
+
+Claim: "Tupac Shakur was born Lesane Parish Crooks."
+Label: "SUPPORTS"
+Wiki article: "Tupac_Shakur"
+Primary supporting sentences: 
+Tupac Amaru Shakur -LRB- -LSB- ?tu?p??k_???k??r -RSB- ; born Lesane Parish Crooks ; June 16 , 1971September 13 , 1996 -RRB- , also known by his stage names 2Pac , Makaveli , and Pac , was an American rapper , record producer , actor , and poet
+Matching words: 
+{pac=1, parish=1, born=1, tupac=1, shakur=1, was=1, crooks=1, an=1, lesane=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Tupac Shakur, Lesane Parish Crooks]
+Noun phrases: 
+[tupac shakur, lesane parish crooks]
+
+Claim: "The Jim Henson Company produced The Muppet Movie, The Dark Crystal, and Labyrinth."
+Label: "SUPPORTS"
+Wiki article: "The_Jim_Henson_Company"
+Primary supporting sentences: 
+The company has also produced many films , including The Muppet Movie , The Dark Crystal , and Labyrinth
+Matching words: 
+{the=3, muppet=1, movie=1, crystal=1, and=1, dark=1, company=1, labyrinth=1, ,=3, produced=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Jim Henson Company, Muppet Movie, The Dark Crystal, Labyrinth]
+Noun phrases: 
+[jim henson company, muppet movie , the dark crystal , and labyrinth]
+
+Claim: "Slovenia uses the euro."
+Label: "SUPPORTS"
+Wiki article: "Slovenia"
+Primary supporting sentences: 
+Matching words: 
+{}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Slovenia, euro]
+Noun phrases: 
+[slovenia, euro]
+
+Claim: "Iowa is a part of the Midwestern United States."
+Label: "SUPPORTS"
+Wiki article: "Midwestern_United_States"
+Primary supporting sentences: 
+Although the region is often defined in a number of ways , the Census Bureau 's definition consists of 12 states in the north central United States : Illinois , Indiana , Iowa , Kansas , Michigan , Minnesota , Missouri , Nebraska , North Dakota , Ohio , South Dakota , and Wisconsin
+Matching words: 
+{the=3, a=1, iowa=1, united=1, of=2, is=1, states=2}
+Missing words (not counting article topic): 
+{part=1}
+Named entities: 
+[Iowa, Midwestern United States]
+Noun phrases: 
+[iowa, part of the midwestern united states]
+
+Claim: "Saratoga is an American film from 1937."
+Label: "SUPPORTS"
+Wiki article: "Saratoga_-LRB-film-RRB-"
+Primary supporting sentences: 
+Saratoga is a 1937 American romantic comedy film written by Anita Loos and directed by Jack Conway
+Matching words: 
+{a=1, is=1, american=1, saratoga=1, 1937=1, film=1}
+Missing words (not counting article topic): 
+{from=1}
+Named entities: 
+[Saratoga, American, 1937]
+Noun phrases: 
+[saratoga, american film from 1937]
+
+Claim: "J. Howard Marshall was a baby."
+Label: "SUPPORTS"
+Wiki article: "J._Howard_Marshall"
+Primary supporting sentences: 
+Matching words: 
+{}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[J. Howard Marshall]
+Noun phrases: 
+[j. howard marshall, baby]
+
+Claim: "Grace Jones is a dancer."
+Label: "REFUTES"
+Wiki article: "Grace_Jones"
+Primary supporting sentences: 
+Grace Jones -LRB- born 19 May 1948 -RRB- is a Jamaican born singer , songwriter , lyricist , supermodel , record producer , and actress
+Matching words: 
+{a=1, grace=1, is=1, jones=1}
+Missing words (not counting article topic): 
+{dancer=1}
+Named entities: 
+[Grace Jones, dancer]
+Noun phrases: 
+[grace jones, dancer]
+
+Claim: "Lisbon has a population larger than 1."
+Label: "SUPPORTS"
+Wiki article: "Lisbon"
+Primary supporting sentences: 
+Lisbon -LRB- -LSB- ?l?zb?n -RSB- Lisboa , -LSB- li???o? -RSB- -RRB- is the capital and the largest city of Portugal , with a population of 552,700 within its administrative limits in an area of 100.05 km ²
+About 2.8 million people live in the Lisbon Metropolitan Area -LRB- which represents approximately 27 % of the country 's population -RRB-
+Matching words: 
+{a=1, lisbon=2, is=1, an=1, population=2}
+Missing words (not counting article topic): 
+{larger=2, 1=1, than=2, has=2}
+Named entities: 
+[Lisbon, 1]
+Noun phrases: 
+[lisbon, population larger, 1]
+
+Claim: "Willie Nelson dropped out of college after three years."
+Label: "REFUTES"
+Wiki article: "Willie_Nelson"
+Primary supporting sentences: 
+After his return , Nelson attended Baylor University for two years but dropped out because he was succeeding in music
+Matching words: 
+{dropped=1, nelson=1, after=1, years=1, out=1}
+Missing words (not counting article topic): 
+{college=1, of=1, three=1}
+Named entities: 
+[Willie Nelson, three years]
+Noun phrases: 
+[willie nelson, college, three years]
+
+Claim: "Malcolm Young was the co-founder of Australian hard rock band AC/DC."
+Label: "SUPPORTS"
+Wiki article: "Malcolm_Young"
+Primary supporting sentences: 
+Malcolm Mitchell Young -LRB- born 6 January 1953 -RRB- is an Australian retired musician and songwriter , best known as a co-founder , rhythm guitarist , backing vocalist and songwriter for the hard rock band AC/DC
+Matching words: 
+{a=1, young=1, malcolm=1, australian=1, ac/dc=1, an=1, the=1, rock=1, as=1, and=2, hard=1, band=1, co-founder=1}
+Missing words (not counting article topic): 
+{of=1, was=1}
+Named entities: 
+[Malcolm Young, co-founder, Australian]
+Noun phrases: 
+[malcolm young, co-founder of australian hard rock band ac/dc]
+
+Claim: "Newfoundland and Labrador is the most linguistically homogeneous of Canada."
+Label: "SUPPORTS"
+Wiki article: "Newfoundland_and_Labrador"
+Primary supporting sentences: 
+The province is Canada 's most linguistically homogeneous , with 97.6 % of residents reporting English -LRB- Newfoundland English -RRB- as their mother tongue in the 2006 census
+Matching words: 
+{the=2, most=1, homogeneous=1, canada=1, in=1, newfoundland=1, of=1, is=1, linguistically=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Newfoundland, Labrador, Canada]
+Noun phrases: 
+[newfoundland and labrador, most linguistically homogeneous of canada]
+
+Claim: "Furia is adapted from a short story by Anna Politkovskaya."
+Label: "REFUTES"
+Wiki article: "Furia_-LRB-film-RRB-"
+Primary supporting sentences: 
+Furia is a 1999 French romantic drama film directed by Alexandre Aja , who co-wrote screenplay with Grégory Levasseur , adapted from the science fiction short story `` Graffiti '' by Julio Cortázar
+Matching words: 
+{a=1, by=2, short=1, is=1, from=1, adapted=1, furia=1, story=1}
+Missing words (not counting article topic): 
+{anna=1, politkovskaya=1}
+Named entities: 
+[Furia, Anna Politkovskaya]
+Noun phrases: 
+[furia, short story, anna politkovskaya]
+
+Claim: "One state of the United States has Russia to its west."
+Label: "SUPPORTS"
+Wiki article: "United_States"
+Primary supporting sentences: 
+The state of Alaska is in the northwest corner of North America , bordered by Canada to the east and across the Bering Strait from Russia to the west
+Matching words: 
+{the=5, russia=1, of=2, west=1, state=1, to=2}
+Missing words (not counting article topic): 
+{one=1, its=1, has=1}
+Named entities: 
+[One, United States, Russia]
+Noun phrases: 
+[one state of the united states, russia to its west]
+
+Claim: "Sophie Turner was born in the 1990s."
+Label: "SUPPORTS"
+Wiki article: "Sophie_Turner"
+Primary supporting sentences: 
+Sophie Turner -LRB- born 21 February 1996 -RRB- is an English actress
+Matching words: 
+{turner=1, born=1, sophie=1}
+Missing words (not counting article topic): 
+{the=1, in=1, was=1, 1990s=1}
+Named entities: 
+[Sophie Turner, the 1990s]
+Noun phrases: 
+[sophie turner, 1990s]
+
+Claim: "Mother Teresa was made a saint by the church."
+Label: "SUPPORTS"
+Wiki article: "Mother_Teresa"
+Primary supporting sentences: 
+She was canonised -LRB- recognised by the church as a saint -RRB- on 4 September 2016 , and the anniversary of her death -LRB- 5 September -RRB- is her feast day
+Matching words: 
+{the=2, a=1, as=1, saint=1, her=2, by=1, church=1, was=1}
+Missing words (not counting article topic): 
+{made=1}
+Named entities: 
+[Mother Teresa, saint]
+Noun phrases: 
+[mother teresa, saint, church]
+
+Claim: "The Smurfs (film) was released."
+Label: "SUPPORTS"
+Wiki article: "The_Smurfs_-LRB-film-RRB-"
+Primary supporting sentences: 
+After having the release date changed three times , Columbia Pictures released The Smurfs on July 29 , 2011
+The Smurfs is a 2011 American 3D live-action/computer-animated comedy film loosely based on the comic book series of the same name created by the Belgian comics artist Peyo
+A sequel , titled The Smurfs 2 , was released on July 31 , 2013
+The Smurfs reached the $ 500 million milestone in the weekend of September 23 -- 25 , 2011
+Matching words: 
+{the=10, smurfs=4, a=2, release=1, was=1, film=1, released=2}
+Missing words (not counting article topic): 
+{(=4, was=3, )=4, released=2}
+Named entities: 
+[Smurfs]
+Noun phrases: 
+[smurfs -lrb- film -rrb-]
+
+Claim: "C. S. Forester's first name was Carl."
+Label: "REFUTES"
+Wiki article: "C._S._Forester"
+Primary supporting sentences: 
+Cecil Louis Troughton Smith -LRB- 27 August 1899 -- 2 April 1966 -RRB- , known by his pen name Cecil Scott `` C. S. '' Forester , was an English novelist known for writing tales of naval warfare such as the 12-book Horatio Hornblower series , depicting a Royal Navy officer during the Napoleonic wars
+Matching words: 
+{a=1, as=1, forester=1, name=1, was=1, for=1}
+Missing words (not counting article topic): 
+{carl=1, 's=1, first=1}
+Named entities: 
+[C. S. Forester, first, Carl]
+Noun phrases: 
+[c. s. forester 's first name, carl]
+
+Claim: "Kong: Skull Island is a book."
+Label: "REFUTES"
+Wiki article: "Kong-COLON-_Skull_Island"
+Primary supporting sentences: 
+Kong : Skull Island is a 2017 American action-adventure monster film directed by Jordan Vogt-Roberts and written by Dan Gilroy , Max Borenstein and Derek Connolly , from a story by John Gatins
+Matching words: 
+{a=2, island=1, and=2, :=1, is=1, skull=1, kong=1}
+Missing words (not counting article topic): 
+{book=1, kong:=1}
+Named entities: 
+[Kong, Skull Island]
+Noun phrases: 
+[kong, skull island, book]
+
+Claim: "The Challenge was a scripted show."
+Label: "REFUTES"
+Wiki article: "The_Challenge_-LRB-TV_series-RRB-"
+Primary supporting sentences: 
+The Challenge -LRB- originally known as Road Rules : All Stars , followed by Real World/Road Rules Challenge -RRB- is a reality game show on MTV that is spun off from the network 's two reality shows , Real World and Road Rules
+Matching words: 
+{the=2, all=1, a=1, as=1, show=1, challenge=2}
+Missing words (not counting article topic): 
+{was=1, scripted=1}
+Named entities: 
+[Challenge]
+Noun phrases: 
+[challenge, scripted show]
+
+Claim: "Berlin is the capital of Germany."
+Label: "SUPPORTS"
+Wiki article: "Berlin"
+Primary supporting sentences: 
+Berlin -LRB- -LSB- b???l?n -RSB- , -LSB- b????li?n -RSB- -RRB- is the capital and the largest city of Germany as well as one of its 16 constituent states
+Matching words: 
+{the=2, capital=1, of=2, germany=1, is=1, berlin=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Berlin, Germany]
+Noun phrases: 
+[berlin, capital of germany]
+
+Claim: "South Korea has a highly educated workforce."
+Label: "SUPPORTS"
+Wiki article: "South_Korea"
+Primary supporting sentences: 
+South Korea is a technologically advanced developed country driven by a highly educated and skilled workforce , having the world 's eighth highest median household income , the highest in Asia
+Matching words: 
+{a=2, korea=1, educated=1, south=1, workforce=1, highly=1}
+Missing words (not counting article topic): 
+{has=1}
+Named entities: 
+[South Korea]
+Noun phrases: 
+[south korea, highly educated workforce]
+
+Claim: "Hacksaw Ridge came out in America on November 4, 2016."
+Label: "SUPPORTS"
+Wiki article: "Hacksaw_Ridge"
+Primary supporting sentences: 
+It was released in the United States on November 4 , 2016 , received positive reviews and grossed $ 175.3 million worldwide
+Matching words: 
+{november=1, 4=1, 2016=1, in=1, ,=2, on=1}
+Missing words (not counting article topic): 
+{came=1, out=1, america=1}
+Named entities: 
+[Hacksaw Ridge, America, November 4 , 2016]
+Noun phrases: 
+[hacksaw ridge, america, november 4 , 2016]
+
+Claim: "Michael Fassbender is an actor."
+Label: "SUPPORTS"
+Wiki article: "Michael_Fassbender"
+Primary supporting sentences: 
+Michael Fassbender -LRB- born 2 April 1977 -RRB- is a German-born Irish actor
+His feature film debut was in the fantasy war epic 300 -LRB- 2007 -RRB- as a Spartan warrior ; his earlier roles included various stage productions , as well as starring roles on television such as in the HBO miniseries Band of Brothers -LRB- 2001 -RRB- and the Sky One fantasy drama Hex -LRB- 2004 -- 05 -RRB-
+He first came to prominence for his role as IRA activist Bobby Sands in Hunger -LRB- 2008 -RRB- , for which he won a British Independent Film Award
+Subsequent roles include in the independent film Fish Tank -LRB- 2009 -RRB- , as a Royal Marines lieutenant in Inglourious Basterds -LRB- 2009 -RRB- , as Edward Rochester in the 2011 film adaptation of Jane Eyre , as Carl Jung in A Dangerous Method -LRB- 2011 -RRB- , as a sentient android in Prometheus -LRB- 2012 -RRB- and its sequel , Alien : Covenant -LRB- 2017 -RRB- , and in the musical comedy-drama Frank -LRB- 2014 -RRB- as an eccentric musician loosely inspired by Frank Sidebottom
+Matching words: 
+{michael=1, actor=1, a=6, as=10, fassbender=1, is=1, to=1, an=1}
+Missing words (not counting article topic): 
+{actor=3}
+Named entities: 
+[Michael Fassbender, actor]
+Noun phrases: 
+[michael fassbender, actor]
+
+Claim: "Red Headed Stranger is a movie."
+Label: "REFUTES"
+Wiki article: "Red_Headed_Stranger"
+Primary supporting sentences: 
+Red Headed Stranger is a 1975 album by American outlaw country singer Willie Nelson
+A concept album , Red Headed Stranger is about a fugitive on the run from the law after killing his wife and her lover
+Matching words: 
+{red=2, a=3, stranger=2, is=2, headed=2}
+Missing words (not counting article topic): 
+{movie=2}
+Named entities: 
+[Red Headed Stranger]
+Noun phrases: 
+[red headed stranger, movie]
+
+Claim: "Paul Bettany has played Vision in at least two works."
+Label: "SUPPORTS"
+Wiki article: "Paul_Bettany"
+Primary supporting sentences: 
+Matching words: 
+{}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Paul Bettany, two]
+Noun phrases: 
+[paul bettany, vision in at least two works]
+
+Claim: "Scotland's Hebrides is widespread and diverse with many islands."
+Label: "SUPPORTS"
+Wiki article: "Scotland"
+Primary supporting sentences: 
+Matching words: 
+{}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Scotland, Hebrides]
+Noun phrases: 
+[scotland 's hebrides, many islands]
+
+Claim: "Uzbekistan is a part of the Commonwealth of Independent States (CIS)."
+Label: "SUPPORTS"
+Wiki article: "Uzbekistan"
+Primary supporting sentences: 
+Uzbekistan is a member of the Commonwealth of Independent States -LRB- CIS -RRB- , Organization for Security and Co-operation in Europe -LRB- OSCE -RRB- , UN , and the SCO
+Matching words: 
+{the=2, a=1, independent=1, in=1, of=2, is=1, commonwealth=1, cis=1, uzbekistan=1, states=1}
+Missing words (not counting article topic): 
+{part=1, (=1, )=1}
+Named entities: 
+[Uzbekistan, Commonwealth of Independent States, CIS]
+Noun phrases: 
+[uzbekistan, part of the commonwealth of independent states -lrb- cis -rrb-]
+
+Claim: "Charles, Prince of Wales is patron of numerous other organizations."
+Label: "SUPPORTS"
+Wiki article: "Charles,_Prince_of_Wales"
+Primary supporting sentences: 
+Charles 's interests encompass a range of humanitarian and social issues : he founded The Prince 's Trust in 1976 , sponsors The Prince 's Charities , and is patron of numerous other charitable and arts organisations
+Matching words: 
+{the=2, a=1, patron=1, other=1, in=1, numerous=1, of=2, charles=1, is=1, ,=2, he=1, prince=2}
+Missing words (not counting article topic): 
+{organizations=1}
+Named entities: 
+[Charles, Prince, Wales]
+Noun phrases: 
+[charles , prince of wales, patron of numerous other organizations]
+
+Claim: "Chester Bennington is not a singer."
+Label: "REFUTES"
+Wiki article: "Chester_Bennington"
+Primary supporting sentences: 
+Chester Charles Bennington -LRB- born March 20 , 1976 -RRB- is an American musician , singer , songwriter and actor
+He is best known as the lead vocalist of rock bands Linkin Park , Dead by Sunrise , and live rock cover band Bucket of Weenies
+He was originally the lead vocalist for Sean Dowdell And His Friends
+Bennington was the lead vocalist for Stone Temple Pilots from 2013 to 2015
+Bennington became known as a vocalist with Linkin Park 's debut album , Hybrid Theory , in 2000 , which was a massive commercial success
+Matching words: 
+{a=2, bennington=3, singer=1, in=1, chester=1, is=2, to=1, he=2}
+Missing words (not counting article topic): 
+{not=5, singer=4}
+Named entities: 
+[Chester Bennington, singer]
+Noun phrases: 
+[chester bennington, singer]
+
+Claim: "Vincent Cassel played Jacques Mesrine in at least two films."
+Label: "SUPPORTS"
+Wiki article: "Vincent_Cassel"
+Primary supporting sentences: 
+Cassel is also renowned for playing the infamous French bank-robber Jacques Mesrine in Mesrine : Killer Instinct and Mesrine : Public Enemy Number One
+Matching words: 
+{mesrine=3, in=1, cassel=1, jacques=1}
+Missing words (not counting article topic): 
+{films=1, at=1, least=1, played=1, two=1}
+Named entities: 
+[Vincent Cassel, Jacques Mesrine, two]
+Noun phrases: 
+[vincent cassel, jacques mesrine in at least two films]
+
+Claim: "Pope John Paul II co-stars many actors besides Christopher Lee."
+Label: "SUPPORTS"
+Wiki article: "Pope_John_Paul_II_-LRB-miniseries-RRB-"
+Primary supporting sentences: 
+Pope John Paul II co-stars James Cromwell as Archbishop Adam Stefan Cardinal Sapieha , Ben Gazzara as Agostino Cardinal Casaroli , and Christopher Lee as Stefan Cardinal Wyszy?ski
+Matching words: 
+{pope=1, ii=1, john=1, paul=1, co-stars=1, christopher=1, lee=1}
+Missing words (not counting article topic): 
+{actors=1, besides=1, many=1}
+Named entities: 
+[Pope John Paul, Christopher Lee]
+Noun phrases: 
+[pope john paul ii co-stars many actors besides christopher lee .]
+
+Claim: "David Beckham has zero middle names."
+Label: "REFUTES"
+Wiki article: "David_Beckham"
+Primary supporting sentences: 
+David Robert Joseph Beckham , -LRB- -LSB- ?b?k?m -RSB- born 2 May 1975 -RRB- is an English former professional footballer
+Matching words: 
+{beckham=1, david=1}
+Missing words (not counting article topic): 
+{zero=1, middle=1, names=1, has=1}
+Named entities: 
+[David Beckham, zero]
+Noun phrases: 
+[david beckham, zero middle names]
+
+Claim: "Indiana Jones has only been portrayed by Harrison Ford."
+Label: "REFUTES"
+Wiki article: "Indiana_Jones"
+Primary supporting sentences: 
+Jones is most famously played by Harrison Ford and has also been portrayed by River Phoenix -LRB- as the young Jones in The Last Crusade -RRB- and in the television series The Young Indiana Jones Chronicles by Corey Carrier , Sean Patrick Flanery , and George Hall
+Matching words: 
+{been=1, as=1, harrison=1, in=2, by=3, portrayed=1, is=1, ford=1, has=1, jones=3, indiana=1}
+Missing words (not counting article topic): 
+{only=1}
+Named entities: 
+[Indiana Jones, Harrison Ford]
+Noun phrases: 
+[indiana jones, harrison ford]
+
+Claim: "Brian Wilson was part of the Beach Boys."
+Label: "SUPPORTS"
+Wiki article: "Brian_Wilson"
+Primary supporting sentences: 
+Brian Douglas Wilson -LRB- born June 20 , 1942 -RRB- is an American musician , singer , songwriter , and record producer best known for being the multi-tasking leader and co-founder of the rock band the Beach Boys
+As he suffered repeated nervous breakdowns , Wilson 's contributions to the Beach Boys diminished , and his erratic behavior led to tensions with the band
+He remains a member of the Beach Boys ' corporation , Brother Records Incorporated
+Matching words: 
+{the=6, a=1, as=1, wilson=2, of=2, beach=3, boys=3, brian=1, an=1, he=2}
+Missing words (not counting article topic): 
+{part=3, of=1, was=3}
+Named entities: 
+[Brian Wilson, Beach Boys]
+Noun phrases: 
+[brian wilson, part of the beach boys]
+
+Claim: "The Great Gatsby centers on a youthful person with over a million dollars."
+Label: "SUPPORTS"
+Wiki article: "The_Great_Gatsby"
+Primary supporting sentences: 
+The story primarily concerns the young and mysterious millionaire Jay Gatsby and his quixotic passion and obsession for the beautiful former debutante Daisy Buchanan
+Matching words: 
+{the=3, gatsby=1}
+Missing words (not counting article topic): 
+{over=1, with=1, youthful=1, person=1, centers=1, dollars=1}
+Named entities: 
+[Great Gatsby, million dollars]
+Noun phrases: 
+[great gatsby, youthful person with over a million dollars]
+
+Claim: "Shane Black and Chris Miller wrote Iron Man 3."
+Label: "REFUTES"
+Wiki article: "Iron_Man_3"
+Primary supporting sentences: 
+Shane Black directed a screenplay he co-wrote with Drew Pearce , which uses concepts from the `` Extremis '' story arc by Warren Ellis
+Matching words: 
+{a=1, shane=1, black=1}
+Missing words (not counting article topic): 
+{chris=1, miller=1, and=1}
+Named entities: 
+[Shane Black, Chris Miller, Iron Man 3]
+Noun phrases: 
+[shane black and chris miller, iron man 3]
+
+Claim: "La La Anthony was conceived on June 25th, 1979."
+Label: "REFUTES"
+Wiki article: "La_La_Anthony"
+Primary supporting sentences: 
+Alani Nicole `` La La '' Anthony -LRB- née Vázquez ; born June 25 , 1979 -RRB- is a television personality , New York Times best-selling author , business woman , producer and actress
+Matching words: 
+{a=1, june=1, 25=1, la=2, anthony=1, ,=4, 1979=1}
+Missing words (not counting article topic): 
+{25th=1, conceived=1, was=1}
+Named entities: 
+[La La Anthony, June 25th , 1979]
+Noun phrases: 
+[la la anthony, june 25th, 1979]
+
+Claim: "Led Zeppelin is a band."
+Label: "SUPPORTS"
+Wiki article: "Led_Zeppelin"
+Primary supporting sentences: 
+Led Zeppelin were an English rock band formed in London in 1968
+The band 's heavy , guitar-driven sound , rooted in blues and psychedelia on their early albums , has earned them recognition as one of the progenitors of heavy metal , though their unique style drew from a wide variety of influences , including folk music
+The group consisted of guitarist Jimmy Page , singer Robert Plant , bassist and keyboardist John Paul Jones , and drummer John Bonham
+Although they remained commercially and critically successful , their output and touring schedule were limited during the late 1970s , and the group disbanded following Bonham 's death from alcohol-related asphyxia in 1980
+With RIAA-certified sales of 111.5 million units , they are the second-best-selling band in the US
+Rolling Stone magazine described them as `` the heaviest band of all time '' , `` the biggest band of the Seventies '' , and `` unquestionably one of the most enduring bands in rock history ''
+They were inducted into the Rock and Roll Hall of Fame in 1995 ; the museum 's biography of the band states that they were `` as influential '' during the 1970s as the Beatles were during the 1960s
+Although the group was initially unpopular with critics , they achieved significant commercial success with albums such as Led Zeppelin -LRB- 1969 -RRB- , Led Zeppelin II -LRB- 1969 -RRB- , Led Zeppelin III -LRB- 1970 -RRB- , Led Zeppelin IV -LRB- 1971 -RRB- , Houses of the Holy -LRB- 1973 -RRB- , and Physical Graffiti -LRB- 1975 -RRB-
+Led Zeppelin are widely considered one of the most successful , innovative , and influential rock groups in history
+Matching words: 
+{a=1, in=8, and=10, led=6, zeppelin=6, band=6, an=1}
+Missing words (not counting article topic): 
+{is=4, band=3}
+Named entities: 
+[Zeppelin]
+Noun phrases: 
+[led zeppelin, band]
+
+Claim: "Richard Harris was born on October 25, 2002."
+Label: "SUPPORTS"
+Wiki article: "Richard_Harris"
+Primary supporting sentences: 
+Richard St John Harris -LRB- 1 October 1930 -- 25 October 2002 -RRB- was an Irish actor and singer
+Matching words: 
+{richard=1, 25=1, harris=1, 2002=1, was=1, october=2}
+Missing words (not counting article topic): 
+{born=1, ,=1, on=1}
+Named entities: 
+[Richard Harris, October 25 , 2002]
+Noun phrases: 
+[richard harris, october 25 , 2002]
+
+Claim: "The Fosters is a television series."
+Label: "SUPPORTS"
+Wiki article: "The_Fosters_-LRB-2013_TV_series-RRB-"
+Primary supporting sentences: 
+The Fosters is an American family drama television series created by Peter Paige and Bradley Bredeweg which first premiered in the United States on June 3 , 2013 on the Freeform -LRB- previously named ABC Family -RRB- television network
+The first season of The Fosters received generally favorable reviews from critics and also garnered particular acclaim for its portrayal of LGBT themes
+Matching words: 
+{the=5, television=2, series=1, is=1, fosters=2, on=2}
+Missing words (not counting article topic): 
+{television=1, is=1}
+Named entities: 
+[Fosters]
+Noun phrases: 
+[fosters, television series]
+
+Claim: "Blair is Jonathan Hensleigh's middle name."
+Label: "SUPPORTS"
+Wiki article: "Jonathan_Hensleigh"
+Primary supporting sentences: 
+Jonathan Blair Hensleigh -LRB- born February 1959 -RRB- is an American screenwriter and film director , working primarily in the action-adventure genre , best known for writing film such as Jumanji , Die Hard with a Vengeance , and Armageddon , as well as making his own directorial debut with the 2004 comic book action film The Punisher
+Matching words: 
+{hensleigh=1, a=1, blair=1, is=1, jonathan=1, an=1}
+Missing words (not counting article topic): 
+{middle=1, name=1, 's=1}
+Named entities: 
+[Blair, Jonathan Hensleigh]
+Noun phrases: 
+[blair, jonathan hensleigh 's middle name]
+
+Claim: "Filmfare is about cheese."
+Label: "REFUTES"
+Wiki article: "Filmfare"
+Primary supporting sentences: 
+Filmfare is an English-language , tabloid-sized magazine about Hindi-language cinema , popularly known as Bollywood
+Matching words: 
+{filmfare=1, about=1, is=1}
+Missing words (not counting article topic): 
+{cheese=1}
+Named entities: 
+[]
+Noun phrases: 
+[filmfare, cheese]
+
+Claim: "Buckingham Palace lacks brightly colored scagliola."
+Label: "REFUTES"
+Wiki article: "Buckingham_Palace"
+Primary supporting sentences: 
+The original early 19th-century interior designs , many of which survive , include widespread use of brightly coloured scagliola and blue and pink lapis , on the advice of Sir Charles Long
+Matching words: 
+{scagliola=1, brightly=1}
+Missing words (not counting article topic): 
+{lacks=1, colored=1}
+Named entities: 
+[Buckingham Palace]
+Noun phrases: 
+[buckingham palace, brightly colored scagliola]
+
+Claim: "Sarah Paulson makes an appearance in What Women Want."
+Label: "SUPPORTS"
+Wiki article: "Sarah_Paulson"
+Primary supporting sentences: 
+Paulson later appeared in comedy films such as What Women Want -LRB- 2000 -RRB- and Down with Love -LRB- 2003 -RRB- , and had dramatic roles in films such as Path to War -LRB- 2002 -RRB- and The Notorious Bettie Page -LRB- 2005 -RRB-
+Matching words: 
+{what=1, in=2, want=1, paulson=1, women=1}
+Missing words (not counting article topic): 
+{appearance=1, makes=1}
+Named entities: 
+[Sarah Paulson]
+Noun phrases: 
+[sarah paulson, appearance in what women want]
+
+Claim: "David Harbour is an American."
+Label: "SUPPORTS"
+Wiki article: "David_Harbour"
+Primary supporting sentences: 
+David Harbour -LRB- born April 10 , 1974 -RRB- is an American actor who has performed in film , television , and the theatre
+Matching words: 
+{harbour=1, is=1, american=1, david=1, an=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[David Harbour, American]
+Noun phrases: 
+[david harbour, american]
+
+Claim: "The terrain of Kazakhstan includes taiga."
+Label: "SUPPORTS"
+Wiki article: "Kazakhstan"
+Primary supporting sentences: 
+The terrain of Kazakhstan includes flatlands , steppe , taiga , rock canyons , hills , deltas , snow-capped mountains , and deserts
+Matching words: 
+{the=1, taiga=1, of=1, kazakhstan=1, includes=1, terrain=1}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Kazakhstan]
+Noun phrases: 
+[terrain of kazakhstan, taiga]
+
+Claim: "José María Chacón surrendered the island of Trinidad in 1797, one year before his death."
+Label: "REFUTES"
+Wiki article: "Jose?_Mari?a_Chaco?n"
+Primary supporting sentences: 
+Don José María Chacón -LRB- 1 January 1749 -- 1 January 1833 -RRB- was the last Spanish Governor of Trinidad
+Matching words: 
+{the=1, 1=2, chacón=1, of=1, josé=1, trinidad=1, maría=1}
+Missing words (not counting article topic): 
+{surrendered=1, 1797=1, his=1, death=1, year=1, before=1, island=1, one=1, ,=1}
+Named entities: 
+[José María Chacón, Trinidad, 1797, one year]
+Noun phrases: 
+[josé maría chacón, island of trinidad, 1797 , one year, his death]
+
+Claim: "Liverpool F.C. was valued at $1.55 billion at one point."
+Label: "SUPPORTS"
+Wiki article: "Liverpool_F.C."
+Primary supporting sentences: 
+Liverpool was the ninth highest-earning football club in the world for 2014 -- 15 , with an annual revenue of $ 391 million , and the world 's eighth most valuable football club in 2016 , valued at $ 1.55 billion
+Matching words: 
+{at=1, $=2, in=2, billion=1, valued=1, was=1, liverpool=1}
+Missing words (not counting article topic): 
+{one=1, $1=1, point=1}
+Named entities: 
+[Liverpool F.C., $ 1.55 billion, one]
+Noun phrases: 
+[liverpool f.c., $ 1.55 billion, one point]
+
+Claim: "Land Rover makes cars."
+Label: "SUPPORTS"
+Wiki article: "Land_Rover"
+Primary supporting sentences: 
+Land Rover is a car brand that specialises in four-wheel-drive vehicles , owned by British multinational car manufacturer Jaguar Land Rover , which has been owned by India 's Tata Motors since 2008
+The carmaker said around 1,000 academics and engineers would work there and that construction would start in 2014
+Matching words: 
+{a=1, car=2, and=2, land=2, rover=2}
+Missing words (not counting article topic): 
+{cars=2, makes=2}
+Named entities: 
+[Rover]
+Noun phrases: 
+[land rover, cars]
+
+Claim: "Sully is a form of media."
+Label: "SUPPORTS"
+Wiki article: "Sully_-LRB-film-RRB-"
+Primary supporting sentences: 
+Sully -LRB- also known as Sully : Miracle on the Hudson -RRB- is a 2016 American biographical drama film directed by Clint Eastwood and written by Todd Komarnicki , based on the autobiography Highest Duty by Chesley Sullenberger and Jeffrey Zaslow
+Matching words: 
+{a=1, is=1, sully=2}
+Missing words (not counting article topic): 
+{form=1, of=1, media=1}
+Named entities: 
+[]
+Noun phrases: 
+[sully, form of media]
+
+Claim: "Stanley Tucci performed in an television series."
+Label: "SUPPORTS"
+Wiki article: "Stanley_Tucci"
+Primary supporting sentences: 
+Matching words: 
+{}
+Missing words (not counting article topic): 
+{}
+Named entities: 
+[Stanley Tucci]
+Noun phrases: 
+[stanley tucci, television series]
+
+Claim: "Brock Lesnar married Randy Couture."
+Label: "REFUTES"
+Wiki article: "Brock_Lesnar"
+Primary supporting sentences: 
+In November 2008 , Lesnar defeated Randy Couture to become the UFC Heavyweight Champion
+Matching words: 
+{randy=1, lesnar=1, couture=1}
+Missing words (not counting article topic): 
+{married=1}
+Named entities: 
+[Brock Lesnar, Randy Couture]
+Noun phrases: 
+[brock lesnar, randy couture]
+
