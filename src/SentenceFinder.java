@@ -9,17 +9,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import edu.stanford.nlp.ling.IndexedWord;
+import edu.stanford.nlp.neural.Embedding;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.trees.Constituent;
+import edu.stanford.nlp.trees.LabeledScoredConstituentFactory;
+import edu.stanford.nlp.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,15 +38,39 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
 
 
+
 public class SentenceFinder {
 	
-	static String claimsFileName = "shared_task_dev.jsonl";
-	static String sentenceResultsFileName = "sentence_results.jsonl";
+	static String claimsFileName = "train_with_evidence_text_links.jsonl";
+	static String sentenceResultsFileName = "extended_keywords_sentence_results.jsonl";
 	static String wikiDirName = "wiki-dump";
 	static int numClaimsToTest = 100;
-	
+	static String embeddingFileName = "embeddings/glove.6B.50d.txt";
+
 	static Map<String, Map<String, Object>> wikiMap;
 	//static Map<String, ArrayList<String>> disambiguationMap;
+
+    /**
+     * Split lines in wiki dump
+     * @param input -- "lines" element in wiki
+     * @return  a list of sentences in the wiki
+     */
+    private static String[] splitWikiLines(String input) {
+        String[] lines = input.split("\n");
+        String[] output = new String[lines.length];
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+            String[] tabs = line.split("\t");
+            try {
+                output[i] = tabs[1];
+            }
+            catch (IndexOutOfBoundsException e) {
+                output[i] = "";
+            }
+        }
+        return output;
+    }
+
 	
 	public static void main(String[] args) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
@@ -91,6 +116,7 @@ public class SentenceFinder {
 			
 			System.out.println("wikiMap compiled. Time: "+dtf.format(LocalDateTime.now()));
 			int claimCount =0;
+            VocabSimilarity similarity = new VocabSimilarity(embeddingFileName);
 			while(claimReader.hasNext() && claimCount < numClaimsToTest) {
 				claimCount++;
 				statement = claimReader.nextLine();
@@ -107,72 +133,107 @@ public class SentenceFinder {
 			    
 			    String wikiName = "";
 			    ArrayList<Object[]> evidenceSets = new ArrayList<Object[]>();
+                ArrayList<Object[]> extendedEvidenceSets = new ArrayList<Object[]>();
 			    String[] sentences = {};
+			    // relevant words to search for
 			    ArrayList<String> relevantWords = new ArrayList<String>();
+
+			    // matched evidence sentences
+                ArrayList<String> matchedWords = new ArrayList<String>();
+
+                // indices of matched evidence sentences
+                ArrayList<Integer> matchedWordsNum = new ArrayList<Integer>();
+
 			    for(int i = 0; i < answerEvidence.length(); i++) {
-			    	ArrayList<String> matchedWords = new ArrayList<String>();
-				    ArrayList<Integer> matchedWordsNum = new ArrayList<Integer>();
-			    	JSONArray evidenceSet = answerEvidence.getJSONArray(i);
-					JSONArray primarySentence = evidenceSet.getJSONArray(0);
-					boolean isAlone = (evidenceSet.length() == 1);
-					String newWikiName = primarySentence.get(2).toString();
-					if(!isAlone || wikiName.equals(newWikiName)) {
-						continue;
-					}
-					wikiName = primarySentence.get(2).toString();
-					ArrayList<String> wikiArrayList= new ArrayList<String>();
-					wikiArrayList.add(wikiName.toLowerCase());
-					ArrayList<Map<String, String>> allDocs = getDocsFromTopics(wikiArrayList);
-					if(allDocs.size() == 0) {
-						continue;
-					}
-					Map<String, String> wikiDoc = allDocs.get(0);
-					CoreDocument document = new CoreDocument(claim);
-				    pipeline.annotate(document);
-				    CoreSentence claimDoc = document.sentences().get(0);
-					Tree constituencyTree = claimDoc.constituencyParse();
-					System.out.println("ready to grab. Time: "+dtf.format(LocalDateTime.now()));
-//					relevantWords = getRelevantWords(formattedClaim, wikiName);
-				    relevantWords = getNouns(formattedClaim, wikiName, constituencyTree);
-//				    relevantWords = getNamedEntities(formattedClaim, wikiName, pipeline);
-					System.out.println("relevantWords: " + relevantWords.toString() + " Time: "+dtf.format(LocalDateTime.now()));
-					String lines = wikiDoc.get("lines");
-					sentences = lines.split("\\\n\\d*\\\t");
-					for(int j = 0; j < sentences.length; j++) {
-						String sentence = sentences[j].toLowerCase();
-						boolean wordsPresent = true;
-						for(String word: relevantWords) {
-							if(!sentence.contains(word)) {
-								wordsPresent = false;
-							}
-						}
-						if(wordsPresent && relevantWords.size() > 0) {
-							matchedWords.add(sentence);
-							matchedWordsNum.add(j);
-						}
-						
-					}
-					
-					for(int j = 0; j < matchedWords.size(); j++) {
-						Object[] evidence = new Object[3];
-						evidence[0] = wikiName;
-						evidence[1] = matchedWords.get(j);
-						evidence[2] = matchedWordsNum.get(j);
-						System.out.println("added");
-						evidenceSets.add(evidence);
-					}
-					
-					
-					System.out.println();
-					
+                    JSONArray evidenceSet = answerEvidence.getJSONArray(i);
+                    JSONArray primarySentence = evidenceSet.getJSONArray(0);
+                    boolean isAlone = (evidenceSet.length() == 1);
+                    String newWikiName = primarySentence.get(2).toString();
+                    if (!isAlone || wikiName.equals(newWikiName)) {
+                        continue;
+                    }
+                    wikiName = primarySentence.get(2).toString();
+                    ArrayList<String> wikiArrayList = new ArrayList<String>();
+                    wikiArrayList.add(wikiName.toLowerCase());
+                    ArrayList<Map<String, String>> allDocs = getDocsFromTopics(wikiArrayList);
+                    if (allDocs.size() == 0) {
+                        continue;
+                    }
+
+
+				    // annotate claim
+                    CoreDocument document = new CoreDocument(claim);
+                    pipeline.annotate(document);
+                    CoreSentence claimDoc = document.sentences().get(0);
+
+                    System.out.println("ready to grab. Time: "+dtf.format(LocalDateTime.now()));
+                    // for each wikidoc in all found docs
+					for (Map<String, String> wikiDoc : allDocs) {
+    //					relevantWords = getRelevantWords(formattedClaim, wikiName);
+                        relevantWords = getNouns(formattedClaim, wikiName, claimDoc.constituencyParse());
+    //				    relevantWords = getNamedEntities(formattedClaim, wikiName, pipeline);
+
+//                        System.out.println("relevantWords: " + relevantWords.toString() + " Time: "+dtf.format(LocalDateTime.now()));
+                        String lines = wikiDoc.get("lines");
+                        //sentences = lines.split("\\\n\\d*\\\t");
+                        sentences = splitWikiLines(lines);
+
+                        Set<String> relevantWordsSet = relevantWords.stream().collect(Collectors.toSet());
+
+
+                        Pair<List<String>, List<Integer>> matchedResult = searchSentencesWithKeywords(sentences, relevantWordsSet);
+                        matchedWords = (ArrayList<String>) matchedResult.first;
+                        matchedWordsNum = (ArrayList<Integer>) matchedResult.second;
+                        for(int j = 0; j < matchedWords.size(); j++) {
+                            Object[] evidence = new Object[3];
+                            evidence[0] = wikiName;
+                            evidence[1] = matchedWords.get(j);
+                            evidence[2] = matchedWordsNum.get(j);
+                            evidenceSets.add(evidence);
+                        }
+
+                        System.out.println("Original keywords");
+                        System.out.println(relevantWords);
+                        System.out.println("Evidence matched by relevant words:");
+                        System.out.println(matchedWords);
+
+                        // search for 10 closest words of each relevantWords
+                        // and search for the 10 closest words of the root of the evidence sentneces
+                        Set<String> roots = getDependencyRoots(claim, claimDoc.dependencyParse());
+                        relevantWords.addAll(roots);
+
+                        // the set of new keywords to match
+                        HashSet<String> closestRelevantWords = new HashSet<String>();
+                        for (String word: relevantWords) {
+                            Map<String, Double> neighborsWordMap = similarity.getClosestWordVectors(word, 10);
+                            Set<String> neighborWords = neighborsWordMap.keySet();
+                            closestRelevantWords.addAll(neighborWords);
+                        }
+
+                        // search with the new set of keywords
+                        // if there is one keyword that matches, count the claim sentence as an evidence
+                        Pair<List<String>, List<Integer>> extendedMatchedResult = searchSentencesWithKeywords(sentences, closestRelevantWords);
+                        List<String> evidenceMatchedByClosestWords = extendedMatchedResult.first;
+                        List<Integer> evidenceIndexMatchedByClosestWords = extendedMatchedResult.second;
+
+                        System.out.println("Extended keywords");
+                        System.out.println(closestRelevantWords);
+                        System.out.println("Evidence matched by closest words:");
+                        System.out.println(evidenceMatchedByClosestWords);
+
+                    }
+
 			    }
+
 			    Map<String, Object> claimJsonMap = new LinkedHashMap<String, Object>();
 			    claimJsonMap.put("id", claimJson.getInt("id"));
 			    claimJsonMap.put("claim", claim);
 			    claimJsonMap.put("label", label);
-			    claimJsonMap.put("sentences", sentences);
+//			    claimJsonMap.put("sentences", sentences);
 			    claimJsonMap.put("relevantWords", relevantWords.toArray(new Object[relevantWords.size()]));
-			    claimJsonMap.put("evidence", evidenceSets.toArray(new Object[evidenceSets.size()]));
+			    claimJsonMap.put("predicted_evidence", evidenceSets.toArray(new Object[evidenceSets.size()]));
+                claimJsonMap.put("predicted_evidence2", extendedEvidenceSets.toArray(new Object[extendedEvidenceSets.size()]));
+                claimJsonMap.put("correct_evidence", claimJson.getJSONArray("evidence"));
 			    JSONObject resultJson = new JSONObject(claimJsonMap);
 			    writer.append(resultJson.toString());
 			    writer.append("\n");
@@ -267,7 +328,7 @@ public class SentenceFinder {
 //			boolean emptyDisam = false;
 			if (!topic.isEmpty() && wikiMap.containsKey(urlTitle)){
 				Map<String, Object> fileInfo = wikiMap.get(urlTitle);
-				String wikiListName = wikiDirName + "\\" + fileInfo.get("fileName");
+				String wikiListName = wikiDirName + "/" + fileInfo.get("fileName");
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(wikiListName)); 
 					Long byteOffset = (Long) fileInfo.get("offset");
@@ -414,14 +475,14 @@ public class SentenceFinder {
 	    return nounPhrases;
 	}
 	
-private static ArrayList<String> getNouns(String claim, String wikiName, Tree constituencyTree) {
+	private static ArrayList<String> getNouns(String claim, String wikiName, Tree constituencyTree) {
 		String wikiTitle = formatSentence(wikiName.replaceAll("_", " "));
 		List<Tree> leaves = constituencyTree.getLeaves();
 	    int wordNum = 0;
 
 	    //return ArrayList of topic phrases, from broadest to most narrow
 	    ArrayList<String> wordList = new ArrayList<String>();
-	    String[] nounsTags = {"NN", "NNS", "NNP", "NNPS", "NP"};//, "CD", "JJ"}; 
+	    String[] nounsTags = {"NN", "NNS", "NNP", "NNPS", "NP"};//, "CD", "JJ"}
 	    while(wordNum < leaves.size()) {
 	    	Tree word = leaves.get(wordNum);
 	    	Tree type = word.parent(constituencyTree);
@@ -436,7 +497,15 @@ private static ArrayList<String> getNouns(String claim, String wikiName, Tree co
     
 	    return wordList;
 	}
-	
+
+
+    public static Set<String> getDependencyRoots(String claim, SemanticGraph dependencyGraph) {
+        Collection<IndexedWord> roots = dependencyGraph.getRoots();
+        Set<String> verbs = roots.stream().map(indexedWord -> indexedWord.word()).collect(Collectors.toSet());
+        return verbs;
+    }
+
+
 	private static ArrayList<String> getNamedEntities(String sentence, String wikiName, StanfordCoreNLP pipeline){
 		String wikiTitle = formatSentence(wikiName).toLowerCase();
 		ArrayList<CoreLabel> tokens = getSentenceTokens(sentence, pipeline);
@@ -478,6 +547,33 @@ private static ArrayList<String> getNouns(String claim, String wikiName, Tree co
 	      }
 	    return tokens;
 	}
-	
+
+    /**
+     * Match a set of keywords in a set of sentences
+     * if at least one word in keywords appear in a sentence, the sentence is matched
+     * @param sentences a list of sentences to match
+     * @param keywords a list of keywords
+     * @return a pair of matched sentences and the indices of those matched sentences
+     */
+	private static Pair<List<String>, List<Integer>> searchSentencesWithKeywords(String[] sentences,
+                                                                                 Set<String> keywords) {
+
+        ArrayList<String> matchedSentences = new ArrayList<>();
+        ArrayList<Integer> matchedSentenceIndices = new ArrayList<>();
+        for(int j = 0; j < sentences.length; j++) {
+            String sentence = sentences[j].toLowerCase();
+            boolean wordsPresent = false;
+            for(String word: keywords) {
+                if(sentence.contains(word)) {
+                    wordsPresent = true;
+                }
+            }
+            if(wordsPresent && keywords.size() > 0) {
+                matchedSentences.add(sentence);
+                matchedSentenceIndices.add(j);
+            }
+        }
+        return new Pair(matchedSentences, matchedSentenceIndices);
+    }
 
 }
