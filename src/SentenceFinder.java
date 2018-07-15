@@ -50,7 +50,7 @@ public class SentenceFinder {
 	static Map<String, Map<String, Object>> wikiMap;
 	static Map<String, Map<String, Float>> correlationMap;
 	//static Map<String, ArrayList<String>> disambiguationMap;
-	
+
 	public static void main(String[] args) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
 	    System.out.println("Beginning document processing. Time: "+dtf.format(LocalDateTime.now()));	    
@@ -131,7 +131,12 @@ public class SentenceFinder {
 		if(wikiDocs.size() == 0 || !hasSoloEvidence(answerEvidence)) {
 			return sentenceResults(id, claim, label, wikiSentences, evidenceSets);
 		}
-		wikiSentences = wikiDocs.get(0).get("lines").split("\\n\\d*\\t");
+		List<String> wikiSentencesLines = Arrays.asList(wikiDocs.get(0).get("lines").split("\n"));
+		wikiSentences = (String[]) wikiSentencesLines.stream()
+                                                     .map(i -> getWikiSentencefromLine(i))
+                                                     .collect(Collectors.toList())
+                                                     .toArray(new String[wikiSentencesLines.size()]);
+
 		
 		String wikiTitle = formatSentence(wikiName.replace("_", " ")).toLowerCase();
 		System.out.println("wikiTitle: " + wikiTitle);
@@ -318,7 +323,7 @@ public class SentenceFinder {
 //			boolean emptyDisam = false;
 			if (!topic.isEmpty() && wikiMap.containsKey(urlTitle)){
 				Map<String, Object> fileInfo = wikiMap.get(urlTitle);
-				String wikiListName = wikiDirName + "\\" + fileInfo.get("fileName");
+				String wikiListName = wikiDirName + "/" + fileInfo.get("fileName");
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(wikiListName)); 
 					Long byteOffset = (Long) fileInfo.get("offset");
@@ -621,6 +626,18 @@ public class SentenceFinder {
 	    wordList = (ArrayList<String>) wordList.stream().distinct().collect(Collectors.toList());
 	    return wordList;
 	}
-	
+
+    /**
+     * get the wiki sentence from a tab-separated line in wiki dump
+     * @param line
+     * @return the sentence text from the line
+     */
+    private static String getWikiSentencefromLine(String line) {
+        String[] tabs = line.split("\t");
+        if (tabs.length < 2) {
+            return "";
+        }
+        return tabs[1];
+    }
 
 }
