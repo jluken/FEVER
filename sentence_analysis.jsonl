@@ -2,9 +2,8 @@
 
 
 
-Claim: Colin Kaepernick became a starting quarterback during the 49ers 63rd season in the National Football League.
+Claim 1: Colin Kaepernick became a starting quarterback during the 49ers 63rd season in the National Football League.
 Label: NOT ENOUGH INFO
-Relevant words: ["colin","kaepernick","quarterback","49ers","season","national","football","league"]
 
 Correct sentences in training set: 
 
@@ -15,9 +14,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Tilda Swinton is a vegan.
+Claim 2: Tilda Swinton is a vegan.
 Label: NOT ENOUGH INFO
-Relevant words: ["tilda","swinton","vegan"]
 
 Correct sentences in training set: 
 
@@ -28,9 +26,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Fox 2000 Pictures released the film Soul Food.
+Claim 3: Fox 2000 Pictures released the film Soul Food.
 Label: SUPPORTS
-Relevant words: ["fox","pictures"]
 Wiki title: Soul_Food_-LRB-film-RRB-
 
 Correct sentences in training set: 
@@ -44,9 +41,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Anne Rice was born in New Jersey.
+Claim 4: Anne Rice was born in New Jersey.
 Label: NOT ENOUGH INFO
-Relevant words: []
 
 Correct sentences in training set: 
 
@@ -57,9 +53,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Telemundo is a English-language television network.
+Claim 5: Telemundo is a English-language television network.
 Label: REFUTES
-Relevant words: ["television","network"]
 Wiki title: Telemundo
 
 Correct sentences in training set: 
@@ -76,9 +71,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Damon Albarn's debut album was released in 2011.
+Claim 6: Damon Albarn's debut album was released in 2011.
 Label: REFUTES
-Relevant words: ["debut","album"]
 Wiki title: Damon_Albarn
 
 Correct sentences in training set: 
@@ -94,9 +88,8 @@ Drawing influences from alternative rock , trip hop , hip hop , electronica , du
 
 
 
-Claim: There is a capital called Mogadishu.
+Claim 7: There is a capital called Mogadishu.
 Label: SUPPORTS
-Relevant words: ["capital"]
 Wiki title: Mogadishu
 
 Correct sentences in training set: 
@@ -116,24 +109,23 @@ Mogadishu International Airport , the capital 's main airport , is the hub of th
 
 
 
-Claim: Savages was exclusively a German film.
+Claim 8: Savages was exclusively a German film.
 Label: REFUTES
-Relevant words: []
 Wiki title: Savages_-LRB-2012_film-RRB-
 
 Correct sentences in training set: 
 Savages is a 2012 American crime thriller film directed by Oliver Stone .	Oliver Stone	Oliver Stone	Savages	Savages (2010 novel)	crime	Crime film	thriller	Thriller (genre)
 
 Correctly found sentences: 
+Savages is a 2012 American crime thriller film directed by Oliver Stone .	Oliver Stone	Oliver Stone	Savages	Savages (2010 novel)	crime	Crime film	thriller	Thriller (genre)
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Happiness in Slavery is a gospel song by Nine Inch Nails.
+Claim 9: Happiness in Slavery is a gospel song by Nine Inch Nails.
 Label: NOT ENOUGH INFO
-Relevant words: ["happiness","slavery","gospel","song","inch","nails"]
 
 Correct sentences in training set: 
 
@@ -144,24 +136,23 @@ Incorrectly found sentences:
 
 
 
-Claim: Andrew Kevin Walker is only Chinese.
+Claim 10: Andrew Kevin Walker is only Chinese.
 Label: REFUTES
-Relevant words: []
 Wiki title: Andrew_Kevin_Walker
 
 Correct sentences in training set: 
 0	Andrew Kevin Walker -LRB- born August 14 , 1964 -RRB- is an American BAFTA-nominated screenwriter .	American	United States	BAFTA	British Academy of Film and Television Arts	screenwriter	screenwriter
 
 Correctly found sentences: 
+0	Andrew Kevin Walker -LRB- born August 14 , 1964 -RRB- is an American BAFTA-nominated screenwriter .	American	United States	BAFTA	British Academy of Film and Television Arts	screenwriter	screenwriter
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Shooter is about an expert marksman who tries to stop the assassination of the president.
+Claim 11: Shooter is about an expert marksman who tries to stop the assassination of the president.
 Label: NOT ENOUGH INFO
-Relevant words: ["shooter","expert","marksman","assassination","president"]
 
 Correct sentences in training set: 
 
@@ -172,9 +163,8 @@ Incorrectly found sentences:
 
 
 
-Claim: House is a sitcom.
+Claim 12: House is a sitcom.
 Label: NOT ENOUGH INFO
-Relevant words: ["house","sitcom"]
 
 Correct sentences in training set: 
 
@@ -185,9 +175,8 @@ Incorrectly found sentences:
 
 
 
-Claim: The Cretaceous ended.
+Claim 13: The Cretaceous ended.
 Label: SUPPORTS
-Relevant words: []
 Wiki title: Cretaceous
 
 Correct sentences in training set: 
@@ -195,15 +184,15 @@ The Cretaceous ended with a large mass extinction , the Cretaceous -- Paleogene 
 The end of the Cretaceous is defined by the abrupt Cretaceous -- Paleogene boundary -LRB- K -- Pg boundary -RRB- , a geologic signature associated with the mass extinction which lies between the Mesozoic and Cenozoic eras .	Paleogene	Paleogene	mass extinction	mass extinction	Cenozoic	Cenozoic	eras	era (geology)
 
 Correctly found sentences: 
+The Cretaceous ended with a large mass extinction , the Cretaceous -- Paleogene extinction event , in which many groups , including non-avian dinosaurs , pterosaurs and large marine reptiles died out .	Paleogene	Paleogene	mass extinction	mass extinction
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Murda Beatz's real name is Marshall Mathers.
+Claim 14: Murda Beatz's real name is Marshall Mathers.
 Label: REFUTES
-Relevant words: ["name","marshall","mathers"]
 Wiki title: Murda_Beatz
 
 Correct sentences in training set: 
@@ -216,9 +205,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Nicholas Brody is a character on Homeland.
+Claim 15: Nicholas Brody is a character on Homeland.
 Label: SUPPORTS
-Relevant words: ["character","homeland"]
 Wiki title: Nicholas_Brody
 
 Correct sentences in training set: 
@@ -233,9 +221,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Charles Manson has been proven innocent of all crimes.
+Claim 16: Charles Manson has been proven innocent of all crimes.
 Label: REFUTES
-Relevant words: ["crimes"]
 Wiki title: Charles_Manson
 
 Correct sentences in training set: 
@@ -249,9 +236,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Sean Penn is only ever a stage actor.
+Claim 17: Sean Penn is only ever a stage actor.
 Label: REFUTES
-Relevant words: ["stage","actor"]
 Wiki title: Sean_Penn
 
 Correct sentences in training set: 
@@ -265,9 +251,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Don Bradman retired from soccer.
+Claim 18: Don Bradman retired from soccer.
 Label: NOT ENOUGH INFO
-Relevant words: ["don","bradman","soccer"]
 
 Correct sentences in training set: 
 
@@ -278,9 +263,8 @@ Incorrectly found sentences:
 
 
 
-Claim: L.A. Reid has served as the CEO of Arista Records for four years.
+Claim 19: L.A. Reid has served as the CEO of Arista Records for four years.
 Label: NOT ENOUGH INFO
-Relevant words: ["l.a.","reid","ceo","arista","records","years"]
 
 Correct sentences in training set: 
 
@@ -291,9 +275,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Brad Wilk helped co-found Rage in 1962.
+Claim 20: Brad Wilk helped co-found Rage in 1962.
 Label: REFUTES
-Relevant words: ["rage"]
 Wiki title: Brad_Wilk
 
 Correct sentences in training set: 
@@ -303,16 +286,12 @@ Correctly found sentences:
 Wilk started his career as a drummer for Greta in 1990 , and helped co-found Rage with Tom Morello and Zack de la Rocha in August 1991 .	Greta	Greta (band)	Tom Morello	Tom Morello	Zack de la Rocha	Zack de la Rocha
 
 Incorrectly found sentences: 
-He is best known as the drummer of the rock bands Rage Against the Machine -LRB- 1991 -- 2000 ; 2007 -- 11 -RRB- and Audioslave -LRB- 2001 -- 07 -RRB- .	Rage Against the Machine	Rage Against the Machine	Audioslave	Audioslave
-Following that band 's breakup in October 2000 Wilk , Morello , Rage Against the Machine bassist Tim Commerford , and Soundgarden front man Chris Cornell formed the supergroup Audioslave , which broke up in 2007 .	Rage Against the Machine	Rage Against the Machine	Audioslave	Audioslave	Tim Commerford	Tim Commerford	Soundgarden	Soundgarden	Chris Cornell	Chris Cornell	supergroup	Supergroup (music)
-As of 2016 , he is playing in the band Prophets of Rage , with Commerford , Morello , Chuck D , B-Real and DJ Lord .	Prophets of Rage	Prophets of Rage	Chuck D	Chuck D	B-Real	B-Real	DJ Lord	DJ Lord
 
 
 
 
-Claim: CBS is the network that aired The Millers.
+Claim 21: CBS is the network that aired The Millers.
 Label: SUPPORTS
-Relevant words: ["cbs","network"]
 Wiki title: The_Millers
 
 Correct sentences in training set: 
@@ -325,9 +304,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Annette Badland was in the 2015 NBA Finals.
+Claim 22: Annette Badland was in the 2015 NBA Finals.
 Label: NOT ENOUGH INFO
-Relevant words: ["annette","badland","nba","finals"]
 
 Correct sentences in training set: 
 
@@ -338,9 +316,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Edgar Wright is a person.
+Claim 23: Edgar Wright is a person.
 Label: SUPPORTS
-Relevant words: ["person"]
 Wiki title: Edgar_Wright
 
 Correct sentences in training set: 
@@ -352,15 +329,15 @@ Along with his friends Joe Cornish and Steven Moffat , he co-wrote Steven Spielb
 Wright and Cornish co-wrote the screenplay for the Marvel Studios film Ant-Man , which Wright was intended to direct before departing the project .	Ant-Man	Ant-Man (film)
 
 Correctly found sentences: 
+0	Edgar Howard Wright -LRB- born 18 April 1974 -RRB- is an English director , screenwriter , producer , and actor .
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Ann Richards was professionally involved in politics.
+Claim 24: Ann Richards was professionally involved in politics.
 Label: SUPPORTS
-Relevant words: ["politics"]
 Wiki title: Ann_Richards
 
 Correct sentences in training set: 
@@ -375,9 +352,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Drake Bell put out an EP.
+Claim 25: Drake Bell put out an EP.
 Label: SUPPORTS
-Relevant words: ["ep"]
 Wiki title: Drake_Bell
 
 Correct sentences in training set: 
@@ -392,9 +368,8 @@ In 2005 he independently released his debut album , Telegraph , released under B
 
 
 
-Claim: Janet Leigh was incapable of writing.
+Claim 26: Janet Leigh was incapable of writing.
 Label: REFUTES
-Relevant words: []
 Wiki title: Janet_Leigh
 
 Correct sentences in training set: 
@@ -408,32 +383,38 @@ Incorrectly found sentences:
 
 
 
-Claim: Simón Bolívar is only known as Simón Bolívar.
+Claim 27: Simón Bolívar is only known as Simón Bolívar.
 Label: REFUTES
-Relevant words: []
-Read error in text 
+Wiki title: Simo?n_Boli?var
+
+Correct sentences in training set: 
+0	Simón José Antonio de la Santísima Trinidad Bolívar y Palacios -LRB- -LSB- si?mon bo?li?ar -RSB- ; 24 July 1783 -- 17 December 1830 -RRB- , known as El Libertador , was a Venezuelan military and political leader who played a leading role in the establishment of Venezuela , Bolivia , Colombia , Ecuador , Peru and Panama as sovereign states , independent of Spanish rule .	Venezuela	Venezuela	Colombia	Colombia	El Libertador	libertadores	Venezuelan	Venezuelan	Bolivia	Bolivia	Ecuador	Ecuador	Peru	Peru	Panama	Panama	Spanish rule	Spanish Empire
+
+Correctly found sentences: 
+
+Incorrectly found sentences: 
+0	Simón José Antonio de la Santísima Trinidad Bolívar y Palacios -LRB- -LSB- si?mon bo?li?ar -RSB- ; 24 July 1783 -- 17 December 1830 -RRB- , known as El Libertador , was a Venezuelan military and political leader who played a leading role in the establishment of Venezuela , Bolivia , Colombia , Ecuador , Peru and Panama as sovereign states , independent of Spanish rule .	Venezuela	Venezuela	Colombia	Colombia	El Libertador	libertadores	Venezuelan	Venezuelan	Bolivia	Bolivia	Ecuador	Ecuador	Peru	Peru	Panama	Panama	Spanish rule	Spanish Empire
 
 
 
 
-Claim: Bermuda Triangle is in the western part of the Himalayas.
+Claim 28: Bermuda Triangle is in the western part of the Himalayas.
 Label: REFUTES
-Relevant words: ["part","himalayas"]
 Wiki title: Bermuda_Triangle
 
 Correct sentences in training set: 
 0	The Bermuda Triangle , also known as the Devil 's Triangle , is a loosely-defined region in the western part of the North Atlantic Ocean , where a number of aircraft and ships are said to have disappeared under mysterious circumstances .	Atlantic Ocean	Atlantic Ocean	aircraft	aircraft	ships	Surface ship
 
 Correctly found sentences: 
+0	The Bermuda Triangle , also known as the Devil 's Triangle , is a loosely-defined region in the western part of the North Atlantic Ocean , where a number of aircraft and ships are said to have disappeared under mysterious circumstances .	Atlantic Ocean	Atlantic Ocean	aircraft	aircraft	ships	Surface ship
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Colin Kaepernick became a starter during the 49ers 63rd season in the Republican Party.
+Claim 29: Colin Kaepernick became a starter during the 49ers 63rd season in the Republican Party.
 Label: NOT ENOUGH INFO
-Relevant words: ["colin","kaepernick","49ers","season","republican","party"]
 
 Correct sentences in training set: 
 
@@ -444,9 +425,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Marnie was directed by someone who was "The Master of Nothing".
+Claim 30: Marnie was directed by someone who was "The Master of Nothing".
 Label: NOT ENOUGH INFO
-Relevant words: ["marnie","someone","master","nothing"]
 
 Correct sentences in training set: 
 
@@ -457,9 +437,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Advertising is a personal message.
+Claim 31: Advertising is a personal message.
 Label: REFUTES
-Relevant words: ["message"]
 Wiki title: Advertising
 
 Correct sentences in training set: 
@@ -478,9 +457,8 @@ The actual presentation of the message in a medium is referred to as an advertis
 
 
 
-Claim: Hot Right Now is mistakenly attributed to DJ Fresh.
+Claim 32: Hot Right Now is mistakenly attributed to DJ Fresh.
 Label: REFUTES
-Relevant words: ["dj","fresh"]
 Wiki title: Hot_Right_Now
 
 Correct sentences in training set: 
@@ -494,9 +472,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Private Lives is a three act play from 1930.
+Claim 33: Private Lives is a three act play from 1930.
 Label: NOT ENOUGH INFO
-Relevant words: ["lives","act","play"]
 
 Correct sentences in training set: 
 
@@ -507,33 +484,30 @@ Incorrectly found sentences:
 
 
 
-Claim: Giada at Home was only available on DVD.
+Claim 34: Giada at Home was only available on DVD.
 Label: REFUTES
-Relevant words: []
-Read error in text 
+No single evidence sets 
 
 
 
 
-Claim: Harold Macmillan was born on February 20, 1894.
+Claim 35: Harold Macmillan was born on February 20, 1894.
 Label: REFUTES
-Relevant words: ["february"]
 Wiki title: Harold_Macmillan
 
 Correct sentences in training set: 
 0	Maurice Harold Macmillan , 1st Earl of Stockton , -LRB- 10 February 1894 -- 29 December 1986 -RRB- was a British Conservative politician and statesman who served as the Prime Minister of the United Kingdom from 10 January 1957 to 19 October 1963 .	Prime Minister of the United Kingdom	Prime Minister of the United Kingdom	Conservative	Conservative Party (UK)	United Kingdom	United Kingdom	statesman	Politician
 
 Correctly found sentences: 
-0	Maurice Harold Macmillan , 1st Earl of Stockton , -LRB- 10 February 1894 -- 29 December 1986 -RRB- was a British Conservative politician and statesman who served as the Prime Minister of the United Kingdom from 10 January 1957 to 19 October 1963 .	Prime Minister of the United Kingdom	Prime Minister of the United Kingdom	Conservative	Conservative Party (UK)	United Kingdom	United Kingdom	statesman	Politician
 
 Incorrectly found sentences: 
+Macmillan was the last British prime minister born in the reign of Queen Victoria , the last to have served in the First World War , the last to wear a moustache when in office , and the last to receive an hereditary peerage .	First World War	First World War	Queen Victoria	Queen Victoria
 
 
 
 
-Claim: Aristotle spent time in Athens.
+Claim 36: Aristotle spent time in Athens.
 Label: SUPPORTS
-Relevant words: ["time","athens"]
 Wiki title: Aristotle
 
 Correct sentences in training set: 
@@ -546,9 +520,8 @@ Incorrectly found sentences:
 
 
 
-Claim: David Packouz refused to be an entrepreneur.
+Claim 37: David Packouz refused to be an entrepreneur.
 Label: REFUTES
-Relevant words: ["entrepreneur"]
 Wiki title: David_Packouz
 
 Correct sentences in training set: 
@@ -562,9 +535,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Magic Johnson did not play for the Lakers.
+Claim 38: Magic Johnson did not play for the Lakers.
 Label: REFUTES
-Relevant words: ["lakers"]
 Wiki title: Magic_Johnson
 
 Correct sentences in training set: 
@@ -580,14 +552,22 @@ After protests from his fellow players , he retired again for four years , but r
 Incorrectly found sentences: 
 0	Earvin `` Magic '' Johnson Jr. -LRB- born August 14 , 1959 -RRB- is an American retired professional basketball player and current president of basketball operations of the Los Angeles Lakers of the National Basketball Association -LRB- NBA -RRB- .	Los Angeles Lakers	Los Angeles Lakers	NBA	National Basketball Association	basketball	basketball	National Basketball Association	National Basketball Association
 After winning championships in high school and college , Johnson was selected first overall in the 1979 NBA draft by the Lakers .	NBA	National Basketball Association	1979	1979 NCAA Men's Basketball All-Americans	high school	High school basketball#U.S. high school basketball	college	College basketball	1979 NBA draft	1979 NBA draft
+Johnson 's career achievements include three NBA MVP Awards , nine NBA Finals appearances , twelve All-Star games , and ten All-NBA First and Second Team nominations .	NBA	National Basketball Association	NBA MVP Awards	NBA Most Valuable Player Award	NBA Finals	NBA Finals	All-Star	List of NBA All-Stars	All-NBA	All-NBA Team
+He led the league in regular-season assists four times , and is the NBA 's all-time leader in average assists per game , at 11.2 .	NBA	National Basketball Association	assists	assist (basketball)
+Johnson was a member of the 1992 United States men 's Olympic basketball team -LRB- `` The Dream Team '' -RRB- , which won the Olympic gold medal in 1992 .	basketball	basketball	Olympic	Basketball at the 1992 Summer Olympics
+After leaving the NBA in 1992 , Johnson formed the Magic Johnson All-Stars , a barnstorming team that travelled around the world playing exhibition games .	NBA	National Basketball Association	barnstorming	barnstorm (sports)
+Johnson was honored as one of the 50 Greatest Players in NBA History in 1996 .	NBA	National Basketball Association	50 Greatest Players in NBA History	50 Greatest Players in NBA History
+Johnson became a two-time inductee into the Basketball Hall of Fame -- being enshrined in 2002 for his individual career , and again in 2010 as a member of the `` Dream Team '' .	Basketball Hall of Fame	Basketball Hall of Fame
+He was rated the greatest NBA point guard of all time by ESPN in 2007 .	NBA	National Basketball Association	point guard	point guard	ESPN	ESPN
+His friendship and rivalry with Boston Celtics star Larry Bird , whom he faced in the 1979 NCAA finals and three NBA championship series , are well documented .	NBA	National Basketball Association	1979	1979 NCAA Men's Basketball All-Americans	Boston Celtics	Boston Celtics	Larry Bird	Larry Bird	1979 NCAA finals	1979 NCAA Men's Division I Basketball Tournament
 Named by Ebony magazine as one of America 's most influential black businessmen in 2009 , Johnson has numerous business interests , and was a part-owner of the Lakers for several years .	Ebony	Ebony (magazine)
+Johnson also is part of a group of investors that purchased the Los Angeles Dodgers in 2012 and the Los Angeles Sparks in 2014 .	Los Angeles Sparks	Los Angeles Sparks	Los Angeles Dodgers	Los Angeles Dodgers
 
 
 
 
-Claim: Tenacious D started in 1997.
+Claim 39: Tenacious D started in 1997.
 Label: REFUTES
-Relevant words: []
 Wiki title: Tenacious_D
 
 Correct sentences in training set: 
@@ -596,13 +576,13 @@ Correct sentences in training set:
 Correctly found sentences: 
 
 Incorrectly found sentences: 
+The band first gained popularity in 1997 when they starred in their eponymous television series and began to support large rock acts .	television series	Tenacious D (TV series)
 
 
 
 
-Claim: James VI and I was a major advocate of a single parliament for Scotland and England.
+Claim 40: James VI and I was a major advocate of a single parliament for Scotland and England.
 Label: SUPPORTS
-Relevant words: ["advocate","parliament","scotland","england"]
 Wiki title: James_VI_and_I
 
 Correct sentences in training set: 
@@ -616,9 +596,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Marcus Bentley is a broadcaster.
+Claim 41: Marcus Bentley is a broadcaster.
 Label: SUPPORTS
-Relevant words: ["broadcaster"]
 Wiki title: Marcus_Bentley
 
 Correct sentences in training set: 
@@ -632,24 +611,24 @@ Incorrectly found sentences:
 
 
 
-Claim: Saxony is in Ireland.
+Claim 42: Saxony is in Ireland.
 Label: REFUTES
-Relevant words: ["ireland"]
 Wiki title: Saxony
 
 Correct sentences in training set: 
 0	The Free State of Saxony -LRB- der Freistaat Sachsen -LSB- ?f?a???ta?t ?zaksn? -RSB- Swobodny stat Sakska -RRB- is a landlocked federal state of Germany , bordering the federal states of Brandenburg , Saxony Anhalt , Thuringia , and Bavaria , as well as the countries of Poland -LRB- Lower Silesian and Lubusz Voivodeships -RRB- and the Czech Republic -LRB- Karlovy Vary , Liberec and Ústí nad Labem Regions -RRB- .	state	States of Germany	Germany	Germany	Brandenburg	Brandenburg	Saxony Anhalt	Saxony Anhalt	Thuringia	Thuringia	Bavaria	Bavaria	countries	countries	Poland	Poland	Lower Silesian	Lower Silesian Voivodeship	Czech Republic	Czech Republic	Karlovy Vary	Karlovy Vary Region	Liberec	Liberec Region
 
 Correctly found sentences: 
+0	The Free State of Saxony -LRB- der Freistaat Sachsen -LSB- ?f?a???ta?t ?zaksn? -RSB- Swobodny stat Sakska -RRB- is a landlocked federal state of Germany , bordering the federal states of Brandenburg , Saxony Anhalt , Thuringia , and Bavaria , as well as the countries of Poland -LRB- Lower Silesian and Lubusz Voivodeships -RRB- and the Czech Republic -LRB- Karlovy Vary , Liberec and Ústí nad Labem Regions -RRB- .	state	States of Germany	Germany	Germany	Brandenburg	Brandenburg	Saxony Anhalt	Saxony Anhalt	Thuringia	Thuringia	Bavaria	Bavaria	countries	countries	Poland	Poland	Lower Silesian	Lower Silesian Voivodeship	Czech Republic	Czech Republic	Karlovy Vary	Karlovy Vary Region	Liberec	Liberec Region
 
 Incorrectly found sentences: 
+Saxony is the tenth largest of Germany 's sixteen states , with an area of 18,413 km2 , and the sixth most populous , with 4 million people .	Germany	Germany
 
 
 
 
-Claim: In the End has baseball in it.
+Claim 43: In the End has baseball in it.
 Label: NOT ENOUGH INFO
-Relevant words: []
 
 Correct sentences in training set: 
 
@@ -660,9 +639,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Mel B released a song on Virgin Records in 2007.
+Claim 44: Mel B released a song on Virgin Records in 2007.
 Label: SUPPORTS
-Relevant words: ["song","virgin","records"]
 Wiki title: Mel_B
 
 Correct sentences in training set: 
@@ -672,66 +650,67 @@ Correctly found sentences:
 Brown began her solo career when she released `` I Want You Back '' with Missy Elliott on Virgin Records .	Virgin	Virgin Records	I Want You Back	I Want You Back (Mel B song)	Missy Elliott	Missy Elliott	Virgin Records	Virgin Records
 
 Incorrectly found sentences: 
+0	Melanie Janine Brown -LRB- born 29 May 1975 -RRB- , better known as Mel B or Melanie B , is an English singer , songwriter , presenter , television personality , dancer , actress , author , and model .
+L.A. State of Mind was Brown 's second studio album , released in 2005 on the independent label Amber Café , which saw the release of one single , `` Today '' in June that year .	L.A. State of Mind	L.A. State of Mind	independent label	independent record label	Today	Today (Mel B song)
+The first single from the album , `` For Once in My Life '' was released in September 2013 , becoming Brown 's first record to be released after eight years .	For Once in My Life	For Once in My Life (Mel B song)
 
 
 
 
-Claim: Noah Cyrus is a younger sister of Macy Grey.
+Claim 45: Noah Cyrus is a younger sister of Macy Grey.
 Label: REFUTES
-Relevant words: ["sister","macy","grey"]
 Wiki title: Noah_Cyrus
 
 Correct sentences in training set: 
 She is the youngest daughter of Billy Ray Cyrus and younger sister of Miley Cyrus and Trace Cyrus .	Billy Ray Cyrus	Billy Ray Cyrus	Trace Cyrus	Trace Cyrus	Miley Cyrus	Miley Cyrus
 
 Correctly found sentences: 
+She is the youngest daughter of Billy Ray Cyrus and younger sister of Miley Cyrus and Trace Cyrus .	Billy Ray Cyrus	Billy Ray Cyrus	Trace Cyrus	Trace Cyrus	Miley Cyrus	Miley Cyrus
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Mohra is a truck.
+Claim 46: Mohra is a truck.
 Label: REFUTES
-Relevant words: ["truck"]
 Wiki title: Mohra
 
 Correct sentences in training set: 
 0	Mohra -LRB- Pawn -RRB- is a 1994 Indian action thriller film directed by Rajiv Rai starring Akshay Kumar , Sunil Shetty , Raveena Tandon and Naseeruddin Shah in the lead roles with Paresh Rawal , Gulshan Grover , Raza Murad and Sadashiv Amrapurkar in supporting roles .	Rajiv Rai	Rajiv Rai	Akshay Kumar	Akshay Kumar	Raveena Tandon	Raveena Tandon	Naseeruddin Shah	Naseeruddin Shah	Paresh Rawal	Paresh Rawal	Gulshan Grover	Gulshan Grover	action thriller	action thriller	Sunil Shetty	Sunil Shetty	Raza Murad	Raza Murad	Sadashiv Amrapurkar	Sadashiv Amrapurkar
 
 Correctly found sentences: 
+0	Mohra -LRB- Pawn -RRB- is a 1994 Indian action thriller film directed by Rajiv Rai starring Akshay Kumar , Sunil Shetty , Raveena Tandon and Naseeruddin Shah in the lead roles with Paresh Rawal , Gulshan Grover , Raza Murad and Sadashiv Amrapurkar in supporting roles .	Rajiv Rai	Rajiv Rai	Akshay Kumar	Akshay Kumar	Raveena Tandon	Raveena Tandon	Naseeruddin Shah	Naseeruddin Shah	Paresh Rawal	Paresh Rawal	Gulshan Grover	Gulshan Grover	action thriller	action thriller	Sunil Shetty	Sunil Shetty	Raza Murad	Raza Murad	Sadashiv Amrapurkar	Sadashiv Amrapurkar
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Hourglass is performed by a Russian singer-songwriter.
+Claim 47: Hourglass is performed by a Russian singer-songwriter.
 Label: REFUTES
-Relevant words: []
-Read error in text 
+No single evidence sets 
 
 
 
 
-Claim: Shane Black was born in 1961.
+Claim 48: Shane Black was born in 1961.
 Label: SUPPORTS
-Relevant words: []
 Wiki title: Shane_Black
 
 Correct sentences in training set: 
 0	Shane Black -LRB- born December 16 , 1961 -RRB- is an American screenwriter , director , producer and actor , known for writing the 1987 action film hit Lethal Weapon , and his directorial debut with the film Kiss Kiss Bang Bang in 2005 .	action film	action film	Lethal Weapon	Lethal Weapon	Kiss Kiss Bang Bang	Kiss Kiss Bang Bang
 
 Correctly found sentences: 
+0	Shane Black -LRB- born December 16 , 1961 -RRB- is an American screenwriter , director , producer and actor , known for writing the 1987 action film hit Lethal Weapon , and his directorial debut with the film Kiss Kiss Bang Bang in 2005 .	action film	action film	Lethal Weapon	Lethal Weapon	Kiss Kiss Bang Bang	Kiss Kiss Bang Bang
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: A View to a Kill is an action movie.
+Claim 49: A View to a Kill is an action movie.
 Label: NOT ENOUGH INFO
-Relevant words: ["view","action","movie"]
 
 Correct sentences in training set: 
 
@@ -742,9 +721,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Papua comprised all of Indonesia.
+Claim 50: Papua comprised all of Indonesia.
 Label: NOT ENOUGH INFO
-Relevant words: ["papua","indonesia"]
 
 Correct sentences in training set: 
 
@@ -755,9 +733,8 @@ Incorrectly found sentences:
 
 
 
-Claim: There are not rumors that Augustus' wife, Livia, poisoned him.
+Claim 51: There are not rumors that Augustus' wife, Livia, poisoned him.
 Label: REFUTES
-Relevant words: ["rumors","wife","livia"]
 Wiki title: Augustus
 
 Correct sentences in training set: 
@@ -771,9 +748,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Jennifer Lopez made a single.
+Claim 52: Jennifer Lopez made a single.
 Label: SUPPORTS
-Relevant words: []
 Wiki title: Jennifer_Lopez
 
 Correct sentences in training set: 
@@ -789,9 +765,8 @@ Incorrectly found sentences:
 
 
 
-Claim: A working animal is trained to perform life saving tasks.
+Claim 53: A working animal is trained to perform life saving tasks.
 Label: NOT ENOUGH INFO
-Relevant words: ["animal","life","saving","tasks"]
 
 Correct sentences in training set: 
 
@@ -802,9 +777,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Billboard Dad is a genre of music.
+Claim 54: Billboard Dad is a genre of music.
 Label: NOT ENOUGH INFO
-Relevant words: ["billboard","dad","genre","music"]
 
 Correct sentences in training set: 
 
@@ -815,24 +789,23 @@ Incorrectly found sentences:
 
 
 
-Claim: Vedam was written and directed by Christopher Nolan.
+Claim 55: Vedam was written and directed by Christopher Nolan.
 Label: REFUTES
-Relevant words: ["christopher","nolan"]
 Wiki title: Vedam_-LRB-film-RRB-
 
 Correct sentences in training set: 
 0	Vedam -LRB- English : Chant -RRB- is a 2010 Telugu language Indian drama film written and directed by Radhakrishna Jagarlamudi , starring Allu Arjun , Manoj Manchu , Anushka Shetty , Manoj Bajpayee , Saranya Ponvannan , Deeksha Seth , Lekha Washington , and Siya Gautham .	Radhakrishna Jagarlamudi	Radhakrishna Jagarlamudi	Anushka Shetty	Anushka Shetty	Allu Arjun	Allu Arjun	Manoj Manchu	Manoj Manchu	Deeksha Seth	Deeksha Seth	Manoj Bajpayee	Manoj Bajpayee	Saranya Ponvannan	Saranya Ponvannan	Lekha Washington	Lekha Washington	Telugu language	Telugu language	drama film	drama film
 
 Correctly found sentences: 
+0	Vedam -LRB- English : Chant -RRB- is a 2010 Telugu language Indian drama film written and directed by Radhakrishna Jagarlamudi , starring Allu Arjun , Manoj Manchu , Anushka Shetty , Manoj Bajpayee , Saranya Ponvannan , Deeksha Seth , Lekha Washington , and Siya Gautham .	Radhakrishna Jagarlamudi	Radhakrishna Jagarlamudi	Anushka Shetty	Anushka Shetty	Allu Arjun	Allu Arjun	Manoj Manchu	Manoj Manchu	Deeksha Seth	Deeksha Seth	Manoj Bajpayee	Manoj Bajpayee	Saranya Ponvannan	Saranya Ponvannan	Lekha Washington	Lekha Washington	Telugu language	Telugu language	drama film	drama film
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Men in Black II stars eight children.
+Claim 56: Men in Black II stars eight children.
 Label: NOT ENOUGH INFO
-Relevant words: ["men","black","ii","children"]
 
 Correct sentences in training set: 
 
@@ -843,9 +816,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Sancho Panza is a character in Don Quixote.
+Claim 57: Sancho Panza is a character in Don Quixote.
 Label: SUPPORTS
-Relevant words: ["character","don","quixote"]
 Wiki title: Sancho_Panza
 
 Correct sentences in training set: 
@@ -859,9 +831,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Magic Johnson was a tap dancer.
+Claim 58: Magic Johnson was a tap dancer.
 Label: REFUTES
-Relevant words: ["tap","dancer"]
 Wiki title: Magic_Johnson
 
 Correct sentences in training set: 
@@ -874,9 +845,8 @@ Incorrectly found sentences:
 
 
 
-Claim: The Adventures of Pluto Nash was reviewed by Ron Underwood.
+Claim 59: The Adventures of Pluto Nash was reviewed by Ron Underwood.
 Label: REFUTES
-Relevant words: ["ron","underwood"]
 Wiki title: The_Adventures_of_Pluto_Nash
 
 Correct sentences in training set: 
@@ -890,24 +860,23 @@ Incorrectly found sentences:
 
 
 
-Claim: Hedda Gabler's world premiere took place at the Battle of Hastings.
+Claim 60: Hedda Gabler's world premiere took place at the Battle of Hastings.
 Label: REFUTES
-Relevant words: ["world","premiere","place","battle","hastings"]
 Wiki title: Hedda_Gabler
 
 Correct sentences in training set: 
 Ibsen was present at the world premiere , which took place on 31 January 1891 at the Residenztheater in Munich .	Munich	Munich
 
 Correctly found sentences: 
+Ibsen was present at the world premiere , which took place on 31 January 1891 at the Residenztheater in Munich .	Munich	Munich
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Brazzers is a company.
+Claim 61: Brazzers is a company.
 Label: SUPPORTS
-Relevant words: ["company"]
 Wiki title: Brazzers
 
 Correct sentences in training set: 
@@ -921,9 +890,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Tim Roth is an English actor.
+Claim 62: Tim Roth is an English actor.
 Label: SUPPORTS
-Relevant words: ["actor"]
 Wiki title: Tim_Roth
 
 Correct sentences in training set: 
@@ -933,14 +901,12 @@ Correctly found sentences:
 0	Timothy Simon Roth -LRB- born 14 May 1961 -RRB- is an English actor and director .
 
 Incorrectly found sentences: 
-For the historical drama Rob Roy -LRB- 1995 -RRB- , Roth won the BAFTA Award for Best Actor in a Supporting Role and was nominated for the Academy Award for Best Supporting Actor .	BAFTA Award	BAFTA Award	Rob Roy	Rob Roy (1995 film)	BAFTA Award for Best Actor in a Supporting Role	BAFTA Award for Best Actor in a Supporting Role	Academy Award for Best Supporting Actor	Academy Award for Best Supporting Actor
 
 
 
 
-Claim: Juventus F.C. rejected their traditional black-and-white-striped home uniform in 1903.
+Claim 63: Juventus F.C. rejected their traditional black-and-white-striped home uniform in 1903.
 Label: REFUTES
-Relevant words: ["f.c.","home","uniform"]
 Wiki title: Juventus_F.C.
 
 Correct sentences in training set: 
@@ -953,9 +919,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Ernest Medina participated in the My Lai Massacre.
+Claim 64: Ernest Medina participated in the My Lai Massacre.
 Label: SUPPORTS
-Relevant words: ["lai","massacre"]
 Wiki title: Ernest_Medina
 
 Correct sentences in training set: 
@@ -970,9 +935,8 @@ He was the commanding officer of Company C , 1st Battalion , 20th Infantry of th
 
 
 
-Claim: Viola Davis appeared in Kate & Leopold as Darth Maul.
+Claim 65: Viola Davis appeared in Kate & Leopold as Darth Maul.
 Label: NOT ENOUGH INFO
-Relevant words: ["viola","davis","kate","leopold","darth","maul"]
 
 Correct sentences in training set: 
 
@@ -983,9 +947,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Jenna Jameson worked as a glamor model and a stripper.
+Claim 66: Jenna Jameson worked as a glamor model and a stripper.
 Label: SUPPORTS
-Relevant words: ["glamor","model","stripper"]
 Wiki title: Jenna_Jameson
 
 Correct sentences in training set: 
@@ -999,17 +962,15 @@ Incorrectly found sentences:
 
 
 
-Claim: New Orleans Pelicans compete in the National Football Association.
+Claim 67: New Orleans Pelicans compete in the National Football Association.
 Label: REFUTES
-Relevant words: []
-Read error in text 
+No single evidence sets 
 
 
 
 
-Claim: Caroline Kennedy is a Catholic.
+Claim 68: Caroline Kennedy is a Catholic.
 Label: NOT ENOUGH INFO
-Relevant words: ["caroline","kennedy","catholic"]
 
 Correct sentences in training set: 
 
@@ -1020,9 +981,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Starrcade was an annual professional wrestling event that began in 1988.
+Claim 69: Starrcade was an annual professional wrestling event that began in 1988.
 Label: REFUTES
-Relevant words: ["wrestling","event"]
 Wiki title: Starrcade
 
 Correct sentences in training set: 
@@ -1033,46 +993,42 @@ Correctly found sentences:
 0	Starrcade was an annual professional wrestling event , originally broadcast via closed-circuit television and eventually broadcast via pay-per-view television , held from 1983 to 2000 by the National Wrestling Alliance -LRB- NWA -RRB- and later World Championship Wrestling -LRB- WCW -RRB- .	professional wrestling	professional wrestling	National Wrestling Alliance	National Wrestling Alliance	World Championship Wrestling	World Championship Wrestling	closed-circuit television	closed-circuit television	pay-per-view	pay-per-view
 
 Incorrectly found sentences: 
-Starrcade was regarded by the NWA and WCW as their flagship event of the year , much in the same vein that its rival , the World Wrestling Entertainment , regards WrestleMania .	World Wrestling Entertainment	WWE	WrestleMania	WrestleMania
-From the 1960s to the 1980s , it was tradition for JCP to hold major professional wrestling events on Thanksgiving and Christmas , mostly at Greensboro Coliseum .	professional wrestling	professional wrestling	Christmas	Christmas	Greensboro Coliseum	Greensboro Coliseum
-The rights to the event now belong to WWE -LRB- formerly the World Wrestling Federation -RRB- .
 
 
 
 
-Claim: Jack Falahee is a person who acts.
+Claim 70: Jack Falahee is a person who acts.
 Label: SUPPORTS
-Relevant words: ["person"]
 Wiki title: Jack_Falahee
 
 Correct sentences in training set: 
 0	Jack Ryan Falahee -LRB- born February 20 , 1989 -RRB- is an American actor .
 
 Correctly found sentences: 
+0	Jack Ryan Falahee -LRB- born February 20 , 1989 -RRB- is an American actor .
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Seohyun is a dog.
+Claim 71: Seohyun is a dog.
 Label: REFUTES
-Relevant words: ["dog"]
 Wiki title: Seohyun
 
 Correct sentences in training set: 
 0	Seo Ju-hyun -LRB- born June 28 , 1991 -RRB- , known professionally as Seohyun , is a South Korean singer and actress .
 
 Correctly found sentences: 
+0	Seo Ju-hyun -LRB- born June 28 , 1991 -RRB- , known professionally as Seohyun , is a South Korean singer and actress .
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Steve Wozniak was born after the Apple II came out.
+Claim 72: Steve Wozniak was born after the Apple II came out.
 Label: REFUTES
-Relevant words: ["apple","ii"]
 Wiki title: Steve_Wozniak
 
 Correct sentences in training set: 
@@ -1082,13 +1038,13 @@ Correctly found sentences:
 He primarily designed the 1977 Apple II , known as one of the first highly successful mass-produced microcomputers , while Jobs oversaw the development of its unusual case and Rod Holt developed the unique power supply .	Apple II	Apple II	Rod Holt	Rod Holt
 
 Incorrectly found sentences: 
+0	Stephen -LRB- or Stephan -RRB- Gary Wozniak -LRB- -LSB- ?w?zniæk -RSB- , born August 11 , 1950 -RRB- , nicknamed `` Woz '' , is an American inventor , electronics engineer , programmer , philanthropist , and technology entrepreneur who co-founded Apple Inc. .	electronics engineer	electronics engineer	programmer	programmer	philanthropist	philanthropist	entrepreneur	entrepreneur
 
 
 
 
-Claim: A&E is a cable and satellite television network.
+Claim 73: A&E is a cable and satellite television network.
 Label: SUPPORTS
-Relevant words: ["cable","satellite","television","network"]
 Wiki title: A&E_-LRB-TV_channel-RRB-
 
 Correct sentences in training set: 
@@ -1102,17 +1058,15 @@ Incorrectly found sentences:
 
 
 
-Claim: L.A. Reid has served as the president of a record label.
+Claim 74: L.A. Reid has served as the president of a record label.
 Label: SUPPORTS
-Relevant words: []
-Read error in text 
+No single evidence sets 
 
 
 
 
-Claim: Veeram is something other than an Indian Tamil film.
+Claim 75: Veeram is something other than an Indian Tamil film.
 Label: REFUTES
-Relevant words: ["something","tamil"]
 Wiki title: Veeram_-LRB-2014_film-RRB-
 
 Correct sentences in training set: 
@@ -1125,17 +1079,15 @@ Incorrectly found sentences:
 
 
 
-Claim: Home for the Holidays stars an American actress.
+Claim 76: Home for the Holidays stars an American actress.
 Label: SUPPORTS
-Relevant words: []
-Read error in text 
+No single evidence sets 
 
 
 
 
-Claim: Taran Killam is an American writer.
+Claim 77: Taran Killam is an American writer.
 Label: SUPPORTS
-Relevant words: ["writer"]
 Wiki title: Taran_Killam
 
 Correct sentences in training set: 
@@ -1149,9 +1101,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Jayasudha is an actor that stars in Daag.
+Claim 78: Jayasudha is an actor that stars in Daag.
 Label: REFUTES
-Relevant words: ["jayasudha","actor"]
 Wiki title: Daag_-LRB-1973_film-RRB-
 
 Correct sentences in training set: 
@@ -1164,9 +1115,8 @@ Incorrectly found sentences:
 
 
 
-Claim: XHamster's The Sex Factor forces eight men and eight women to battle to become a porn star.
+Claim 79: XHamster's The Sex Factor forces eight men and eight women to battle to become a porn star.
 Label: NOT ENOUGH INFO
-Relevant words: []
 
 Correct sentences in training set: 
 
@@ -1177,32 +1127,30 @@ Incorrectly found sentences:
 
 
 
-Claim: John Dolmayan was born on July 15, 1873.
+Claim 80: John Dolmayan was born on July 15, 1873.
 Label: REFUTES
-Relevant words: ["july","1873"]
 Wiki title: John_Dolmayan
 
 Correct sentences in training set: 
 0	John Hovig Dolmayan -LRB- ??? ???????? , born July 15 , 1973 -RRB- is a Lebanese-born Armenian -- American songwriter and drummer .	American	American Recordings (US)
 
 Correctly found sentences: 
+0	John Hovig Dolmayan -LRB- ??? ???????? , born July 15 , 1973 -RRB- is a Lebanese-born Armenian -- American songwriter and drummer .	American	American Recordings (US)
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Despicable Me 2 was directed by a lake.
+Claim 81: Despicable Me 2 was directed by a lake.
 Label: REFUTES
-Relevant words: []
-Read error in text 
+No single evidence sets 
 
 
 
 
-Claim: Island Records is a music school.
+Claim 82: Island Records is a music school.
 Label: NOT ENOUGH INFO
-Relevant words: ["island","records","music","school"]
 
 Correct sentences in training set: 
 
@@ -1213,9 +1161,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Sikkim is a part of the World Bank.
+Claim 83: Sikkim is a part of the World Bank.
 Label: NOT ENOUGH INFO
-Relevant words: ["sikkim","part","world","bank"]
 
 Correct sentences in training set: 
 
@@ -1226,9 +1173,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Christa McAuliffe taught social studies at Concord High School.
+Claim 84: Christa McAuliffe taught social studies at Concord High School.
 Label: SUPPORTS
-Relevant words: ["studies","concord","high","school"]
 Wiki title: Christa_McAuliffe
 
 Correct sentences in training set: 
@@ -1242,9 +1188,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Ron Weasley is a President.
+Claim 85: Ron Weasley is a President.
 Label: NOT ENOUGH INFO
-Relevant words: ["ron","weasley","president"]
 
 Correct sentences in training set: 
 
@@ -1255,39 +1200,43 @@ Incorrectly found sentences:
 
 
 
-Claim: Reign Over Me was released in 2017.
+Claim 86: Reign Over Me was released in 2017.
 Label: REFUTES
-Relevant words: []
 Wiki title: Reign_Over_Me
 
 Correct sentences in training set: 
 Distributed by Columbia Pictures , the film was released on March 23 , 2007 .	Columbia Pictures	Columbia Pictures
 
 Correctly found sentences: 
+Distributed by Columbia Pictures , the film was released on March 23 , 2007 .	Columbia Pictures	Columbia Pictures
 
 Incorrectly found sentences: 
+0	Reign Over Me is a 2007 American drama film written and directed by Mike Binder , and produced by his brother Jack Binder .	Jack Binder	Jack Binder	Mike Binder	Mike Binder	drama film	drama film
+The film was released to DVD , and Blu-ray on October 9 , 2007 .	Blu-ray	Blu-ray
 
 
 
 
-Claim: Colin Kaepernick is a poker player.
+Claim 87: Colin Kaepernick is a poker player.
 Label: REFUTES
-Relevant words: ["poker","player"]
 Wiki title: Colin_Kaepernick
 
 Correct sentences in training set: 
 0	Colin Rand Kaepernick -LRB- -LSB- ` kæp?rn?k -RSB- ; born November 3 , 1987 -RRB- is an American football quarterback who is currently a free agent .	American football	American football	quarterback	quarterback
 
 Correctly found sentences: 
+0	Colin Rand Kaepernick -LRB- -LSB- ` kæp?rn?k -RSB- ; born November 3 , 1987 -RRB- is an American football quarterback who is currently a free agent .	American football	American football	quarterback	quarterback
 
 Incorrectly found sentences: 
+Kaepernick began his professional career as a backup to Alex Smith , but became the 49ers ' starter in the middle of the 2012 season after Smith suffered a concussion .	Alex Smith	Alex Smith	2012 season	2012 San Francisco 49ers season	concussion	concussion
+He remained the team 's starting quarterback for the rest of the season and went on to lead the 49ers to their first Super Bowl appearance since 1994 , losing to the Baltimore Ravens .	quarterback	quarterback	Super Bowl	Super Bowl XLVII	1994	Super Bowl XXIX	Baltimore Ravens	Baltimore Ravens
+During the 2013 season , his first full season as a starter , Kaepernick helped the 49ers reach the NFC Championship , losing to the Seattle Seahawks .	2013 season	2013 San Francisco 49ers season	NFC Championship	2013–14 NFL playoffs#NFC Championship Game: Seattle Seahawks 23.2C San Francisco 49ers 17	Seattle Seahawks	Seattle Seahawks
 
 
 
 
-Claim: Sheryl Lee has yet to appear in a film as of 2016.
+Claim 88: Sheryl Lee has yet to appear in a film as of 2016.
 Label: REFUTES
-Relevant words: ["film"]
 Wiki title: Sheryl_Lee
 
 Correct sentences in training set: 
@@ -1297,35 +1246,32 @@ From 2000 to 2009 , Lee only appeared in four films before having a supporting p
 In 2016 , she appeared in Café Society , and also completed the Showtime revival of Twin Peaks -LRB- 2017 -RRB- , reprising her role of Laura Palmer .	Laura Palmer	Laura Palmer	Twin Peaks	Twin Peaks (2017 TV series)	Café Society	Café Society (film)	Showtime	Showtime (network)
 
 Correctly found sentences: 
-After studying acting in college , Lee relocated to Seattle , Washington to work in theater , where she was cast by David Lynch as Laura Palmer and Maddy Ferguson on the 1990 cult TV series Twin Peaks and in the 1992 film Twin Peaks : Fire Walk with Me .	David Lynch	David Lynch	Laura Palmer	Laura Palmer	Maddy Ferguson	List of Twin Peaks characters#Maddy Ferguson	cult	cult television	TV series	TV series	Twin Peaks	Twin Peaks (2017 TV series)
-Notable film roles include as Astrid Kirchherr in Backbeat -LRB- 1994 -RRB- , as well as a lead role in the drama Mother Night -LRB- 1996 -RRB- , based on the novel by Kurt Vonnegut .	Astrid Kirchherr	Astrid Kirchherr	Backbeat	Backbeat (movie)	Mother Night	Mother Night (film)	Kurt Vonnegut	Kurt Vonnegut
-From 2000 to 2009 , Lee only appeared in four films before having a supporting part in the drama Winter 's Bone -LRB- 2010 -RRB- .
-In 2016 , she appeared in Café Society , and also completed the Showtime revival of Twin Peaks -LRB- 2017 -RRB- , reprising her role of Laura Palmer .	Laura Palmer	Laura Palmer	Twin Peaks	Twin Peaks (2017 TV series)	Café Society	Café Society (film)	Showtime	Showtime (network)
 
 Incorrectly found sentences: 
-0	Sheryl Lynn Lee -LRB- born April 22 , 1967 -RRB- is a German-born film , stage , and television actress .	German	Germany
 
 
 
 
-Claim: Matteo Renzi is German.
+Claim 89: Matteo Renzi is German.
 Label: REFUTES
-Relevant words: []
 Wiki title: Matteo_Renzi
 
 Correct sentences in training set: 
 0	Matteo Renzi -LRB- -LSB- mat?t??o ?r?ntsi -RSB- ; born 11 January 1975 -RRB- is an Italian politician who served as the Prime Minister of Italy from February 2014 until December 2016 .	Prime Minister of Italy	Prime Minister of Italy	Italy	Italy	Italian politician	Politics of Italy
 
 Correctly found sentences: 
+0	Matteo Renzi -LRB- -LSB- mat?t??o ?r?ntsi -RSB- ; born 11 January 1975 -RRB- is an Italian politician who served as the Prime Minister of Italy from February 2014 until December 2016 .	Prime Minister of Italy	Prime Minister of Italy	Italy	Italy	Italian politician	Politics of Italy
 
 Incorrectly found sentences: 
+At the age of 39 years and 42 days upon assuming office , Renzi is the youngest person to serve as Italian Prime Minister -LRB- 52 days younger than Benito Mussolini , who took office in 1922 -RRB- and was the youngest leader in the G7 .	Benito Mussolini	Benito Mussolini	G7	G7
+In 2014 the American magazine Fortune ranked Renzi as the third most influential person under 40 in the world ; and Foreign Policy listed him as one of the Top 100 Global Thinkers .	most influential person under 40	40 under 40 (Fortune magazine)	Foreign Policy	Foreign Policy	Top 100 Global Thinkers	FP Top 100 Global Thinkers
+Moreover , Renzi is nicknamed il Rottamatore -LRB- the Scrapper -RRB- due to his ambition of renovating the Italian political establishment .
 
 
 
 
-Claim: The Road to El Dorado stars Tim Allen.
+Claim 90: The Road to El Dorado stars Tim Allen.
 Label: NOT ENOUGH INFO
-Relevant words: []
 
 Correct sentences in training set: 
 
@@ -1336,24 +1282,23 @@ Incorrectly found sentences:
 
 
 
-Claim: The highest point of the Hindu Kush is Everest.
+Claim 91: The highest point of the Hindu Kush is Everest.
 Label: REFUTES
-Relevant words: ["point","everest"]
 Wiki title: Hindu_Kush
 
 Correct sentences in training set: 
 The Hindu Kush range has numerous high snow-capped peaks , with the highest point in the Hindu Kush being Tirich Mir or Terichmir at 7708 m in the Chitral District of Khyber Pakhtunkhwa , Pakistan .	Pakistan	Pakistan	Tirich Mir	Tirich Mir	Chitral District	Chitral District	Khyber Pakhtunkhwa	Khyber Pakhtunkhwa
 
 Correctly found sentences: 
+The Hindu Kush range has numerous high snow-capped peaks , with the highest point in the Hindu Kush being Tirich Mir or Terichmir at 7708 m in the Chitral District of Khyber Pakhtunkhwa , Pakistan .	Pakistan	Pakistan	Tirich Mir	Tirich Mir	Chitral District	Chitral District	Khyber Pakhtunkhwa	Khyber Pakhtunkhwa
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Same Old Love is disassociated from Selena Gomez.
+Claim 92: Same Old Love is disassociated from Selena Gomez.
 Label: REFUTES
-Relevant words: ["selena","gomez"]
 Wiki title: Same_Old_Love
 
 Correct sentences in training set: 
@@ -1364,14 +1309,12 @@ Correctly found sentences:
 0	`` Same Old Love '' is a song by American singer Selena Gomez from her second studio album , Revival -LRB- 2015 -RRB- .	Selena Gomez	Selena Gomez	Revival	Revival (Selena Gomez album)
 
 Incorrectly found sentences: 
-`` Same Old Love '' was released as the second single from Revival on September 10 , 2015 .	Revival	Revival (Selena Gomez album)
 
 
 
 
-Claim: The heart beats at a resting rate close to 22 beats per minute.
+Claim 93: The heart beats at a resting rate close to 22 beats per minute.
 Label: REFUTES
-Relevant words: ["rate","beats","minute"]
 Wiki title: Heart
 
 Correct sentences in training set: 
@@ -1385,54 +1328,54 @@ Incorrectly found sentences:
 
 
 
-Claim: Weekly Idol is hosted by Yoo Jae Suk.
+Claim 94: Weekly Idol is hosted by Yoo Jae Suk.
 Label: REFUTES
-Relevant words: ["yoo","jae","suk"]
 Wiki title: Weekly_Idol
 
 Correct sentences in training set: 
 The show is hosted by comedian Jeong Hyeong-don and rapper Defconn .	Jeong Hyeong-don	Jeong Hyeong-don	Defconn	Defconn
 
 Correctly found sentences: 
+The show is hosted by comedian Jeong Hyeong-don and rapper Defconn .	Jeong Hyeong-don	Jeong Hyeong-don	Defconn	Defconn
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Heavy Metal music was developed in the early 1970's.
+Claim 95: Heavy Metal music was developed in the early 1970's.
 Label: SUPPORTS
-Relevant words: []
 Wiki title: Heavy_metal_music
 
 Correct sentences in training set: 
 0	Heavy metal -LRB- or simply metal -RRB- is a genre of rock music that developed in the late 1960s and early 1970s , largely in the United Kingdom and the United States .	United Kingdom	United Kingdom	United States	United States	rock music	rock music
 
 Correctly found sentences: 
+0	Heavy metal -LRB- or simply metal -RRB- is a genre of rock music that developed in the late 1960s and early 1970s , largely in the United Kingdom and the United States .	United Kingdom	United Kingdom	United States	United States	rock music	rock music
 
 Incorrectly found sentences: 
+With roots in blues rock and psychedelic/acid rock , the bands that created heavy metal developed a thick , massive sound , characterized by highly amplified distortion , extended guitar solos , emphatic beats , and overall loudness .	acid rock	acid rock	blues rock	blues rock	psychedelic	psychedelic rock	distortion	distortion (music)	blues	blues
 
 
 
 
-Claim: Bermuda Triangle is also known by another name.
+Claim 96: Bermuda Triangle is also known by another name.
 Label: SUPPORTS
-Relevant words: ["name"]
 Wiki title: Bermuda_Triangle
 
 Correct sentences in training set: 
 0	The Bermuda Triangle , also known as the Devil 's Triangle , is a loosely-defined region in the western part of the North Atlantic Ocean , where a number of aircraft and ships are said to have disappeared under mysterious circumstances .	Atlantic Ocean	Atlantic Ocean	aircraft	aircraft	ships	Surface ship
 
 Correctly found sentences: 
+0	The Bermuda Triangle , also known as the Devil 's Triangle , is a loosely-defined region in the western part of the North Atlantic Ocean , where a number of aircraft and ships are said to have disappeared under mysterious circumstances .	Atlantic Ocean	Atlantic Ocean	aircraft	aircraft	ships	Surface ship
 
 Incorrectly found sentences: 
 
 
 
 
-Claim: Ashton Kutcher was directed by George Clooney.
+Claim 97: Ashton Kutcher was directed by George Clooney.
 Label: NOT ENOUGH INFO
-Relevant words: ["ashton","kutcher","george","clooney"]
 
 Correct sentences in training set: 
 
@@ -1443,9 +1386,8 @@ Incorrectly found sentences:
 
 
 
-Claim: Topman has clothing outlets in six Irish cities and towns.
+Claim 98: Topman has clothing outlets in six Irish cities and towns.
 Label: SUPPORTS
-Relevant words: ["clothing","outlets","cities","towns"]
 Wiki title: Topman
 
 Correct sentences in training set: 
@@ -1455,13 +1397,13 @@ Correctly found sentences:
 A part of the Arcadia Group , which also owns Burton , Miss Selfridge , Wallis , Evans and Dorothy Perkins , Topman has a chain of high-street men 's clothing stores located throughout the United Kingdom and has a presence on just about every UK High Street , and in Ireland main street outlets in six cities and towns .	United Kingdom	United Kingdom	Ireland	Republic of Ireland	Arcadia Group	Arcadia Group	Burton	Burton (clothes retailer)	Miss Selfridge	Miss Selfridge	Wallis	Wallis (retailer)	Evans	Evans (clothing)	Dorothy Perkins	Dorothy Perkins	high-street	high-street
 
 Incorrectly found sentences: 
+Since its creation , Topman has also built an international presence , as it continues to expand throughout the USA , Europe , and Asia .
 
 
 
 
-Claim: Wales' population changed.
+Claim 99: Wales' population changed.
 Label: SUPPORTS
-Relevant words: ["population"]
 Wiki title: Wales
 
 Correct sentences in training set: 
@@ -1479,21 +1421,22 @@ Over 560,000 Welsh language speakers live in Wales , and the language is spoken 
 
 
 
-Claim: Tool has won three Oscars.
+Claim 100: Tool has won three Oscars.
 Label: REFUTES
-Relevant words: ["oscars"]
 Wiki title: Tool_-LRB-band-RRB-
 
 Correct sentences in training set: 
 Tool has won three Grammy Awards , performed worldwide tours , and produced albums topping the charts in several countries .
 
 Correctly found sentences: 
+Tool has won three Grammy Awards , performed worldwide tours , and produced albums topping the charts in several countries .
 
 Incorrectly found sentences: 
 
 
 
 
-Number of claims with a correct sentence found (or it correctly found none): 59/100
-Number of incorrect sentences found: 29
-Number of sentences where none of the correct sentences were found: 41/100
+Number of claims with a correct sentence found (or it correctly found none): 79/100
+Number of sentences where none of the correct sentences were found: 21/100
+Number of incorrect sentences found: 47
+Number of claims with incorrect sentences found: 18/100

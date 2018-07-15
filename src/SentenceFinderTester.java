@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
@@ -45,9 +46,12 @@ public class SentenceFinderTester {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(analysisFileName, true));
 			int countCorrect = 0;
 			int countWrong = 0;
+			int countSentenceWrong = 0;
 			int countMissed = 0;
+			int claimCount = 0;
 			while(resultsReader.hasNext()) {
-				String answer = answersReader.nextLine();	
+				claimCount++;
+				String answer = Normalizer.normalize(answersReader.nextLine(), Normalizer.Form.NFD);	
 				JSONObject answerJson = new JSONObject(answer);
 				JSONArray answerEvidence = (JSONArray) answerJson.get("evidence");
 				ArrayList<Object[]> correctEvidence = new ArrayList<Object[]>();
@@ -67,15 +71,14 @@ public class SentenceFinderTester {
 				
 				String result = resultsReader.nextLine();
 				JSONObject resultJson = new JSONObject(result);
-				String claim = resultJson.getString("claim");
+				String claim = Normalizer.normalize(resultJson.getString("claim"), Normalizer.Form.NFC);
 				String label = resultJson.getString("label");
 				JSONArray resultEvidence = (JSONArray) resultJson.get("evidence");
 				JSONArray wikiLines = (JSONArray) resultJson.get("sentences");
-				JSONArray relevantWords = (JSONArray) resultJson.get("relevantWords");
 				ArrayList<Object[]> foundEvidence = new ArrayList<Object[]>();
 				for(int i = 0; i < resultEvidence.length(); i++) {
 					JSONArray primarySentence = resultEvidence.getJSONArray(i);
-					String wikiName = primarySentence.get(0).toString();
+					String wikiName = Normalizer.normalize(primarySentence.get(0).toString(), Normalizer.Form.NFC);
 					Integer sentNum = primarySentence.getInt(2);
 					Object[] resultArr = {wikiName, sentNum};
 					foundEvidence.add(resultArr);
@@ -84,6 +87,7 @@ public class SentenceFinderTester {
 				boolean found = false;
 				ArrayList<Object[]> correctSentences = new ArrayList<Object[]>();
 				ArrayList<Object[]> wrongSentences = new ArrayList<Object[]>();
+				int oldCountWrong = countWrong;
 				if(correctEvidence.isEmpty() && foundEvidence.isEmpty()) {
 					countCorrect++;
 				}
@@ -106,12 +110,15 @@ public class SentenceFinderTester {
 				if(!found && correctEvidence.size() > 0) {
 					countMissed++;
 				}
+				if(countWrong > oldCountWrong) {
+					countSentenceWrong++;
+				}
 				
-				writer.append("\n\n\n\nClaim: " + claim + "\n");
+				writer.append("\n\n\n\nClaim " + claimCount + ": " + claim + "\n");
 				writer.append("Label: " + label + "\n");
-				writer.append("Relevant words: " + relevantWords + "\n");
+//				writer.append("Relevant words: " + relevantWords + "\n");
 				if(wikiLines.length() == 0 && !label.equals("NOT ENOUGH INFO")) {
-					writer.append("Read error in text \n");
+					writer.append("No single evidence sets \n");
 					continue;
 				}
 				if(correctEvidence.size() > 0) {
@@ -129,12 +136,15 @@ public class SentenceFinderTester {
 				for(Object[] resultSent : wrongSentences) {
 					writer.append(wikiLines.getString((int) resultSent[1]) + "\n");
 				}
+				
 
 			}
 			writer.append("\n\n\n\n");
 			writer.append("Number of claims with a correct sentence found (or it correctly found none): " + countCorrect+"/"+numClaimsTested+"\n");
-			writer.append("Number of incorrect sentences found: " + countWrong+"\n");
 			writer.append("Number of sentences where none of the correct sentences were found: " + countMissed+"/"+numClaimsTested+"\n");
+			writer.append("Number of incorrect sentences found: " + countWrong+"\n");
+			writer.append("Number of claims with incorrect sentences found: " + countSentenceWrong+"/"+numClaimsTested+"\n");
+			
 			answersReader.close();
 			resultsReader.close();
 			writer.close();

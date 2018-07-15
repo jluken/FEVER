@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 //import com.google.common;
 //import com.google.common.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.text.Normalizer;
 
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreSentence;
@@ -35,7 +36,7 @@ public class DocFinderTester {
 	static String answersFileName = "shared_task_dev.jsonl";
 	static String resultsFileName = "results.jsonl";
 	static String analysisFileName = "analysis.jsonl";
-	static int numClaimsTested = 100;
+	static int numClaimsTested = 200;
 	
 	public static void main(String[] args) {
 		try {
@@ -52,10 +53,13 @@ public class DocFinderTester {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(analysisFileName, true));
 			int countCorrect = 0;
 			int countNull = 0;
+			
+			int totalWikis = 0;
+			int backups = 0;
 			writer.append("Erroneous retrieved wiki articles:\n\n");
 			while(resultsReader.hasNext()) {
-				String result = resultsReader.nextLine();
-				String answer = answersReader.nextLine();
+				String result = Normalizer.normalize(resultsReader.nextLine(), Normalizer.Form.NFD);
+				String answer = Normalizer.normalize(answersReader.nextLine(), Normalizer.Form.NFD);
 				JSONObject resultJson = new JSONObject(result);
 				JSONObject answerJson = new JSONObject(answer);
 				//JSONObject wikiJson = (JSONObject) resultJson.get("wiki info");
@@ -63,6 +67,8 @@ public class DocFinderTester {
 				Type wikiMapType = new TypeToken<Map<String, Map<String, Object>>>(){}.getType();  
 				Map<String, Object> wikiInfo = new Gson().fromJson(wikiJson, wikiMapType);
 				JSONArray backupWikiJSON = (JSONArray) resultJson.get("backup wikis");
+				totalWikis += wikiInfo.size();
+				backups += backupWikiJSON.length();
 				
 				//Set<String> docsFound = new HashSet<String>();
 //				for(String wiki: wikiJson.keySet()) {
@@ -111,6 +117,8 @@ public class DocFinderTester {
 
 			}
 			writer.append("Correct documents found: " + countCorrect+"/"+(numClaimsTested-countNull)+"\n");
+			writer.append("Total primary documents found: " + totalWikis+"\n");
+			writer.append("Backup documents found: " + backups+"\n");
 			answersReader.close();
 			resultsReader.close();
 			writer.close();

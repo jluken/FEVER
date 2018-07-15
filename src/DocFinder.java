@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,13 +22,7 @@ import java.util.stream.Collectors;
 
 import org.json.*;
 
-//import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
-//import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
-//import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
-//import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
-//import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.IndexedWord;
-//import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreSentence;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -35,14 +30,13 @@ import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.trees.GrammaticalRelation;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.UniversalEnglishGrammaticalRelations;
-//import edu.stanford.nlp.util.CoreMap;
 
 
 public class DocFinder {
 	static String claimsFileName = "shared_task_dev_public.jsonl";
 	static String resultsFileName = "results.jsonl";
 	static String wikiDirName = "wiki-dump";
-	static int numClaimsToTest = 100;
+	static int numClaimsToTest = 200;
 	
 	static Map<String, Map<String, Object>> wikiMap;
 	static Map<String, ArrayList<String>> disambiguationMap;
@@ -69,32 +63,23 @@ public class DocFinder {
 			int claimCount =0;
 			while(claimReader.hasNext() && claimCount < numClaimsToTest) {
 				claimCount++;		
-			    statement = claimReader.nextLine();
+			    statement = Normalizer.normalize(claimReader.nextLine(), Normalizer.Form.NFD);
 			    JSONObject claimJson = new JSONObject(statement);
 			    String claim = claimJson.getString("claim");
 			    
 			    System.out.println("Claim "+ claimCount + ":  \""+claim+"\" Time: "+dtf.format(LocalDateTime.now()));
-			    //Find potentially relevant documents
-			    ArrayList<String> claimTopics = getClaimTopics(pipeline, claim); 
-			    //System.out.println("Beginning document retrieval. Time: "+dtf.format(LocalDateTime.now()));
+			    ArrayList<String> claimTopics = getProperTerms(claim);
+			    if(claimTopics.isEmpty()) {
+			    	claimTopics = getAllTopics(pipeline, claim);
+			    }
+
 			    ArrayList<Map<String, String>> possibleWikiDocs = getDocsFromTopics(claimTopics);
 			    ArrayList<String> backupDocs = getBackupDocs(claimTopics, possibleWikiDocs);
-			    
-			    //Get potentially relevant sentences
+
 			    //System.out.println("Beginning sentence retrieval. Time: "+dtf.format(LocalDateTime.now()));
 			    Map<String, Object> wikiInfo = new HashMap<String, Object>();
 			    for(Map<String, String> wikiDoc: possibleWikiDocs) {
-			    	Map<Integer, String> matchingSentences = new HashMap<Integer, String>();
-				    ArrayList<Integer> matchingSentenceNums = getTextMatches(claim, wikiDoc.get("text"));
-				    //matchingSentenceNums.addAll(getNamedEntityMatches(claim, wikiDoc.get("text"), pipeline));
-				    matchingSentenceNums = (ArrayList<Integer>) matchingSentenceNums.stream().distinct().collect(Collectors.toList());
-				    String[] textSentences = wikiDoc.get("text").split(" [.] ");
-				    for(int i = 0; i < textSentences.length; i++) {
-				    	if(matchingSentenceNums.contains(i)) {
-				    		matchingSentences.put(i, textSentences[i]);
-				    	}
-				    }
-				    wikiInfo.put(wikiDoc.get("id"), matchingSentences);
+				    wikiInfo.put(wikiDoc.get("id"), new HashMap<Integer, String>());
 			    }
 			    //TODO: add key word sentence finder (possibly remove name entity)
 			    
@@ -104,7 +89,6 @@ public class DocFinder {
 			    //TODO: implement classifier
 			    
 			    //System.out.println("Printing to JSON. Time: "+dtf.format(LocalDateTime.now()));
-			    //convert and print to JSON
 			    JSONObject result = convertToJSON(claimJson.getInt("id"), claim, wikiInfo, backupDocs);
 			    writer.append(result.toString());
 			    writer.append("\n");
@@ -127,8 +111,92 @@ public class DocFinder {
 		System.out.println("Document processing finished. Time: "+dtf.format(LocalDateTime.now()));
 	}
 	
+	private static ArrayList<String> getProperTerms(String sentence){
+		String[] lowerWords = {"a", "an", "the", "at", "by", "down", "for", "from", "in", "into", "like", "near", "of", "off", "on", "onto", "onto", "over", 
+				"past", "to", "upon", "with", "and", "&", "as", "but", "for", "if", "nor", "once", "or", "so", "than", "that", "till", "when", "yet"};
+		ArrayList<String> properTerms = new ArrayList<String>();
+		ArrayList<String> possibleProperTerms = new ArrayList<String>();
+		//remove end punctuation and format
+		String newSent = sentence.replace("(", "-lrb-").replace(")", "-rrb-").replace("]", "-rsb-").replace("[", "-lsb-");
+		newSent = newSent.replace("\"", "").replace("\\", "").replace(",", " ,").replace(";", " ;").replace(":", " :").replace("'s", " 's").replace("' ", " ' ");
+		newSent = newSent.substring(0, newSent.length() - 1);
+		System.out.println("New Sentence: " + newSent);
+		String[] words = newSent.split(" ");		
+		String[] punct = {",", ";", ":", "'s", "'"};
+		
+		String properTerm = "";
+		boolean paren = false;
+		for(int i = 0; i < words.length; i++) {
+			String word = words[i];
+			if(word.length() == 0) {
+				continue;
+			}
+			if(Character.isUpperCase(word.charAt(0)) && properTerm.isEmpty()){
+				properTerm = word;
+			}
+			else if(!properTerm.isEmpty() && (Character.isUpperCase(word.charAt(0))|| Character.isDigit(word.charAt(0)))) {
+				properTerm += " " + word;
+			}
+			else if(!properTerm.isEmpty() && Arrays.asList(lowerWords).contains(word)) {
+				possibleProperTerms.add(properTerm);
+				properTerm += " " + word;
+			}
+			else if (Arrays.asList(punct).contains(word)) {
+				possibleProperTerms.add(properTerm);
+				properTerm += word;
+			}
+			else if(!properTerm.isEmpty() && (word.startsWith("-lrb-") || word.startsWith("-lsb-"))) {
+				possibleProperTerms.add(properTerm);
+				paren = true;
+				properTerm += " " + word;
+			}
+			else if(paren) {
+				properTerm += " " + word;
+			}
+			else if(!properTerm.isEmpty() && (word.endsWith("-rrb-") || word.endsWith("-rsb-"))) {
+				paren = false;
+				properTerm += " " + word;
+				possibleProperTerms.add(properTerm);
+			}
+			else if(!properTerm.isEmpty()){
+				possibleProperTerms.add(properTerm);
+				properTerm = "";
+			}
+		}
+		if(!properTerm.isEmpty()) {
+			possibleProperTerms.add(properTerm);
+		}
+		System.out.println("Possible proper terms:" + possibleProperTerms.toString());
+		possibleProperTerms.removeAll(Arrays.asList("A", "The", "There"));
+		possibleProperTerms = (ArrayList<String>) possibleProperTerms.stream().distinct().collect(Collectors.toList());
+		ArrayList<String> totalTerms = new ArrayList<String>();
+		for(String term : possibleProperTerms) {
+			String wikiKey = term.toLowerCase().replaceAll(" ", "_");
+			if(wikiMap.containsKey(wikiKey) || disambiguationMap.containsKey(wikiKey)) {
+				totalTerms.add(term);
+		    }
+		}
+		System.out.println("Terms in wiki:" + totalTerms.toString());
+		for(String term: totalTerms) {
+			String[] termSubstr = {term + " ", term + ",", term + "'", term + ":"};
+			boolean unique = true;
+			for(String checkTerm: totalTerms) {
+				for(String substr : termSubstr) {
+					if(checkTerm.contains(substr)) {
+						unique = false;
+					}
+				}
+			}
+			if(unique) {
+				properTerms.add(term);
+			}
+		}
+		System.out.println("Proper terms:" + properTerms.toString());
+		return properTerms;
+	}
 	
-	private static ArrayList<String> getClaimTopics(StanfordCoreNLP pipeline, String claimSentence) {
+	
+	private static ArrayList<String> getAllTopics(StanfordCoreNLP pipeline, String claimSentence) {
 		GrammaticalRelation[] subjectObjectRelations = {UniversalEnglishGrammaticalRelations.SUBJECT, UniversalEnglishGrammaticalRelations.CLAUSAL_PASSIVE_SUBJECT, 
 	    		UniversalEnglishGrammaticalRelations.CLAUSAL_SUBJECT, //UniversalEnglishGrammaticalRelations.CONTROLLING_CLAUSAL_PASSIVE_SUBJECT,
 	    		UniversalEnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT, UniversalEnglishGrammaticalRelations.NOMINAL_SUBJECT,
@@ -177,27 +245,20 @@ public class DocFinder {
 	    }
 
 	    Tree constituencyTree = claimSen.constituencyParse();
-	    //System.out.println("constituencyTree: " +constituencyTree);
-	    
-	    //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
-	    //System.out.println("topics gathered. List size: "+ topicList.size()+". Time: "+dtf.format(LocalDateTime.now()));
+
 	    ArrayList<String> topicPhrases = new ArrayList<String>();
 	    for(int h = 0; h < topicList.size(); h++) {
 	    	IndexedWord topicWord = topicList.get(h);
-	    	//System.out.println("topic word: "+ topicWord.originalText()+". Time: "+dtf.format(LocalDateTime.now()));
 	    	String compoundPhrase = getCompoundPhrase(topicWord, dependencyGraph);
 	    	if(compoundPhrase != null) {
 	    		//System.out.println("compound Phrase: " +compoundPhrase);
 	    		topicPhrases.add(compoundPhrase);
 	    	}
-	    	//System.out.println("Compound phrase done. Time: "+dtf.format(LocalDateTime.now()));
 	    	
 	    	ArrayList<String> nounPhrases = getNounPhrases(claimSentence, topicWord, constituencyTree);
 
 		    topicPhrases.addAll(nounPhrases);
 		    //System.out.println("Noun phrases done. Time: "+dtf.format(LocalDateTime.now()));
-		    
-		  //TODO: add named entities with better version, and get rid of redundancies
 	    }
 	    
 	    
@@ -237,7 +298,7 @@ public class DocFinder {
 
 	    //return ArrayList of topic phrases, from broadest to most narrow
 	    ArrayList<Tree> topicTreeList = new ArrayList<Tree>();
-	    String[] nounsAndPhrases = {"NN", "NNS", "NNP", "NNPS", "NP"};//, "VP", "CONJP"};
+	    String[] nounsAndPhrases = {"NN", "NNS", "NNP", "NNPS", "NP"};
 	    boolean onlyNouns = true;
 	    boolean added = false;
 	    while(topicTree.parent(constituencyTree) != null) {
@@ -264,14 +325,18 @@ public class DocFinder {
 			    	topicPhrase += topicWords.get(j).toString().toLowerCase();
 		    	}
 		    }
-		    //System.out.println("Attempted noun phrase: " + topicPhrase);
-		   
 		    
 		    
-		    if(topicPhrase.startsWith("the ")) {
-		    	boolean proper = topicWords.get(0).toString().equals("The") && !claim.toLowerCase().startsWith(topicPhrase);
-		    	boolean notProper = topicWords.get(0).toString().equals("the") && !claim.toLowerCase().startsWith(topicPhrase);
-		    	String nonDetPhrase = topicPhrase.substring(4);
+		    if(topicPhrase.startsWith("the ") || topicPhrase.startsWith("a ")) { 
+		    	boolean proper = Character.isUpperCase(topicWords.get(0).toString().charAt(0)) && !claim.toLowerCase().startsWith(topicPhrase);
+		    	boolean notProper = Character.isLowerCase(topicWords.get(0).toString().charAt(0)) && !claim.toLowerCase().startsWith(topicPhrase);
+		    	String nonDetPhrase;
+		    	if(topicPhrase.startsWith("the ")) {
+		    		nonDetPhrase = topicPhrase.substring(4);
+		    	}else {
+		    		nonDetPhrase = topicPhrase.substring(2);
+		    	}
+		    	
 		    	if(proper) {
 		    		if(wikiMap.containsKey(topicPhrase.replaceAll(" ", "_")) || disambiguationMap.containsKey(topicPhrase.replaceAll(" ", "_"))) {
 				    	nounPhrases.add(topicPhrase);
@@ -313,90 +378,6 @@ public class DocFinder {
 		return descendents;
 	}
 	
-	private static ArrayList<Integer> getTextMatches(String sentence, String text){
-		String phrase = sentence.substring(0, sentence.length()-1);
-		ArrayList<String> matchingSentences = new ArrayList<String>();
-		ArrayList<Integer> matchingSentenceNums = new ArrayList<Integer>();
-		String[] textSentences = text.split(" \\.|\\!|\\? ");
-		for(int i = 0; i < textSentences.length; i++) {
-			String normal = textSentences[i].replaceAll(" , ", ", ").replaceAll(" : ", ": ").replaceAll(" ; ", "; ").replaceAll(" '", "'").replaceAll(" -- ", "–").replaceAll(" -LRB- ", " (").replaceAll("-RRB- ", ") ").replaceAll("-LSB- ", " [").replaceAll("-RSB- ", "] ");
-			String negateSentence = normal.replaceAll("not ", "").replaceAll("n\'t", "").replaceAll("never ", "");
-			if(normal.contains(phrase)) {
-				matchingSentences.add(textSentences[i]);
-				matchingSentenceNums.add(i);
-				System.out.println("full phrase match found");
-			} else if(negateSentence.contains(phrase)) {
-				matchingSentences.add(textSentences[i]);
-				matchingSentenceNums.add(i);
-				System.out.println("negation match found");
-			}
-		}
-		
-		return matchingSentenceNums;
-	}
-	
-	//possibly remove subject of article from included named entities?
-//	private static ArrayList<Integer> getNamedEntityMatches(String sentence, String text, StanfordCoreNLP pipeline){
-//		ArrayList<String> namedEntities = getNamedEntities(sentence, pipeline);
-//		ArrayList<String> matchingSentences = new ArrayList<String>();
-//		ArrayList<Integer> matchingSentenceNums = new ArrayList<Integer>();
-//		String[] textSentences = text.split(" [.] ");
-//		for(int i = 0; i < textSentences.length; i++) {
-//			//normalize sentence for matching
-//			String normalSent = textSentences[i].replaceAll(" , ", ", ").replaceAll(" : ", ": ").replaceAll(" ; ", "; ").replaceAll(" '", "'").replaceAll(" -- ", "–").replaceAll(" -LRB- ", " (").replaceAll("-RRB- ", ") ").replaceAll("-LSB- ", " [").replaceAll("-RSB- ", "] ");
-//			boolean includesAll = true;
-//			for(int j = 0; j < namedEntities.size(); j++) {
-//				if(!normalSent.contains(namedEntities.get(j))) {
-//					includesAll = false;
-//				}
-//			}
-//			if(includesAll) {
-//				matchingSentences.add(textSentences[i]);
-//				matchingSentenceNums.add(i);
-//			}
-//		}
-//		
-//		return matchingSentenceNums;
-//	}
-	
-//	private static ArrayList<String> getNamedEntities(String sentence, StanfordCoreNLP pipeline){
-//		ArrayList<CoreLabel> tokens = getSentenceTokens(sentence, pipeline);
-//		ArrayList<String> namedEntities = new ArrayList<String>();
-//		String namedEntity = "";
-//		boolean neActive = false;
-//		for(int i = 0; i < tokens.size(); i++) {
-//			String ne = tokens.get(i).get(NamedEntityTagAnnotation.class);
-//			if(!neActive && !ne.equals("O")) {
-//				neActive = true;
-//				namedEntity += tokens.get(i).get(TextAnnotation.class);
-//			}
-//			else if(neActive && !ne.equals("O")) {
-//				namedEntity += " " + tokens.get(i).get(TextAnnotation.class);
-//			}
-//			else if(neActive && ne.equals("O")) {
-//				neActive = false;
-//				namedEntities.add(namedEntity);
-//				namedEntity = "";
-//			}
-//		}
-//		if(neActive) {
-//			namedEntities.add(namedEntity);
-//		}
-//		return namedEntities;
-//	}
-	
-//	private static ArrayList<CoreLabel> getSentenceTokens(String sentence, StanfordCoreNLP pipeline){
-//		Annotation document = new Annotation(sentence);
-//	    pipeline.annotate(document);
-//	    List<CoreMap> sentences = document.get(SentencesAnnotation.class);
-//	    CoreMap tokenSen = sentences.get(0);
-//	    
-//	    ArrayList<CoreLabel> tokens = new ArrayList<CoreLabel>();
-//	    for (CoreLabel token: tokenSen.get(TokensAnnotation.class)) {
-//	        tokens.add(token);
-//	      }
-//	    return tokens;
-//	}
 	
 	private static ArrayList<Map<String, String>> getDocsFromTopics(ArrayList<String> possibleTopics) {
 		//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -469,17 +450,17 @@ public class DocFinder {
 		ArrayList<String> backupDocs = new ArrayList<String>();
 		for(String topic: possibleTopics) {
 			String urlTitle = topic.replace(' ', '_').toLowerCase();
-			
 			if (!topic.isEmpty() && disambiguationMap.containsKey(urlTitle)){
 				backupDocs.addAll(disambiguationMap.get(urlTitle));
 				for(Map<String, String> wiki: existingDocs) {
 					if(backupDocs.contains(wiki.get("id").toLowerCase())) {
-						backupDocs.remove(wiki.get("id"));
+						backupDocs.remove(wiki.get("id").toLowerCase());
 					}
 				}
 			}
 		
 		}
+		System.out.println("final topics: " + backupDocs.toString());
 		return backupDocs;
 	}
 	
@@ -534,39 +515,39 @@ public class DocFinder {
 					System.out.print("*");
 					Scanner s = new Scanner(wikiEntryList);
 					long byteOffset = 0;
-						while(s.hasNextLine()) {
-							String wikiEntry = s.nextLine();
-						    JSONObject wikiJson = new JSONObject(wikiEntry);
-						    String id = wikiJson.getString("id").toLowerCase();
-						    if(!id.isEmpty()) {
-						    	String fileName = wikiEntryList.getName();
-						    	Map<String, Object> docLocation = new HashMap<String, Object>();
-						    	docLocation.put("fileName", fileName);
-						    	docLocation.put("offset", byteOffset);
-								wikiMap.put(id, docLocation);
-								
-								int paren = id.indexOf("-lrb-");
-								if(paren > 0) {
-									String base = id.substring(0, paren-1).toLowerCase();
-									ArrayList<String> disambiguationChildren = new ArrayList<String>();
-									if(disambiguationMap.containsKey(base)) {
-										disambiguationChildren = disambiguationMap.get(base);
-										disambiguationChildren.add(id);
-										disambiguationMap.put(base, disambiguationChildren);
-									}
-									else {
-										disambiguationChildren.add(id);
-										disambiguationMap.put(base, disambiguationChildren);
-									}
+					while(s.hasNextLine()) {
+						String wikiEntry = Normalizer.normalize(s.nextLine(), Normalizer.Form.NFD);
+					    JSONObject wikiJson = new JSONObject(wikiEntry);
+					    String id = wikiJson.getString("id").toLowerCase();
+					    if(!id.isEmpty()) {
+					    	String fileName = wikiEntryList.getName();
+					    	Map<String, Object> docLocation = new HashMap<String, Object>();
+					    	docLocation.put("fileName", fileName);
+					    	docLocation.put("offset", byteOffset);
+							wikiMap.put(id, docLocation);
+							
+							int paren = id.indexOf("-lrb-");
+							if(paren > 0) {
+								String base = id.substring(0, paren-1).toLowerCase();
+								ArrayList<String> disambiguationChildren = new ArrayList<String>();
+								if(disambiguationMap.containsKey(base)) {
+									disambiguationChildren = disambiguationMap.get(base);
+									disambiguationChildren.add(id);
+									disambiguationMap.put(base, disambiguationChildren);
 								}
-						    }
-						    byteOffset += wikiEntry.getBytes().length;
-							byteOffset += 1;
-						}
-						filesProcessed++;
-						if(filesProcessed % 10 == 0 || filesProcessed == 109) {
-							System.out.println("\nWiki processing "+filesProcessed+"/109 done.");
-						}
+								else {
+									disambiguationChildren.add(id);
+									disambiguationMap.put(base, disambiguationChildren);
+								}
+							}
+					    }
+					    byteOffset += wikiEntry.getBytes().length;
+						byteOffset += 1;
+					}
+					filesProcessed++;
+					if(filesProcessed % 10 == 0 || filesProcessed == 109) {
+						System.out.println("\nWiki processing "+filesProcessed+"/109 done.");
+					}
 						
 					s.close();
 				} catch (FileNotFoundException e) {

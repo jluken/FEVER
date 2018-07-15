@@ -1,129 +1,333 @@
 Erroneous retrieved wiki articles:
 
-Claim: "Fox 2000 Pictures released the film Soul Food."
-Correct document: Soul_Food_-LRB-film-RRB-
+Claim: "Heavy Metal music was developed in the early 1970's."
+Correct document: Heavy_metal_music
 Found Documents: 
-Food
+English_possessive
+Possessive
+Contraction_-LRB-grammar-RRB-
+Contraction_-LRB-operator_theory-RRB-
+Heavy_metal
 Backup Documents: 
-pictures_-lrb-film-rrb-
-pictures_-lrb-short_story-rrb-
-pictures_-lrb-timo_maas_album-rrb-
-pictures_-lrb-sneaky_sound_system_song-rrb-
-pictures_-lrb-leon_bolier_album-rrb-
-pictures_-lrb-jack_dejohnette_album-rrb-
-pictures_-lrb-atlanta_album-rrb-
-pictures_-lrb-katie_melua_album-rrb-
-pictures_-lrb-john_michael_montgomery_album-rrb-
-food_-lrb-new_york_restaurant-rrb-
-food_-lrb-kelis_album-rrb-
-food_-lrb-film-rrb-
-food_-lrb-disambiguation-rrb-
-food_-lrb-band-rrb-
-Constituency Tree: (ROOT (S (NP (NNP Fox) (CD 2000) (NNP Pictures)) (VP (VBD released) (NP (DT the) (NN film) (NN Soul) (NN Food))) (. .)))
-Dependency Graph: -> released/VBD (root)
-  -> Pictures/NNP (nsubj)
-    -> Fox/NNP (compound)
-    -> 2000/CD (nummod)
-  -> Food/NN (dobj)
+heavy_metal_-lrb-magazine-rrb-
+heavy_metal_-lrb-wrestler-rrb-
+heavy_metal_-lrb-g.i._joe-rrb-
+heavy_metal_-lrb-film-rrb-
+heavy_metal_-lrb-comics-rrb-
+heavy_metal_-lrb-terminator-colon-_the_sarah_connor_chronicles-rrb-
+Constituency Tree: (ROOT (S (NP (NNP Heavy) (NNP Metal) (NN music)) (VP (VBD was) (VP (VBN developed) (PP (IN in) (NP (NP (DT the) (JJ early)) (NP (CD 1970) (POS 's)))))) (. .)))
+Dependency Graph: -> developed/VBN (root)
+  -> music/NN (nsubjpass)
+    -> Heavy/NNP (compound)
+    -> Metal/NNP (compound)
+  -> was/VBD (auxpass)
+  -> 1970/CD (nmod:'s)
+    -> in/IN (case)
     -> the/DT (det)
-    -> film/NN (compound)
-    -> Soul/NN (compound)
+    -> early/JJ (amod)
+    -> 's/POS (case)
   -> ./. (punct)
 
 
-Claim: "Simón Bolívar is only known as Simón Bolívar."
-Correct document: Simo?n_Boli?var
+Claim: "2015 was the year when the principal photography of The Disaster Aritst (film) started."
+Correct document: The_Disaster_Artist_-LRB-film-RRB-
 Found Documents: 
-Simón_Bolívar
 Backup Documents: 
-simón_bolívar_-lrb-opera-rrb-
-simón_bolívar_-lrb-1969_film-rrb-
-simón_bolívar_-lrb-1942_film-rrb-
-simón_bolívar_-lrb-tadolini-rrb-
-simón_bolívar_-lrb-barque-rrb-
-simón_bolívar_-lrb-talacca-rrb-
-simón_bolívar_-lrb-transmilenio-rrb-
-simón_bolívar_-lrb-disambiguation-rrb-
-simón_bolívar_-lrb-monterrey_metro-rrb-
-Constituency Tree: (ROOT (S (NP (NNP Simón) (NNP Bolívar)) (VP (VBZ is) (ADVP (RB only)) (VP (VBN known) (PP (IN as) (NP (NNP Simón) (NNP Bolívar))))) (. .)))
-Dependency Graph: -> known/VBN (root)
-  -> Bolívar/NNP (nsubjpass)
-    -> Simón/NNP (compound)
-  -> is/VBZ (auxpass)
-  -> only/RB (advmod)
-  -> Bolívar/NNP (nmod:as)
-    -> as/IN (case)
-    -> Simón/NNP (compound)
+Constituency Tree: (ROOT (S (NP (CD 2015)) (VP (VBD was) (NP (NP (DT the) (NN year)) (SBAR (WHADVP (WRB when)) (S (NP (NP (DT the) (JJ principal) (NN photography)) (PP (IN of) (NP (NP (DT The) (NN Disaster) (NN Aritst)) (PRN (-LRB- -LRB-) (NP (NN film)) (-RRB- -RRB-))))) (VP (VBD started)))))) (. .)))
+Dependency Graph: -> year/NN (root)
+  -> 2015/CD (nsubj)
+  -> was/VBD (cop)
+  -> the/DT (det)
+  -> when/WRB (dep)
+    -> photography/NN (dep)
+      -> the/DT (det)
+      -> principal/JJ (amod)
+      -> started/VBD (acl:of)
+        -> of/IN (mark)
+        -> The/DT (dep)
+        -> Aritst/NN (nsubj)
+          -> Disaster/NN (compound)
+          -> film/NN (appos)
+            -> -LRB-/-LRB- (punct)
+            -> -RRB-/-RRB- (punct)
   -> ./. (punct)
 
 
-Claim: "There are not rumors that Augustus' wife, Livia, poisoned him."
-Correct document: Augustus
+Claim: "In 1971 Asylum Records the American record label was founded by David Geffen and his partner Elliot Roberts."
+Correct document: Asylum_Records
 Found Documents: 
+David_Geffen
+Elliot_Roberts
 Backup Documents: 
-rumors_-lrb-lindsay_lohan_song-rrb-
-rumors_-lrb-ep-rrb-
-rumors_-lrb-album-rrb-
-rumors_-lrb-film-rrb-
-rumors_-lrb-play-rrb-
-rumors_-lrb-timex_social_club_song-rrb-
-Constituency Tree: (ROOT (S (NP (EX There)) (VP (VBP are) (RB not) (NP (NNS rumors)) (SBAR (IN that) (S (NP (NP (NP (NNP Augustus) (POS ')) (NN wife)) (, ,) (NP (NNP Livia)) (, ,)) (VP (VBD poisoned) (NP (PRP him)))))) (. .)))
-Dependency Graph: -> are/VBP (root)
-  -> There/EX (expl)
-  -> not/RB (neg)
-  -> rumors/NNS (nsubj)
-    -> poisoned/VBD (ccomp)
-      -> that/IN (mark)
-      -> wife/NN (nsubj)
-        -> Augustus/NNP (nmod:poss)
-          -> '/POS (case)
-        -> ,/, (punct)
-        -> Livia/NNP (appos)
-        -> ,/, (punct)
-      -> him/PRP (dobj)
+Constituency Tree: (ROOT (S (PP (IN In) (NP (CD 1971))) (NP (NP (NNP Asylum) (NNPS Records)) (NP (DT the) (JJ American) (NN record) (NN label))) (VP (VBD was) (VP (VBN founded) (PP (IN by) (NP (NP (NNP David) (NNP Geffen)) (CC and) (NP (PRP$ his) (NN partner) (NNP Elliot) (NNP Roberts)))))) (. .)))
+Dependency Graph: -> founded/VBN (root)
+  -> Records/NNPS (nmod:in)
+    -> In/IN (case)
+    -> 1971/CD (nummod)
+    -> Asylum/NNP (compound)
+  -> label/NN (nsubjpass)
+    -> the/DT (det)
+    -> American/JJ (amod)
+    -> record/NN (compound)
+  -> was/VBD (auxpass)
+  -> Geffen/NNP (nmod:agent)
+    -> by/IN (case)
+    -> David/NNP (compound)
+    -> and/CC (cc)
+    -> Roberts/NNP (conj:and)
+      -> his/PRP$ (nmod:poss)
+      -> partner/NN (compound)
+      -> Elliot/NNP (compound)
+  -> Roberts/NNP (nmod:agent)
   -> ./. (punct)
 
 
-Claim: "Jayasudha is an actor that stars in Daag."
-Correct document: Daag_-LRB-1973_film-RRB-
+Claim: "The Armenian Genocide was the killing of Armenians who were mostly Ottoman natives."
+Correct document: Armenian_Genocide
 Found Documents: 
-Jayasudha
-Actor
+Armenians
+The_Armenian_Genocide
+Ottoman
 Backup Documents: 
-actor_-lrb-album-rrb-
-actor_-lrb-uml-rrb-
-actor_-lrb-mythology-rrb-
-actor_-lrb-1993_film-rrb-
-actor_-lrb-disambiguation-rrb-
-actor_-lrb-policy_debate-rrb-
-actor_-lrb-programming_language-rrb-
-actor_-lrb-2016_film-rrb-
-Constituency Tree: (ROOT (S (NP (NNP Jayasudha)) (VP (VBZ is) (NP (NP (DT an) (NN actor)) (SBAR (WHNP (WDT that)) (S (VP (VBZ stars) (PP (IN in) (NP (NNP Daag)))))))) (. .)))
-Dependency Graph: -> actor/NN (root)
-  -> Jayasudha/NNP (nsubj)
+the_armenian_genocide_-lrb-film-rrb-
+ottoman_-lrb-textile-rrb-
+ottoman_-lrb-furniture-rrb-
+Constituency Tree: (ROOT (S (NP (DT The) (JJ Armenian) (NN Genocide)) (VP (VBD was) (NP (NP (DT the) (NN killing)) (PP (IN of) (NP (NNPS Armenians))) (SBAR (WHNP (WP who)) (S (VP (VBD were) (ADVP (RB mostly)) (NP (NNP Ottoman) (NNS natives))))))) (. .)))
+Dependency Graph: -> killing/NN (root)
+  -> Genocide/NN (nsubj)
+    -> The/DT (det)
+    -> Armenian/JJ (amod)
+  -> was/VBD (cop)
+  -> the/DT (det)
+  -> Armenians/NNPS (nmod:of)
+    -> of/IN (case)
+  -> who/WP (ref)
+  -> natives/NNS (acl:relcl)
+    -> killing/NN (nsubj)
+    -> were/VBD (cop)
+    -> mostly/RB (advmod)
+    -> Ottoman/NNP (compound)
+  -> ./. (punct)
+
+
+Claim: "The first inauguration of Bill Clinton made him the 50th President of the United States."
+Correct document: First_inauguration_of_Bill_Clinton
+Found Documents: 
+Bill_Clinton
+President_of_the_United_States
+Backup Documents: 
+president_of_the_united_states_-lrb-disambiguation-rrb-
+Constituency Tree: (ROOT (S (NP (NP (DT The) (JJ first) (NN inauguration)) (PP (IN of) (NP (NNP Bill) (NNP Clinton)))) (VP (VBD made) (S (NP (PRP him)) (NP (NP (DT the) (JJ 50th) (NN President)) (PP (IN of) (NP (DT the) (NNP United) (NNPS States)))))) (. .)))
+Dependency Graph: -> made/VBD (root)
+  -> inauguration/NN (nsubj)
+    -> The/DT (det)
+    -> first/JJ (amod)
+    -> Clinton/NNP (nmod:of)
+      -> of/IN (case)
+      -> Bill/NNP (compound)
+  -> President/NN (xcomp)
+    -> him/PRP (nsubj)
+    -> the/DT (det)
+    -> 50th/JJ (amod)
+    -> States/NNPS (nmod:of)
+      -> of/IN (case)
+      -> the/DT (det)
+      -> United/NNP (compound)
+  -> ./. (punct)
+
+
+Claim: "The 14th Dalai Lama lives in Japan exclusively."
+Correct document: 14th_Dalai_Lama
+Found Documents: 
+Japan
+Backup Documents: 
+japan_-lrb-japan_album-rrb-
+japan_-lrb-disambiguation-rrb-
+japan_-lrb-film-rrb-
+japan_-lrb-1992_manga-rrb-
+japan_-lrb-band-rrb-
+japan_-lrb-1994_manga-rrb-
+Constituency Tree: (ROOT (S (NP (DT The) (JJ 14th) (NNP Dalai) (NNP Lama)) (VP (VBZ lives) (PP (IN in) (NP (NNP Japan))) (ADVP (RB exclusively))) (. .)))
+Dependency Graph: -> lives/VBZ (root)
+  -> Lama/NNP (nsubj)
+    -> The/DT (det)
+    -> 14th/JJ (amod)
+    -> Dalai/NNP (compound)
+  -> Japan/NNP (nmod:in)
+    -> in/IN (case)
+  -> exclusively/RB (advmod)
+  -> ./. (punct)
+
+
+Claim: "The Mod Squad is a series that fits into the genre of crime drama."
+Correct document: The_Mod_Squad
+Found Documents: 
+The_MOD_Squad
+Backup Documents: 
+the_mod_squad_-lrb-film-rrb-
+Constituency Tree: (ROOT (S (NP (DT The) (NNP Mod) (NNP Squad)) (VP (VBZ is) (NP (NP (DT a) (NN series)) (SBAR (WHNP (WDT that)) (S (VP (VBZ fits) (PP (IN into) (NP (NP (DT the) (NN genre)) (PP (IN of) (NP (NN crime) (NN drama)))))))))) (. .)))
+Dependency Graph: -> series/NN (root)
+  -> Squad/NNP (nsubj)
+    -> The/DT (det)
+    -> Mod/NNP (compound)
   -> is/VBZ (cop)
-  -> an/DT (det)
+  -> a/DT (det)
   -> that/WDT (ref)
-  -> stars/VBZ (acl:relcl)
-    -> actor/NN (nsubj)
-    -> Daag/NNP (nmod:in)
-      -> in/IN (case)
+  -> fits/VBZ (acl:relcl)
+    -> series/NN (nsubj)
+    -> genre/NN (nmod:into)
+      -> into/IN (case)
+      -> the/DT (det)
+      -> drama/NN (nmod:of)
+        -> of/IN (case)
+        -> crime/NN (compound)
   -> ./. (punct)
 
 
-Claim: "Reign Over Me was released in 2017."
-Correct document: Reign_Over_Me
+Claim: "The Saw franchise grossed under $873 million."
+Correct document: Saw_-LRB-franchise-RRB-
 Found Documents: 
+Television_network
+Deductible
+League
+Passenger_rail_franchising_in_Great_Britain
+Franchise_tag
+Chain_store
+Franchise_player
+Dem_Franchize_Boyz
+Franchising
+Media_franchise
+Cable_television
+Suffrage
+Franchise_Pictures
+North_America
+Sports_league
 Backup Documents: 
-Constituency Tree: (ROOT (S (VP (VB Reign) (FRAG (S (PP (IN Over) (NP (PRP Me))) (VP (VBD was) (VP (VBN released) (PP (IN in) (NP (CD 2017)))))))) (. .)))
-Dependency Graph: -> Reign/VB (root)
-  -> released/VBN (advcl:over)
-    -> Over/IN (mark)
-    -> Me/PRP (nsubjpass)
-    -> was/VBD (auxpass)
-    -> 2017/CD (nmod:in)
-      -> in/IN (case)
+franchise_-lrb-short_story-rrb-
+Constituency Tree: (ROOT (S (NP (DT The) (NNP Saw) (NN franchise)) (VP (VBN grossed) (PP (IN under) (NP (QP ($ $) (CD 873) (CD million))))) (. .)))
+Dependency Graph: -> grossed/VBN (root)
+  -> franchise/NN (nsubj)
+    -> The/DT (det)
+    -> Saw/NNP (compound)
+  -> $/$ (nmod:under)
+    -> under/IN (case)
+    -> million/CD (nummod)
+      -> 873/CD (compound)
   -> ./. (punct)
 
 
-Correct documents found: 69/74
+Claim: "The Faroe Islands are no longer part of the Kingdom of Mercia."
+Correct document: Faroe_Islands
+Found Documents: 
+Kingdom
+Backup Documents: 
+kingdom_-lrb-song-rrb-
+kingdom_-lrb-u.s._tv_series-rrb-
+kingdom_-lrb-video_game-rrb-
+kingdom_-lrb-biology-rrb-
+kingdom_-lrb-director-rrb-
+kingdom_-lrb-covenant_worship_album-rrb-
+kingdom_-lrb-album-rrb-
+kingdom_-lrb-uk_tv_series-rrb-
+kingdom_-lrb-gorgon_city_album-rrb-
+kingdom_-lrb-manga-rrb-
+kingdom_-lrb-professional_wrestling-rrb-
+kingdom_-lrb-comics-rrb-
+kingdom_-lrb-ep-rrb-
+kingdom_-lrb-magazine-rrb-
+Constituency Tree: (ROOT (S (NP (DT The) (NNP Faroe) (NNPS Islands)) (VP (VBP are) (ADVP (RB no) (RB longer)) (NP (NP (NN part)) (PP (IN of) (NP (NP (DT the) (NNP Kingdom)) (PP (IN of) (NP (NNP Mercia))))))) (. .)))
+Dependency Graph: -> part/NN (root)
+  -> Islands/NNPS (nsubj)
+    -> The/DT (det)
+    -> Faroe/NNP (compound)
+  -> are/VBP (cop)
+  -> longer/RB (advmod)
+    -> no/RB (neg)
+  -> Kingdom/NNP (nmod:of)
+    -> of/IN (case)
+    -> the/DT (det)
+    -> Mercia/NNP (nmod:of)
+      -> of/IN (case)
+  -> ./. (punct)
+
+
+Claim: "Part of the Hindu Kush is in Brazil."
+Correct document: Hindu_Kush
+Found Documents: 
+Part
+Brazil
+Backup Documents: 
+part_-lrb-music-rrb-
+brazil_-lrb-ep-rrb-
+brazil_-lrb-bebi_dol_song-rrb-
+brazil_-lrb-rosemary_clooney_album-rrb-
+brazil_-lrb-surname-rrb-
+brazil_-lrb-1944_film-rrb-
+brazil_-lrb-1985_film-rrb-
+brazil_-lrb-novel-rrb-
+brazil_-lrb-men_at_work_album-rrb-
+brazil_-lrb-disambiguation-rrb-
+brazil_-lrb-band-rrb-
+brazil_-lrb-the_ritchie_family_album-rrb-
+brazil_-lrb-book-rrb-
+Constituency Tree: (ROOT (S (NP (NP (NN Part)) (PP (IN of) (NP (DT the) (NNP Hindu) (NNP Kush)))) (VP (VBZ is) (PP (IN in) (NP (NNP Brazil)))) (. .)))
+Dependency Graph: -> Brazil/NNP (root)
+  -> Part/NN (nsubj)
+    -> Kush/NNP (nmod:of)
+      -> of/IN (case)
+      -> the/DT (det)
+      -> Hindu/NNP (compound)
+  -> is/VBZ (cop)
+  -> in/IN (case)
+  -> ./. (punct)
+
+
+Claim: "Most of Ripon College's student body die on campus."
+Correct document: Ripon_College_-LRB-Wisconsin-RRB-
+Found Documents: 
+Most
+Backup Documents: 
+most_-lrb-satellite-rrb-
+most_-lrb-unix-rrb-
+most_-lrb-2003_film-rrb-
+most_-lrb-most_district-rrb-
+most_-lrb-surname-rrb-
+Constituency Tree: (ROOT (S (NP (NP (JJS Most)) (PP (IN of) (NP (NP (NNP Ripon) (NNP College) (POS 's)) (NN student) (NN body)))) (VP (VB die) (PP (IN on) (NP (NN campus)))) (. .)))
+Dependency Graph: -> die/VB (root)
+  -> Most/JJS (nsubj)
+    -> body/NN (nmod:of)
+      -> of/IN (case)
+      -> College/NNP (nmod:poss)
+        -> Ripon/NNP (compound)
+        -> 's/POS (case)
+      -> student/NN (compound)
+  -> campus/NN (nmod:on)
+    -> on/IN (case)
+  -> ./. (punct)
+
+
+Claim: "Speech recognition incorporates knowledge and research into multiple fields."
+Correct document: Speech_recognition
+Found Documents: 
+Speech
+Backup Documents: 
+speech_-lrb-rapper-rrb-
+speech_-lrb-disambiguation-rrb-
+speech_-lrb-album-rrb-
+Constituency Tree: (ROOT (S (NP (NN Speech) (NN recognition)) (VP (VBZ incorporates) (NP (NN knowledge) (CC and) (NN research)) (PP (IN into) (NP (JJ multiple) (NNS fields)))) (. .)))
+Dependency Graph: -> incorporates/VBZ (root)
+  -> recognition/NN (nsubj)
+    -> Speech/NN (compound)
+  -> knowledge/NN (dobj)
+    -> and/CC (cc)
+    -> research/NN (conj:and)
+  -> research/NN (dobj)
+  -> fields/NNS (nmod:into)
+    -> into/IN (case)
+    -> multiple/JJ (amod)
+  -> ./. (punct)
+
+
+Correct documents found: 133/145
+Total primary documents found: 306
+Backup documents found: 810
