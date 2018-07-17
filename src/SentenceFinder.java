@@ -469,7 +469,7 @@ public class SentenceFinder {
 		}
 		if(containsEntities && entityToBeSwapped != null && entityToBeSwapped[1] == "NOUN") {
 			System.out.println("sentence: " + evidenceSentence);
-			if(isIsSent(claim) && isIsSent(evidenceSentence)) {
+			if(isNounComplement(claim) && isNounComplement(evidenceSentence)) {
 				System.out.println("The only remaining entity is a generic noun, and it's a 'is a' sentence.");
 			} else {
 				System.out.println("The only remaining entity is a generic noun, which can't be reliably replaced.");
@@ -507,15 +507,15 @@ public class SentenceFinder {
 		return containsEntities;
 	}
 	
-	private static boolean isIsSent(String sentence) { //I forget what the name of this type of sent is called, will rename
-		String[] IsTags = {" is a ", " is an " , " was a " , " was an "};
-		boolean isIs = false;
-		for(String tag : IsTags) {
+	private static boolean isNounComplement(String sentence) {
+		String[] NCTags = {" is a ", " is an " , " was a " , " was an "};
+		boolean isNC = false;
+		for(String tag : NCTags) {
 			if(sentence.contains(tag)) {
-				isIs = true;
+				isNC = true;
 			}
 		}
-		return isIs;
+		return isNC;
 	}
 	private static boolean containsCorrelatedWord(String sentence, String root, String wikiTitle) {
 		ArrayList<String> words = getWords(wikiTitle, sentence.toLowerCase());

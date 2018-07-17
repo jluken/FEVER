@@ -76,24 +76,14 @@ public class DocFinder {
 			    ArrayList<Map<String, String>> possibleWikiDocs = getDocsFromTopics(claimTopics);
 			    ArrayList<String> backupDocs = getBackupDocs(claimTopics, possibleWikiDocs);
 
-			    //System.out.println("Beginning sentence retrieval. Time: "+dtf.format(LocalDateTime.now()));
 			    Map<String, Object> wikiInfo = new HashMap<String, Object>();
 			    for(Map<String, String> wikiDoc: possibleWikiDocs) {
 				    wikiInfo.put(wikiDoc.get("id"), new HashMap<Integer, String>());
 			    }
-			    //TODO: add key word sentence finder (possibly remove name entity)
-			    
-			    //TODO: repeat process for backup wikis if no relevant sentences found
-			    
-			    //determine if sentences are verify, refute, or not enough info
-			    //TODO: implement classifier
-			    
-			    //System.out.println("Printing to JSON. Time: "+dtf.format(LocalDateTime.now()));
 			    JSONObject result = convertToJSON(claimJson.getInt("id"), claim, wikiInfo, backupDocs);
 			    writer.append(result.toString());
 			    writer.append("\n");
 			    
-			    //System.out.println("Claim "+ claimCount + " complete. Time: "+dtf.format(LocalDateTime.now())+ "\n");
 			}
 			claimReader.close();
 			writer.close();
@@ -115,84 +105,100 @@ public class DocFinder {
 		String[] lowerWords = {"a", "an", "the", "at", "by", "down", "for", "from", "in", "into", "like", "near", "of", "off", "on", "onto", "onto", "over", 
 				"past", "to", "upon", "with", "and", "&", "as", "but", "for", "if", "nor", "once", "or", "so", "than", "that", "till", "when", "yet"};
 		ArrayList<String> properTerms = new ArrayList<String>();
-		ArrayList<String> possibleProperTerms = new ArrayList<String>();
-		//remove end punctuation and format
-		String newSent = sentence.replace("(", "-lrb-").replace(")", "-rrb-").replace("]", "-rsb-").replace("[", "-lsb-");
-		newSent = newSent.replace("\"", "").replace("\\", "").replace(",", " ,").replace(";", " ;").replace(":", " :").replace("'s", " 's").replace("' ", " ' ");
-		newSent = newSent.substring(0, newSent.length() - 1);
-		System.out.println("New Sentence: " + newSent);
-		String[] words = newSent.split(" ");		
-		String[] punct = {",", ";", ":", "'s", "'"};
+		List<String> possibleProperTerms = new ArrayList<String>();
+		String[] words = sentence.split(" ");		
 		
-		String properTerm = "";
+		String properPhrase = "";
 		boolean paren = false;
 		for(int i = 0; i < words.length; i++) {
 			String word = words[i];
 			if(word.length() == 0) {
 				continue;
 			}
-			if(Character.isUpperCase(word.charAt(0)) && properTerm.isEmpty()){
-				properTerm = word;
+			if(Character.isUpperCase(word.charAt(0)) && properPhrase.isEmpty()){
+				properPhrase = word;
 			}
-			else if(!properTerm.isEmpty() && (Character.isUpperCase(word.charAt(0))|| Character.isDigit(word.charAt(0)))) {
-				properTerm += " " + word;
+			else if(!properPhrase.isEmpty() && !Character.isLowerCase(word.charAt(0)) || paren) {
+				properPhrase += " " + word;
 			}
-			else if(!properTerm.isEmpty() && Arrays.asList(lowerWords).contains(word)) {
-				possibleProperTerms.add(properTerm);
-				properTerm += " " + word;
+			else if(!properPhrase.isEmpty() && Arrays.asList(lowerWords).contains(word)) {
+				possibleProperTerms.add(properPhrase);
+				properPhrase += " " + word;
 			}
-			else if (Arrays.asList(punct).contains(word)) {
-				possibleProperTerms.add(properTerm);
-				properTerm += word;
-			}
-			else if(!properTerm.isEmpty() && (word.startsWith("-lrb-") || word.startsWith("-lsb-"))) {
-				possibleProperTerms.add(properTerm);
+			else if(!properPhrase.isEmpty() && (word.startsWith("(") || word.startsWith("["))) {
+				possibleProperTerms.add(properPhrase);
 				paren = true;
-				properTerm += " " + word;
+				properPhrase += " " + word;
 			}
-			else if(paren) {
-				properTerm += " " + word;
-			}
-			else if(!properTerm.isEmpty() && (word.endsWith("-rrb-") || word.endsWith("-rsb-"))) {
+			else if(!properPhrase.isEmpty() && (word.endsWith(")") || word.endsWith("]"))) {
 				paren = false;
-				properTerm += " " + word;
-				possibleProperTerms.add(properTerm);
+				properPhrase += word;
+				possibleProperTerms.add(properPhrase);
+				properPhrase = "";
 			}
-			else if(!properTerm.isEmpty()){
-				possibleProperTerms.add(properTerm);
-				properTerm = "";
+			else if(!properPhrase.isEmpty()){
+				possibleProperTerms.add(properPhrase);
+				properPhrase = "";
 			}
 		}
-		if(!properTerm.isEmpty()) {
-			possibleProperTerms.add(properTerm);
+		if(!properPhrase.isEmpty()) {
+			possibleProperTerms.add(properPhrase);
 		}
 		System.out.println("Possible proper terms:" + possibleProperTerms.toString());
-		possibleProperTerms.removeAll(Arrays.asList("A", "The", "There"));
-		possibleProperTerms = (ArrayList<String>) possibleProperTerms.stream().distinct().collect(Collectors.toList());
-		ArrayList<String> totalTerms = new ArrayList<String>();
-		for(String term : possibleProperTerms) {
-			String wikiKey = term.toLowerCase().replaceAll(" ", "_");
-			if(wikiMap.containsKey(wikiKey) || disambiguationMap.containsKey(wikiKey)) {
-				totalTerms.add(term);
-		    }
-		}
-		System.out.println("Terms in wiki:" + totalTerms.toString());
-		for(String term: totalTerms) {
-			String[] termSubstr = {term + " ", term + ",", term + "'", term + ":"};
-			boolean unique = true;
-			for(String checkTerm: totalTerms) {
-				for(String substr : termSubstr) {
-					if(checkTerm.contains(substr)) {
-						unique = false;
-					}
-				}
-			}
-			if(unique) {
-				properTerms.add(term);
-			}
-		}
+		List<String> dets = Arrays.asList("A", "An", "The", "There");
+		possibleProperTerms = possibleProperTerms.stream()
+				.distinct().map(phrase -> removeEndPunct(phrase))
+				.filter(phrase -> !isInt(phrase)).filter(phrase -> !dets.contains(phrase)).filter(phrase -> isValidWiki(phrase))
+				.collect(Collectors.toList());		
+		possibleProperTerms = removeSubsets(possibleProperTerms);
 		System.out.println("Proper terms:" + properTerms.toString());
 		return properTerms;
+	}
+	
+	private static String removeEndPunct(String phrase) {
+		String removed = phrase;
+		String[] punct = {"!", "?", ".",",", ";", ":", "'s", "'"};
+		for (String mark: punct) {
+			if (phrase.endsWith(mark)) {
+				removed = phrase.substring(0, phrase.length() - mark.length());
+		    }
+		}
+		return removed;
+	}
+	
+	private static boolean isValidWiki(String title) {
+		boolean valid = false;
+		String wikiKey = title.toLowerCase().replaceAll(" ", "_").replace("(", "-lrb-").replace(")", "-rrb-").replace("]", "-rsb-").replace("[", "-lsb-");
+		if(wikiMap.containsKey(wikiKey) || disambiguationMap.containsKey(wikiKey)) {
+			valid = true;
+	    }
+		return valid;
+	}
+	
+	private static ArrayList<String> removeSubsets(List<String> set) {
+		ArrayList<String> filtered = new ArrayList<String>();
+		for (String subStr: set) {
+			boolean unique = true;
+			for (String str: set) {
+				if(str.contains(subStr) && !str.equals(subStr)) {
+					unique = false;
+				}
+		    }
+			if(unique) {
+				filtered.add(subStr);
+			}
+		}
+		return filtered;
+	}
+	
+	private static boolean isInt(String str) {
+		boolean isInt = true;
+		try {
+			Integer.parseInt(str);
+	    } catch (NumberFormatException e) {
+	        isInt = false;
+	    }
+		return isInt;
 	}
 	
 	
@@ -380,31 +386,24 @@ public class DocFinder {
 	
 	
 	private static ArrayList<Map<String, String>> getDocsFromTopics(ArrayList<String> possibleTopics) {
-		//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
 		ArrayList<Map<String, String>> wikiDocs = new ArrayList<Map<String, String>>();
-		//System.out.println("Number of topics for docs: "+possibleTopics.size());
 		for(String topic: possibleTopics) {
 			String urlTitle = topic.replace(' ', '_').toLowerCase();
 			Map<String, String> wikiDoc = new HashMap<String, String>();
 			boolean emptyDisam = false;
 			if (!topic.isEmpty() && wikiMap.containsKey(urlTitle)){
-				//System.out.println("valid topic: " + topic + " Time: " + dtf.format(LocalDateTime.now()));
 				Map<String, Object> fileInfo = wikiMap.get(urlTitle);
 				String wikiListName = wikiDirName + "\\" + fileInfo.get("fileName");
-				//System.out.println("Key found. Time: "+dtf.format(LocalDateTime.now()));
 				try {
 					BufferedReader reader = new BufferedReader(new FileReader(wikiListName)); 
 					Long byteOffset = (Long) fileInfo.get("offset");
 					reader.skip(byteOffset);
 				    String wikiEntry = reader.readLine();
 				    JSONObject wikiJson = new JSONObject(wikiEntry);
-				    //System.out.println("JSON retrieved. Time: " + dtf.format(LocalDateTime.now()));
 				    if (wikiJson.getString("text").toLowerCase().contains((topic+" may refer to : "))) {
-				    	//System.out.println("disambiguation page: " + topic);
 			    		ArrayList<Map<String, String>> disambiguationChildren = findDisambiguationChildren(wikiJson);
 			    		wikiDocs.addAll(disambiguationChildren);
 			    		if(disambiguationChildren.isEmpty()) {
-			    			//System.out.println("disambiguation page empty");
 			    			emptyDisam = true;
 			    		}
 			    	}
@@ -429,7 +428,6 @@ public class DocFinder {
 			}
 			
 			if (!topic.isEmpty() && disambiguationMap.containsKey(urlTitle)){
-				//System.out.println("disambiguation found: " + urlTitle+". Time: "+dtf.format(LocalDateTime.now()));
 				if(emptyDisam) {
 					ArrayList<String> disambiguations = disambiguationMap.get(urlTitle);
 					ArrayList<String> unchecked = new ArrayList<String>(disambiguations);
@@ -441,7 +439,6 @@ public class DocFinder {
 					wikiDocs.addAll(getDocsFromTopics(unchecked));
 				}
 			}
-			//System.out.println("Topic " + topic + " done. Time: " + dtf.format(LocalDateTime.now()));
 		}
 		return wikiDocs;
 	}
@@ -527,7 +524,7 @@ public class DocFinder {
 							wikiMap.put(id, docLocation);
 							
 							int paren = id.indexOf("-lrb-");
-							if(paren > 0) {
+							if(paren > 0 && !id.contains("disambiguation")) {
 								String base = id.substring(0, paren-1).toLowerCase();
 								ArrayList<String> disambiguationChildren = new ArrayList<String>();
 								if(disambiguationMap.containsKey(base)) {
