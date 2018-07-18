@@ -143,7 +143,7 @@ public class SentenceFinder {
 		ArrayList<String[]> claimNANE = getNounsAndNamedEntities(wikiTitle, constituencyTree, claimNE);
 		
 		for(int j = 0; j < wikiSentences.length; j++) {
-			String sentence = getSentenceTextFromWikiLines(wikiSentences[j]);
+			String sentence = getSentenceTextFromWikiLines(wikiSentences[j]); //TODO: deal with duplicates
 			if(containsNamedEntities(sentence, claim, claimNANE, wikiTitle, pipeline, root) ||
 					 containsCorrelatedWord(sentence, root, wikiTitle) ||
 					 containsValidRoot(sentence, root, pipeline)) {
