@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -45,12 +47,14 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.UniversalEnglishGrammaticalRelations;
 import edu.stanford.nlp.util.CoreMap;
 
+
 public class FEVER_OSU {
 	
 	static String claimsFileName = "shared_task_dev_public.jsonl";
-	static String outputFileName = "claim_sentences.jsonl";
+	static String outputFileName = "dev_predicted_evidence.jsonl";
 	static String wikiDirName = "wiki-dump";
-	static int numClaimsToTest = 25;
+	static int numClaimsToTest = 1;
+	static boolean testAll = true;
 	
 	static Map<String, Map<String, Object>> wikiMap;
 	static Map<String, Map<String, Float>> correlationMap;
@@ -77,7 +81,7 @@ public class FEVER_OSU {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName, true));
 			
 			
-			while(claimReader.hasNext() && claimCount < numClaimsToTest) {
+			while(claimReader.hasNext() && (testAll || claimCount < numClaimsToTest)) {
 				claimCount++;
 				System.out.println("Finding sentences for claim "+ claimCount + ". Time: " + dtf.format(LocalDateTime.now()));
 				try {
@@ -124,7 +128,7 @@ public class FEVER_OSU {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		
 	}
 	
@@ -851,9 +855,13 @@ public class FEVER_OSU {
 			boolean emptyDisam = false;
 			if (!topic.isEmpty() && wikiMap.containsKey(urlTitle)){
 				Map<String, Object> fileInfo = wikiMap.get(urlTitle);
-				String wikiListName = wikiDirName + "\\" + fileInfo.get("fileName");
+//				String wikiListName = wikiDirName + "/" + fileInfo.get("fileName");
+				Path wikiDirPath = Paths.get(wikiDirName);
+				Path wikiListPath =  wikiDirPath.resolve(Paths.get((String)fileInfo.get("fileName")));
+				String wikiListName = wikiListPath.toString();
+
 				try {
-					BufferedReader reader = new BufferedReader(new FileReader(wikiListName)); 
+					BufferedReader reader = new BufferedReader(new FileReader(wikiListName));
 					Long byteOffset = (Long) fileInfo.get("offset");
 					reader.skip(byteOffset);
 				    String wikiEntry = reader.readLine();
@@ -908,8 +916,12 @@ public class FEVER_OSU {
 			try {
 				Map<String, String> backupDoc = new HashMap<String, String>();
 				Map<String, Object> fileInfo = wikiMap.get(key);
-				String wikiListName = wikiDirName + "\\" + fileInfo.get("fileName");
-				BufferedReader reader = new BufferedReader(new FileReader(wikiListName)); 
+//				String wikiListName = wikiDirName + "\\" + fileInfo.get("fileName");
+                Path wikiDirPath = Paths.get(wikiDirName);
+                Path wikiListPath =  wikiDirPath.resolve(Paths.get((String)fileInfo.get("fileName")));
+                String wikiListName = wikiListPath.toString();
+
+				BufferedReader reader = new BufferedReader(new FileReader(wikiListName));
 				Long byteOffset = (Long) fileInfo.get("offset");
 				reader.skip(byteOffset);
 			    String wikiEntry = reader.readLine();
