@@ -49,11 +49,22 @@ public class SentenceFinderTester {
 			int countSentenceWrong = 0;
 			int countMissed = 0;
 			int claimCount = 0;
+			int verifiableClaimCount = 0;
+
+			int verifiableClaimWithNoEvidenceFound = 0;
+
+			// sum of precisions of all claims
+			double precisionSum = 0;
+            // sum of recalls of all claims
+			double recallSum = 0;
 			while(resultsReader.hasNext()) {
 				claimCount++;
+				double precision = 0;
+				double recall = 0;
 				String answer = Normalizer.normalize(answersReader.nextLine(), Normalizer.Form.NFD);	
 				JSONObject answerJson = new JSONObject(answer);
 				JSONArray answerEvidence = (JSONArray) answerJson.get("evidence");
+				int goldEvidenceCount = answerEvidence.length();
 				ArrayList<Object[]> correctEvidence = new ArrayList<Object[]>();
 				for(int i = 0; i < answerEvidence.length(); i++) {
 					JSONArray evidenceSet = answerEvidence.getJSONArray(i);
@@ -66,14 +77,14 @@ public class SentenceFinderTester {
 							correctEvidence.add(answerArr);
 						}
 					}	
-					
 				}
-				
+
 				String result = resultsReader.nextLine();
 				JSONObject resultJson = new JSONObject(result);
 				String claim = Normalizer.normalize(resultJson.getString("claim"), Normalizer.Form.NFC);
 				String label = resultJson.getString("label");
 				JSONArray resultEvidence = (JSONArray) resultJson.get("evidence");
+
 				JSONArray wikiLines = (JSONArray) resultJson.get("sentences");
 				ArrayList<Object[]> foundEvidence = new ArrayList<Object[]>();
 				for(int i = 0; i < resultEvidence.length(); i++) {
@@ -83,7 +94,7 @@ public class SentenceFinderTester {
 					Object[] resultArr = {wikiName, sentNum};
 					foundEvidence.add(resultArr);
 				}
-				
+
 				boolean found = false;
 				ArrayList<Object[]> correctSentences = new ArrayList<Object[]>();
 				ArrayList<Object[]> wrongSentences = new ArrayList<Object[]>();
@@ -113,7 +124,27 @@ public class SentenceFinderTester {
 				if(countWrong > oldCountWrong) {
 					countSentenceWrong++;
 				}
-				
+
+                if (!label.equals("NOT ENOUGH INFO")) {
+                    verifiableClaimCount++;
+                    int foundEvidenceCorrectCount = correctSentences.size();
+                    // precision = # correct evidence found / # correct evidence sets in total
+                    precision = (double)foundEvidenceCorrectCount / goldEvidenceCount;
+                    // recall = # correct evidence found / # evidence found in total
+                    if (foundEvidence.size() == 0) {
+                        recall = 0;
+                        verifiableClaimWithNoEvidenceFound ++;
+                        System.out.println("No evidence found for:");
+                        System.out.println(claim);
+                    }
+                    else {
+                        recall = (double) foundEvidenceCorrectCount / foundEvidence.size();
+                    }
+                }
+
+                precisionSum += precision;
+				recallSum += recall;
+
 				writer.append("\n\n\n\nClaim " + claimCount + ": " + claim + "\n");
 				writer.append("Label: " + label + "\n");
 //				writer.append("Relevant words: " + relevantWords + "\n");
@@ -126,7 +157,15 @@ public class SentenceFinderTester {
 				}
 				writer.append("\nCorrect sentences in training set: \n");
 				for(Object[] answerSent : correctEvidence) {
-					writer.append(wikiLines.getString((int) answerSent[1]) + "\n");
+					try {
+					    writer.append(wikiLines.getString((int) answerSent[1]) + "\n");
+                    }
+                    catch (JSONException e) {
+						System.out.println("Wiki page unmatched");
+					    System.out.println(claim);
+					    System.out.println(wikiLines);
+					    System.out.println(answerEvidence);
+                    }
 				}
 				writer.append("\nCorrectly found sentences: \n");
 				for(Object[] resultSent : correctSentences) {
@@ -136,15 +175,22 @@ public class SentenceFinderTester {
 				for(Object[] resultSent : wrongSentences) {
 					writer.append(wikiLines.getString((int) resultSent[1]) + "\n");
 				}
-				
+				writer.append("\nPrecision: " + precision + ", Recall: " + recall + ", f1: " + f1(precision, recall) + "\n");
 
 			}
+
+			double totalPrecision = precisionSum / verifiableClaimCount;
+			double totalRecall = recallSum / verifiableClaimCount;
 			writer.append("\n\n\n\n");
 			writer.append("Number of claims with a correct sentence found (or it correctly found none): " + countCorrect+"/"+numClaimsTested+"\n");
 			writer.append("Number of sentences where none of the correct sentences were found: " + countMissed+"/"+numClaimsTested+"\n");
 			writer.append("Number of incorrect sentences found: " + countWrong+"\n");
 			writer.append("Number of claims with incorrect sentences found: " + countSentenceWrong+"/"+numClaimsTested+"\n");
-			
+			writer.append("Number of verifiable claims " + verifiableClaimCount + "\n");
+            writer.append("Precision: " + totalPrecision + ", Recall: " + totalRecall + ", f1: " + f1(totalPrecision, totalRecall) + "\n");
+
+            System.out.println("Precision: " + totalPrecision + ", Recall: " + totalRecall + ", f1: " + f1(totalPrecision, totalRecall) + "\n");
+
 			answersReader.close();
 			resultsReader.close();
 			writer.close();
@@ -171,4 +217,12 @@ public class SentenceFinderTester {
 		}
 		return inside;
 	}
+
+	 private static double f1(double precision, double recall) {
+	    if (precision + recall == 0) {
+	        return 0;
+        }
+	    return 2 * precision * recall / (precision + recall);
+
+     }
 }
