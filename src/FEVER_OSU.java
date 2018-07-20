@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,8 +30,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.mit.jwi.Dictionary;
+import edu.mit.jwi.IDictionary;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.IWord;
+import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.POS;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.IndexedWord;
+import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
@@ -50,7 +59,7 @@ public class FEVER_OSU {
 	static String claimsFileName = "shared_task_dev_public.jsonl";
 	static String outputFileName = "claim_sentences.jsonl";
 	static String wikiDirName = "wiki-dump";
-	static int numClaimsToTest = 25;
+	static int numClaimsToTest = 40;
 	
 	static Map<String, Map<String, Object>> wikiMap;
 	static Map<String, Map<String, Float>> correlationMap;
@@ -190,7 +199,6 @@ public class FEVER_OSU {
 		ArrayList<String> claimTopics = getProperTerms(claim, namedEntities);
 		claimTopics.addAll(getAllTopics(claim, dependencyGraph, constituencyTree));
 		System.out.println("initial all topics: " + claimTopics.toString());
-		//TODO: apply new wikiMap capitalization
 		claimTopics = (ArrayList<String>) claimTopics.stream().map(topic -> StringUtils.capitalize(topic)).distinct().collect(Collectors.toList());
 		claimTopics = removeSubsets(claimTopics);
 		ArrayList<Map<String, String>> primaryDocs = getDocsFromTopics(claimTopics);
@@ -211,9 +219,10 @@ public class FEVER_OSU {
 			String wikiName = Normalizer.normalize(wiki.get("id"), Normalizer.Form.NFC);
 			String wikiTitle = formatSentence(wikiName.replace("_", " ")).toLowerCase();
 			List<String[]> nane = getNounsAndNamedEntities(wikiTitle, constituencyTree, namedEntities);
-			System.out.println("Sentences from wiki " + wikiName + ":");
+			System.out.println("Sentences added from wiki " + wikiName + ":");
 			for(int i = 0; i < wikiLines.length; i++) {
 				String sentence = getSentenceTextFromWikiLines(wikiLines[i]);
+				System.out.println("sentence: " + sentence);
 				if(containsNamedEntities(sentence, claim, nane, wikiTitle, pipeline, root) ||
 						 containsCorrelatedWord(sentence, root, wikiTitle) ||
 						 containsValidRoot(sentence, root, pipeline)) {
@@ -221,7 +230,7 @@ public class FEVER_OSU {
 					evidence[0] = i;
 					evidence[1] = sentence;
 					wikiSents.add(evidence);
-					System.out.println("Added sentence: " + sentence);
+					System.out.println("added");
 				}	
 			}
 			if(!wikiSents.isEmpty()) {
@@ -480,6 +489,37 @@ public class FEVER_OSU {
 	    return nounPhrases;
 	}
 	
+	public static List<String> lemmatize(StanfordCoreNLP pipeline, String text) {
+        List<String> lemmas = new ArrayList<String>();
+        Annotation document = new Annotation(text);
+        pipeline.annotate(document);
+
+        List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+        for(CoreMap sentence: sentences) {
+            for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
+                lemmas.add(token.get(LemmaAnnotation.class));
+            }
+        }
+
+        return lemmas;
+    }
+	
+	public static List<String> getSynonyms (StanfordCoreNLP pipeline, String word, POS pos) throws IOException{
+		 URL url = new URL ("file", null , "dict" ) ;
+		 IDictionary dict = new Dictionary ( url ) ;
+		 dict.open () ;
+		 String lemma = lemmatize(pipeline, word).get(0);
+		 IIndexWord idxWord = dict.getIndexWord (lemma, pos) ;
+		 IWordID wordID = idxWord.getWordIDs().get(0) ;
+		 IWord iword = dict.getWord(wordID);
+		 List<String> syns = new ArrayList<String>();
+		 ISynset synset = iword.getSynset();
+		 for (IWord syn : synset.getWords()) {
+			 syns.add(syn.getLemma().replace("_", " "));
+	        }
+		 return syns;
+	}
+	
 	private static String removeEndPunct(String phrase) {
 		String removed = phrase;
 		String[] punct = {"!", "?", ".",",", ";", ":", "'s", "'"};
@@ -600,11 +640,6 @@ public class FEVER_OSU {
 		ArrayList<String> nouns = getNouns(wikiTitle, constituencyTree);
 	    List<String[]> filteredNamedEntities = namedEntities.stream().filter(arr -> !wikiTitle.contains(arr[0]))
 				.collect(Collectors.toList());
-	    System.out.println("claim named entities: ");
-	    for(String[] ne : filteredNamedEntities) {
-	    	System.out.print(ne[0] + "(" + ne[1] + "), ");
-	    }
-	    System.out.println();
 			
 	    ArrayList<String[]> nounsAndNamedEntities = new ArrayList<String[]>(filteredNamedEntities);
 		for(String noun: nouns) {
@@ -630,88 +665,95 @@ public class FEVER_OSU {
 		altMap.put("DATE", "SET");
 		altMap.put("SET", "DATE");
 		
-		boolean containsEntities = true;
-		//unnecessary if statements are included here for the benefit of a descriptive text log
-		if(evidenceSentence.isEmpty()) {
-			containsEntities = false;
+		boolean validSentence = true;
+		if(evidenceSentence.isEmpty() || claimNE.isEmpty()) {
+			validSentence = false;
 		}
-		else if(claimNE.isEmpty()) {
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("contains no entities.");
-			containsEntities = false;
-		}
-		System.out.println("entities: " );
+		System.out.print("claim entities: " );
 		for(String[] ne : claimNE) {
 	    	System.out.print(ne[0] + "(" + ne[1] + "), ");
-	    }
+		}
+		System.out.println();
+
 		String[] entityToBeSwapped = null;
 		for(String[] ne: claimNE) {
 			if(!evidenceSentence.toLowerCase().contains(ne[0]) && entityToBeSwapped == null) {
 				entityToBeSwapped = ne.clone();
 			}
-			else if(!evidenceSentence.toLowerCase().contains(ne[0]) && containsEntities) {
-				System.out.println("sentence: " + evidenceSentence);
-				System.out.println("Missing both: \"" + ne[0] + "\" and \"" + entityToBeSwapped[0] + "\"");
-				containsEntities = false;
-			}
-			
+			else if(!evidenceSentence.toLowerCase().contains(ne[0]) && validSentence) {
+				validSentence = false;
+				System.out.println("two missing");
+			}	
 		}
 		if(entityToBeSwapped == null) {
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("contains all entites");
+			System.out.println("all clear");
 		}
-		if(containsEntities && entityToBeSwapped != null && entityToBeSwapped[1] == "NOUN") {
-			System.out.println("sentence: " + evidenceSentence);
-			if(isNounComplement(claim) && isNounComplement(evidenceSentence)) {
-				System.out.println("The only remaining entity is a generic noun, and it's a 'is a' sentence.");
-			} else {
-				System.out.println("The only remaining entity is a generic noun, which can't be reliably replaced.");
-				//TODO: synset
-				containsEntities = false;
+		if(validSentence && entityToBeSwapped != null && entityToBeSwapped[1] == "NOUN") {
+			if(!isNounComplement(claim) || !isNounComplement(evidenceSentence)) {
+				validSentence = false;
+				try {
+					List<String> evSentLemmas = lemmatize(pipeline, evidenceSentence);
+					List<String> nounSyns = getSynonyms(pipeline, entityToBeSwapped[0], POS.NOUN);
+					for(String syn : nounSyns) {
+						if(evSentLemmas.contains(syn)) {
+							validSentence = true;
+							System.out.println("SYN: ");
+							System.out.println("sentence lemmas: " + evSentLemmas);
+							System.out.println("syn: " + syn);
+						}
+				}
+				}catch(Exception e) {
+				}
+				
 			}
 		}
 		boolean missingRootVerb = false;
 		if(isVerb(root, pipeline) && !evidenceSentence.contains(root)) {
+			//TODO: synset
 			missingRootVerb = true;
+			try {
+				List<String> evSentLemmas = lemmatize(pipeline, evidenceSentence);
+				List<String> verbRootSyns = getSynonyms(pipeline, root, POS.VERB);
+				for(String syn : verbRootSyns) {
+					if(evSentLemmas.contains(syn)) {
+						missingRootVerb = false;
+						System.out.println("SYN: ");
+						System.out.println("sentence lemmas: " + evSentLemmas);
+						System.out.println("syn: " + syn);
+					}
+			}
+			}catch(Exception e) {
+			}
+			
 		}
-		if(containsEntities && entityToBeSwapped != null && entityToBeSwapped[1] != "NOUN" && missingRootVerb) {
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("The entity cannot be swapped because the root word is a verb which is missing.");
-			containsEntities = false;
+		if(validSentence && entityToBeSwapped != null && entityToBeSwapped[1] != "NOUN" && missingRootVerb) {
+			validSentence = false;
 		}
 		List<String[]> evidenceEntities = null;
-		if(containsEntities && entityToBeSwapped != null && entityToBeSwapped[1] != "NOUN" && !missingRootVerb) {
+		if(validSentence && entityToBeSwapped != null && entityToBeSwapped[1] != "NOUN" && !missingRootVerb) {
 			evidenceEntities = getNamedEntities(evidenceSentence, pipeline).stream().filter(arr -> !wikiTitle.contains(arr[0]))
 					.collect(Collectors.toList());
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("entity " + entityToBeSwapped[0] + "(" + entityToBeSwapped[1] + ") is missing. Attempting to find replacement");
-			System.out.print("sentence named entities: ");
-		    for(String[] ne : evidenceEntities) {
-		    	System.out.print(ne[0] + "(" + ne[1] + "), ");
-		    }
-		    System.out.println();
-			containsEntities = false;
+			validSentence = false;
 			String alternative = altMap.get(entityToBeSwapped[1]);
 			for(String[] ne: evidenceEntities) {
-				if(!containsEntities && (ne[1].equals(entityToBeSwapped[1]) || (alternative != null && alternative.equals(ne[1])))) {
-					containsEntities = true;
-					System.out.println("Swap successful: " + ne[0] + " for " + entityToBeSwapped[0]);
+				if(ne[1].equals(entityToBeSwapped[1]) || (alternative != null && alternative.equals(ne[1]))) {
+					validSentence = true;
+					System.out.println("swapped: " + ne[0] + entityToBeSwapped[0]);
 				}
 			}
 		}
 		
 		List<String> claimDates = claimNE.stream().filter(ne -> ne[1].equals("DATE")).map(ne -> ne[0]).collect(Collectors.toList());
-		if(!containsEntities &&  evidenceSentence.contains("-LRB-") && 
-				((claim.contains("born") && !claimDates.isEmpty()) || 
-						claim.contains("died") || claim.contains("dead"))) {
+		if(!validSentence &&  evidenceSentence.contains("-LRB-") && 
+				((claim.contains("born") && !claimDates.isEmpty()) || claim.contains("died") || claim.contains("dead"))) {
 			if(evidenceEntities == null) {
 				evidenceEntities = getNamedEntities(evidenceSentence, pipeline).stream().filter(arr -> !wikiTitle.contains(arr[0]))
 					.collect(Collectors.toList());
 			}
-			containsEntities = wikiBirthDeath(claim, evidenceEntities, evidenceSentence);
+			validSentence = wikiBirthDeath(claim, evidenceEntities, evidenceSentence);
 		}
 		
-		return containsEntities;
+		return validSentence;
 	}
 	
 	private static boolean isNounComplement(String sentence) {
@@ -767,10 +809,9 @@ public class FEVER_OSU {
 		String rootAlone = " " + root + " ";
 		boolean validRoot = false;
 		if(isVerb(root, pipeline) && !Arrays.asList(isWords).contains(root) && sentence.toLowerCase().contains(rootAlone)) {
-			System.out.println("Sentence: " + sentence);
-			System.out.println("Added via presence of root " + root);
 			validRoot = true;
 		}
+		if(validRoot) System.out.println("valid root");
 		return validRoot;
 	}
 	
@@ -945,7 +986,6 @@ public class FEVER_OSU {
 			}
 		
 		}
-		System.out.println("final topics: " + backupDocs.toString());
 		return backupDocs;
 	}
 	
@@ -954,7 +994,6 @@ public class FEVER_OSU {
 		try {
 			String lines = disambiguation.getString("lines");
 			String[] entries = lines.split("[\\n[\\d+]\\t]+");
-			System.out.println("entries: " + entries.toString());
 			ArrayList<String> topics = new ArrayList<String>();
 			for(int i = 1; i < entries.length; i++) {
 				String[] tabs = entries[i].split("\\t");

@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/stanford-corenlp-3.9.1-models.jar"/>
 	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/commons-lang3-3.7.jar"/>
 	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/jwnl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacks/Documents/FEVER/edu.mit.jwi_2.4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
