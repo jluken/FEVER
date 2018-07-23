@@ -220,7 +220,7 @@ public class FEVER_OSU {
 		claimTopics = removeSubsets(claimTopics);
 		System.out.println("search: " + claimTopics.toString());
 		ArrayList<Map<String, String>> primaryDocs = getDocsFromTopics(claimTopics);
-		ArrayList<String> backupDocs = getBackupDocs(claimTopics, primaryDocs);
+		ArrayList<String> backupDocs = getBackupDocKeys(claimTopics, primaryDocs);
 		Map<String, Object> allDocs = new HashMap<String, Object>();
 		allDocs.put("primary", primaryDocs);
 		allDocs.put("backup", backupDocs);
@@ -927,7 +927,7 @@ public class FEVER_OSU {
 	private static ArrayList<Map<String, String>> getDocsFromTopics(ArrayList<String> possibleTopics) {
 		ArrayList<Map<String, String>> wikiDocs = new ArrayList<Map<String, String>>();
 		for(String topic: possibleTopics) {
-			String urlTitle = StringUtils.capitalize(topic.replace(' ', '_')).replace("(", "-LRB-").replace(")", "-RRB-");;
+			String urlTitle = StringUtils.capitalize(topic.replace(' ', '_')).replace("(", "-LRB-").replace(")", "-RRB-");
 			Map<String, String> wikiDoc = new HashMap<String, String>();
 			boolean emptyDisam = false;
 			if (!topic.isEmpty() && wikiMap.containsKey(urlTitle)){
@@ -1020,10 +1020,10 @@ public class FEVER_OSU {
 		return backupDocs;
 	}
 	
-	private static ArrayList<String> getBackupDocs(ArrayList<String> possibleTopics, ArrayList<Map<String, String>> existingDocs) {
+	private static ArrayList<String> getBackupDocKeys(ArrayList<String> possibleTopics, ArrayList<Map<String, String>> existingDocs) {
 		ArrayList<String> backupDocs = new ArrayList<String>();
 		for(String topic: possibleTopics) {
-			String urlTitle = StringUtils.capitalize(topic.replace(' ', '_'));
+			String urlTitle = StringUtils.capitalize(topic.replace(' ', '_').replace("(", "-LRB-").replace(")", "-RRB-"));
 			if (!topic.isEmpty() && disambiguationMap.containsKey(urlTitle)){
 				backupDocs.addAll(disambiguationMap.get(urlTitle));
 				for(Map<String, String> wiki: existingDocs) {
@@ -1046,7 +1046,7 @@ public class FEVER_OSU {
 			for(int i = 1; i < entries.length; i++) {
 				String[] tabs = entries[i].split("\\t");
 				String wiki = tabs.length > 1 ? tabs[1] : null;
-				if(wiki != null && !wiki.replace(' ', '_').equals(disambiguation.getString("id"))) {
+				if(wiki != null && !wiki.replace(' ', '_').replace("(", "-LRB-").replace(")", "-RRB-").equals(disambiguation.getString("id"))) {
 					topics.add(wiki);
 				}
 			}
@@ -1072,7 +1072,7 @@ public class FEVER_OSU {
 					Scanner s = new Scanner(wikiEntryList);
 					long byteOffset = 0;
 					while(s.hasNextLine()) {
-						String wikiEntry = Normalizer.normalize(s.nextLine(), Normalizer.Form.NFD);
+						String wikiEntry = Normalizer.normalize(s.nextLine(), Normalizer.Form.NFC);
 					    JSONObject wikiJson = new JSONObject(wikiEntry);
 					    String id = wikiJson.getString("id");
 					    if(!id.isEmpty()) {
