@@ -63,7 +63,7 @@ public class FEVER_OSU {
 	static String outputFileName = "dev_predicted_evidence.jsonl";
 	static String wikiDirName = "wiki-dump";
 
-	static int numClaimsToTest = 5;
+	static int numClaimsToTest = 0;
 	static int claimBatchSize = 10;
 	static boolean testAll = false;
 	
@@ -80,8 +80,8 @@ public class FEVER_OSU {
 	    System.out.println("CoreNLP pipeline established. Time: "+dtf.format(LocalDateTime.now()));	    
 	    compileWikiMaps();
 		System.out.println("wikiMaps compiled. Time: "+dtf.format(LocalDateTime.now()));
-		compileCorrelationMap();
-		System.out.println("correlationMap compiled. Time: "+dtf.format(LocalDateTime.now()));
+//		compileCorrelationMap();
+//		System.out.println("correlationMap compiled. Time: "+dtf.format(LocalDateTime.now()));
 		
 		int claimCount =0;
 		try {
@@ -197,20 +197,20 @@ public class FEVER_OSU {
 		
 	}	
 	
-	@SuppressWarnings("unchecked")
-	private static void compileCorrelationMap() {
-		try {
-		     FileInputStream fileIn = new FileInputStream("rootCorrelations.ser");
-		     ObjectInputStream in = new ObjectInputStream(fileIn);
-		     correlationMap = (Map<String, Map<String, Float>>) in.readObject();
-		     in.close();
-		     fileIn.close();
-		  } catch (Exception e) {
-			  e.printStackTrace();
-			  correlationMap = new HashMap<String, Map<String, Float>>();
-		  } 
-
-	}
+//	@SuppressWarnings("unchecked")
+//	private static void compileCorrelationMap() {
+//		try {
+//		     FileInputStream fileIn = new FileInputStream("rootCorrelations.ser");
+//		     ObjectInputStream in = new ObjectInputStream(fileIn);
+//		     correlationMap = (Map<String, Map<String, Float>>) in.readObject();
+//		     in.close();
+//		     fileIn.close();
+//		  } catch (Exception e) {
+//			  e.printStackTrace();
+//			  correlationMap = new HashMap<String, Map<String, Float>>();
+//		  } 
+//
+//	}
 	
 	private static Map<String, Object> findDocuments(String claim, SemanticGraph dependencyGraph, Tree constituencyTree, ArrayList<String[]> namedEntities){
 		ArrayList<String> claimTopics = getProperTerms(claim, namedEntities);
