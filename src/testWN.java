@@ -31,15 +31,15 @@ public class testWN {
         // StanfordCoreNLP loads a lot of models, so you probably
         // only want to do this once per execution
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		
-		 
-		
-		 // look up first sense of the word "dog "
-		 String word = "ep";
-		 List<String> syns = getSynonyms(pipeline, word, POS.VERB);
-		 System . out . println (" Synset = " + syns.toString()) ;
-		 
-		 String sent = "There is a boy and -LRB- his dogs -RRB- who ran to the park.";
+//		
+//		 
+//		
+//		 // look up first sense of the word "dog "
+//		 String word = "ep";
+//		 List<String> syns = getSynonyms(pipeline, word, POS.VERB);
+//		 System . out . println (" Synset = " + syns.toString()) ;
+//		 
+		 String sent = "kjdasfhlkdsafhal";
 		 List<String> sentLemmas = lemmatize(pipeline, sent);
 		 System.out.println("sent lemmas: " + sentLemmas.toString());
 		 }
