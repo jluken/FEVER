@@ -15,10 +15,11 @@ from keras.layers.normalization import BatchNormalization
 from keras.layers.pooling import GlobalAveragePooling1D, GlobalMaxPooling1D
 # from keras.layers import add, concatenate
 from keras.layers import merge, add, concatenate, SpatialDropout1D
+from pprint import pprint
 
 
 def build_model(vectors, shape, settings):
-    print(settings)
+    pprint(settings)
     '''Compile the model.'''
     max_length, nr_hidden, nr_class = shape
     text_max_length = settings['text_max_length']
@@ -51,7 +52,7 @@ def build_model(vectors, shape, settings):
         ents2 = Input(shape=(ent_max_length,), dtype='int32', name='ents2')
         inputs += [ents1, ents2]
         # Construct operations, which we'll chain together.
-        entity_embed = _EntityEmbedding(ent_max_length, entity_dim=nr_hidden)
+        entity_embed = _EntityEmbedding(ent_max_length, entity_dim=10, output_dim=nr_hidden)
 
         entemb1 = entity_embed(ents1) # ent_max_length * nr_hidden
         entemb2 = entity_embed(ents2) # ent_max_length * nr_hidden
@@ -59,13 +60,11 @@ def build_model(vectors, shape, settings):
         # (text_max_length + 2*ent_max_length) x nr_hidden
         sent1 = concatenate([sent1, entemb1], axis=1)
         sent2 = concatenate([sent2, entemb2], axis=1)
-        print("Concatenated sentence with enities", sent1.shape)
 
 
     if settings['gru_encode']:
         sent1 = encode(sent1)
         sent2 = encode(sent2)
-        print("gruencode")
 
     attention = attend(sent1, sent2)  # Shape: (i, j)
 
@@ -127,7 +126,6 @@ class _StaticEmbedding(object):
 
     def __call__(self, sentence):
         def get_output_shape(shapes):
-            print(shapes)
             return shapes[0]
         mod_sent = self.mod_ids(sentence)
         tuning = self.tune(mod_sent)
@@ -141,20 +139,21 @@ class _StaticEmbedding(object):
         return vectors
 
 class _EntityEmbedding(object):
-    def __init__(self, max_length, entity_dim=10, dropout=0.0):
+    def __init__(self, max_length, entity_dim=10, output_dim=200, dropout=0.0):
         self.max_length = max_length
-        self.embed = Embedding(20,
-                               entity_dim,
-                               input_length=max_length,
-                               name='ent_embed',
-                               trainable=True)
+        self.embed = Sequential()
+        self.embed.add(Embedding(20,
+                                 entity_dim,
+                                 input_length=max_length,
+                                 name='ent_embed',
+                                 trainable=True))
+        self.embed.add(TimeDistributed(Dense(output_dim)))
 
     def __call__(self, sentence):
         def get_output_shape(shapes):
-            print(shapes)
             return shapes[0]
 
-        print(self.embed.input_dim, self.embed.output_dim, self.embed.input_length)
+        # print(self.embed.input_dim, self.embed.output_dim, self.embed.input_length)
         return self.embed(sentence)
 
 
@@ -269,7 +268,7 @@ class _Entailment(object):
 
     def __call__(self, feats1, feats2):
         features = add([feats1, feats2])
-        print(features)
+        # print(features)
         return self.model(features)
 
 
