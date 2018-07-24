@@ -63,7 +63,7 @@ public class FEVER_OSU {
 	static String outputFileName = "dev_predicted_evidence.jsonl";
 	static String wikiDirName = "wiki-dump";
 
-	static int numClaimsToTest = 0;
+	static int numClaimsToTest = 5;
 	static int claimBatchSize = 10;
 	static boolean testAll = false;
 	
@@ -80,8 +80,6 @@ public class FEVER_OSU {
 	    System.out.println("CoreNLP pipeline established. Time: "+dtf.format(LocalDateTime.now()));	    
 	    compileWikiMaps();
 		System.out.println("wikiMaps compiled. Time: "+dtf.format(LocalDateTime.now()));
-//		compileCorrelationMap();
-//		System.out.println("correlationMap compiled. Time: "+dtf.format(LocalDateTime.now()));
 		
 		int claimCount =0;
 		try {
@@ -110,10 +108,6 @@ public class FEVER_OSU {
 					SemanticGraph dependencyGraph = claimDoc.dependencyParse();
 					String formattedClaim = formatSentence(claim);
 					ArrayList<String[]> claimNE = getNamedEntities(formattedClaim, pipeline);
-					System.out.print("claim entities: ");
-					for(String[] ne : claimNE) {
-						System.out.print(ne[0] + "(" + ne[1] + ")");
-					}
 					System.out.println();
 					Map<String, Object> documents = findDocuments(claim, dependencyGraph, constituencyTree, claimNE);
 					ArrayList<Map<String, String>> primaryDocuments = (ArrayList<Map<String, String>>) documents.get("primary");
@@ -240,7 +234,12 @@ public class FEVER_OSU {
 			System.out.println("Sentences added from wiki " + wikiName + ":");
 			for(int i = 0; i < wikiLines.length; i++) {
 				String sentence = getSentenceTextFromWikiLines(wikiLines[i]);
-				//System.out.println("sentence: " + sentence);
+				System.out.println("sentence "+ i + ": " + sentence);
+				System.out.print("NANE: ");
+				for(String[] ne : nane) {
+					System.out.print(ne[0] + "(" + ne[1] + ")");
+				}
+				System.out.println();
 				if(containsNamedEntities(sentence, claim, nane, wikiTitle, pipeline, root) || 
 						containsValidRoot(sentence, root, pipeline)) {
 					Object[] evidence = new Object[2];
@@ -658,7 +657,7 @@ public class FEVER_OSU {
 	}
 
 	private static ArrayList<String> getNouns(String wikiTitle, Tree constituencyTree) {
-		String[] ignoredNouns = {"something", "anything", "thing", "there", "name"};
+		String[] ignoredNouns = {"something", "anything", "thing", "there", "name", "part"};
 		List<String> ignoredNounsList = Arrays.asList(ignoredNouns);
 		List<Tree> leaves = constituencyTree.getLeaves();
 	    int wordNum = 0;
@@ -719,7 +718,6 @@ public class FEVER_OSU {
 				entityToBeSwapped = ne.clone();
 			}
 			else if(!evidenceSentence.toLowerCase().contains(ne[0])) {
-				System.out.println("sentence: " + evidenceSentence);
 				System.out.println("double missing");
 				validSentence = false;
 			}	
@@ -728,11 +726,13 @@ public class FEVER_OSU {
 			//both sentences need to be noun complements, have at least 2 other matching entities
 			//or the evidence needs to have a synonym of the missing noun
 			if(!isNounComplement(claim) || !isNounComplement(evidenceSentence)) {
-				validSentence = containsSynonym(entityToBeSwapped[0], POS.NOUN, evidenceSentence, pipeline);				
+				validSentence = containsSynonym(entityToBeSwapped[0], POS.NOUN, evidenceSentence, pipeline);
+				if(!validSentence) {
+					System.out.println("noun has no synonym");
+				}
 			}
 		}	
 		if(validSentence && entityToBeSwapped[1] == "NOUN" && claimNE.size() >= 3) {
-			System.out.println("sentence: " + evidenceSentence);
 			System.out.println("excused because of matching");
 		}
 		
@@ -741,7 +741,6 @@ public class FEVER_OSU {
 			if(isVerb(root, pipeline) && !(evidenceSentence.contains(root) || containsSynonym(root, POS.VERB, evidenceSentence, pipeline))) {
 				//if the evidence is missing a root verb and a named entity, then the evidence needs to have a synonym of the missing root
 				validSentence = false;
-				System.out.println("sentence: " + evidenceSentence);
 				System.out.println("missing root verb");
 			}
 			else {
@@ -793,52 +792,21 @@ public class FEVER_OSU {
 	}
 	
 	private static boolean isNounComplement(String sentence) {
-		String[] NCTags = {" is a ", " is an " , " was a " , " was an "};
-		boolean isNC = false;
-		for(String tag : NCTags) {
-			if(sentence.contains(tag)) {
-				isNC = true;
+		String[] bes = {" is", " was"};
+		String[] adverbs = {" ", " only ", " always ", " never ", " not ", };
+		String[] dets = {"a ", "an ", "the "};
+		for(String verb : bes) {
+			for(String adverb : adverbs) {
+				for(String det : dets) {
+					String ncTag = verb + adverb + det;
+					if(sentence.contains(ncTag)) {
+						return true;
+					}
+				}
 			}
 		}
-		return isNC;
+		return false;
 	}
-	
-//	private static boolean containsCorrelatedWord(String sentence, String root, String wikiTitle) {
-//		ArrayList<String> words = getWords(wikiTitle, sentence.toLowerCase());
-//		boolean correlated = false;
-//		if(correlationMap.containsKey(root)) {
-//			Map<String, Float> correlations = correlationMap.get(root);	
-//			for(String word: words) {
-//				if(correlations.containsKey(word)) {
-//					System.out.println("Sentence: " + sentence);
-//					System.out.println("Added via correlation of root " + root + " to word " + word + ". correlation score: " + correlations.get(word));
-//					correlated = true;
-//				}
-//			}
-//		}
-//		return correlated;
-//	}
-	
-//	private static ArrayList<String> getWords(String wikiTitle, String claim) {
-//		String[] words = claim.split(" |\\t");
-//		
-//	    ArrayList<String> wordList = new ArrayList<String>();
-//	    String[] skipWords = {"a", "an", "the", "at", "by", "down", "for", "from", "in", "into", "like", "near", "of", "off", "on", "onto", "onto", "over", 
-//				"past", "to", "upon", "with", "and", "&", "as", "but", "for", "if", "nor", "once", "or", "so", "than", "that", "till", "when", "yet", "'s", "'",
-//				"be", "is", "am", "are", "was", "were", "been", "being", "has", "have", "had", "having", "do", "does", "did",
-//				"he", "his", "him", "she", "her", "hers", "it", "its", "they", "theirs",
-//				".","!","?",",",";",":", "-rrb-", "-lrb-", "-rsb-", "-lsb-", "", "0", "``", "''", "--", "-"};
-//	    
-//	    for(int i = 0; i < words.length; i++) {
-//	    	String word = words[i];
-//	    	if(!Arrays.asList(skipWords).contains(word) && !wikiTitle.contains(word)) {
-//	    		wordList.add(word);
-//	    	} 
-//	    }
-//
-//	    wordList = (ArrayList<String>) wordList.stream().distinct().collect(Collectors.toList());
-//	    return wordList;
-//	}
 	
 	private static boolean containsValidRoot(String sentence, String root, StanfordCoreNLP pipeline) {
 		String[] isWords = {"is", "was", "be", "are", "were", "has", "had", "have"};
@@ -849,7 +817,6 @@ public class FEVER_OSU {
 			validRoot = true;
 		}
 		if(validRoot) {
-			System.out.println("Sentence: " + sentence);
 			System.out.println("valid root: " + root);
 		}
 		return validRoot;
