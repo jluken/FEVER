@@ -186,43 +186,6 @@ def aggregate_classifier_result(ids, evids, predictions):
     return result_by_claim
 
 
-def write_classifier_prediction(sents1, sents2, ids, predictions, infile, model_dir):
-    LABELS = ['SUPPORTS', 'REFUTES', 'NOT ENOUGH INFO']
-    outfile = model_dir / "classifier_prediction.jsonl"
-    print("Write classifer output to ", outfile)
-    result_by_claim = dict()
-
-    with open(outfile, 'w') as f:
-        for i, (sent1, sent2, num, pred) in enumerate(zip(sents1, sents2, ids, predictions)):
-            snli_result = dict()
-            snli_result['evidence'] = sent1
-            snli_result['claim'] = sent2
-            snli_result['id'] = num
-
-            snli_result['prediction'] = LABELS[int(pred.argmax())]
-            score = list(map(float, list(pred)))
-            # snli_result['scores'] = score
-
-            f.write(json.dumps(snli_result) + "\n")
-            try:
-                data = result_by_claim[num]
-                assert data['id'] == num
-                assert data['claim'] == sent2
-            except KeyError:
-                result_by_claim[num] = dict()
-                data = result_by_claim[num]
-                data['id'] = num
-                data['claim'] = sent2
-                data['predicted_evidence'] = []
-            data['predicted_evidence'].append({ 'evidence_sentence': sent1,
-                                                'prediction': LABELS[int(pred.argmax())],
-                                                'score': score
-                                                 })
-
-    f.close()
-    return result_by_claim
-
-
 def write_fever_prediction(result_by_claim, infile, model_dir, max_evidence=5):
     def format_evidence(dicts, debug=False):
         predicted_evidence = []
@@ -231,63 +194,72 @@ def write_fever_prediction(result_by_claim, infile, model_dir, max_evidence=5):
             page, idx = evid.split("~")
             output = [page, int(idx)]
             if debug:
-                output += x.values()
+                output += [x['prediction'], x['score']]
             predicted_evidence.append(output)
         return predicted_evidence
-    # def write_debug_log(content, pred_result, discarded, debugf):
-    #     debugf.write("ID\t" + str(content["id"]) + "\n")
-    #     debugf.write("Claim\t" + content["claim"] + "\n")
-    #     debugf.write("Predictions " + content["evidence"] + "\n")
-    #     debugf.write("Discarded evidence: ")
 
     LABELS = ['SUPPORTS', 'REFUTES', 'NOT ENOUGH INFO']
-    with open(model_dir / 'fever_prediction.jsonl', 'w') as f, \
+    with open(model_dir / 'predictions.jsonl', 'w') as f, \
+         open(model_dir / "fever_debug", "w") as f_debug, \
          open(infile, "r") as infile_:
-         # open(model_dir / "fever_debug", "w") as f_debug, \
         for i, line in enumerate(infile_):
             content = json.loads(line)
             num = content["id"]
             pred_evidence = content["evidence"]
-            if len(pred_evidence) == 0:
-                content["predicted_label"] = "NOT ENOUGH INFO"
-                content["predicted_evidence"] = []
-                content.pop("evidence")
-                f.write(json.dumps(content) + "\n")
-                continue
 
-            result = result_by_claim[num]
-            non_nei_evidences = []
-            # non_nei_evidences = [x for x in result['predicted_evidence'] if x['prediction'] != 'NOT ENOUGH INFO']
+            debug_content = {'id': content["id"],
+                             'claim': content["claim"],
+                             'retrieved_evidence': content['evidence']}
+
             discarded_evidences = []
-            for ev in result['predicted_evidence']:
-                if ev['prediction'] != 'NOT ENOUGH INFO':
-                    non_nei_evidences.append(ev)
+            top_scored_evidences = []
+            if len(pred_evidence) > 0:
+                result = result_by_claim[num]
+                non_nei_evidences = []
+                # Remove the evidences with label NEI
+                # non_nei_evidences = [x for x in result['predicted_evidence'] if x['prediction'] != 'NOT ENOUGH INFO']
+                for ev in result['predicted_evidence']:
+                    if ev['prediction'] != 'NOT ENOUGH INFO':
+                        non_nei_evidences.append(ev)
+                    else:
+                        discarded_evidences.append(ev)
+
+                # Calculate the end label for the claim
+                # by summing all evidences scores
+                if len(non_nei_evidences) > 0:
+                    all_scores = [ev['score'] for ev in non_nei_evidences]
+                    score_sum = numpy.array([sum(x) for x in zip(*all_scores)])
+                    end_label = LABELS[int(score_sum.argmax())]
+                    debug_content["predicted_label"] = end_label
+
+                    # Remove evidences with label different from end_label
+                    consistent_evidences = [x for x in non_nei_evidences if x['prediction'] == end_label]
+                    inconsistent_evidences = [x for x in non_nei_evidences if x['prediction'] != end_label]
+                    discarded_evidences += inconsistent_evidences
+
+                    # Choose top 5 evidences with highest score
+                    top_scored_evidences = sorted(consistent_evidences, key=lambda k: max(k['score']))[:max_evidence]
+                    debug_content["predicted_evidence"] = format_evidence(top_scored_evidences, debug=True)
+                    debug_content['discarded_evidence'] = format_evidence(discarded_evidences, debug=True)
+
                 else:
-                    discarded_evidences.append(ev)
-
-            if len(non_nei_evidences) == 0:
-                content["predicted_label"] = "NOT ENOUGH INFO"
-                content["predicted_evidence"] = []
+                    debug_content["predicted_evidence"] = []
+                    debug_content["predicted_label"] = "NOT ENOUGH INFO"
             else:
-                all_scores = [ev['score'] for ev in non_nei_evidences]
-                score_sum = numpy.array([sum(x) for x in zip(*all_scores)])
-                end_label = LABELS[int(score_sum.argmax())]
-                content["predicted_label"] = end_label
+                debug_content["predicted_evidence"] = []
+                debug_content["predicted_label"] = "NOT ENOUGH INFO"
 
-                # filter the evidence with different
-                consistent_evidences = [x for x in non_nei_evidences if x['prediction'] == end_label]
-                inconsistent_evidences = [x for x in non_nei_evidences if x['prediction'] != end_label]
-                discarded_evidences += inconsistent_evidences
 
-                # choose the top scored evidence
-                top_scored_evidences = sorted(consistent_evidences, key=lambda k: max(k['score']))[:max_evidence]
-                content["predicted_evidence"] = format_evidence(top_scored_evidences)
-            content.pop("evidence")
-            f.write(json.dumps(content) + "\n")
+            f_debug.write(json.dumps(debug_content) + "\n")
+            output_content = {'id': num,
+                              'predicted_label': debug_content['predicted_label'],
+                              'predicted_evidence': format_evidence(top_scored_evidences)
+                              }
+            f.write(json.dumps(output_content) + "\n")
 
     f.close()
-    # f_debug.close()
-    print("Write files:", model_dir / 'fever_prediction.jsonl')
+    f_debug.close()
+    print("Write files:", model_dir / 'predictions.jsonl', model_dir /'fever_debug')
 
 
 def strip_brackets(sent):

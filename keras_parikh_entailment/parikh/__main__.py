@@ -7,10 +7,10 @@ from pathlib import Path, PosixPath
 import ujson as json
 import numpy
 import keras
+from keras.callbacks import ModelCheckpoint
 from keras.utils.np_utils import to_categorical
 from keras.models import model_from_json
 from keras.optimizers import Adam
-from keras.callbacks import ModelCheckpoint
 import random, string
 import os
 from os import listdir
@@ -27,10 +27,6 @@ try:
     import cPickle as pickle
 except ImportError:
     import pickle
-
-
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
 
 
 def preprocess(train_loc, dev_loc, test_loc, settings):
@@ -52,47 +48,33 @@ def preprocess(train_loc, dev_loc, test_loc, settings):
     Xs = [] # each array is data_count * max_length
     all_entity_labels = [] # each array is data_count * entity_length
     all_entity_ids = []
-    if (settings['embedding'] == "default"):
-        print('Use spaCy model\'s embeddings')
-        print('Processing text')
-        all_texts = [train_texts1, train_texts2, dev_texts1, dev_texts2, test_texts1, test_texts2]
-        for texts in all_texts:
-            piped = list(nlp.pipe(texts, n_threads=20, batch_size=20000))
-            text_ids = get_word_ids(piped,
-                                    max_length=settings['text_max_length'],
-                                    rnn_encode=settings['gru_encode'],
-                                    tree_truncate=settings['tree_truncate'])
-            Xs.append(text_ids)
 
-            print('Getting entity labels')
-            ents_doc, ents_label = get_ents_labels(piped,
-                                                max_length=settings['ent_max_length'])
-            all_entity_labels.append(ents_label)
-            print(ents_label.shape)
-            print(len(all_entity_labels))
-            # text_ents = [x + y for (x, y) in zip(piped, ents_doc)]
+    print('Processing text')
+    all_texts = [train_texts1, train_texts2, dev_texts1, dev_texts2, test_texts1, test_texts2]
+    for texts in all_texts:
+        piped = list(nlp.pipe(texts, n_threads=20, batch_size=20000))
+        text_ids = get_word_ids(piped,
+                                max_length=settings['text_max_length'],
+                                rnn_encode=settings['gru_encode'],
+                                tree_truncate=settings['tree_truncate'])
+        Xs.append(text_ids)
 
-            ents_ids = get_word_ids(ents_doc,
-                                    max_length=settings['ent_max_length'],
-                                    rnn_encode=settings['gru_encode'],
-                                    tree_truncate=False)
-            all_entity_ids.append(ents_ids)
+        print('Getting entity labels')
+        ents_doc, ents_label = get_ents_labels(piped,
+                                            max_length=settings['ent_max_length'])
+        all_entity_labels.append(ents_label)
+
+        ents_ids = get_word_ids(ents_doc,
+                                max_length=settings['ent_max_length'],
+                                rnn_encode=settings['gru_encode'],
+                                tree_truncate=False)
+        all_entity_ids.append(ents_ids)
 
 
     print("Xs\t", [x.shape for x in Xs])
     print("entity texts\t", [x.shape for x in all_entity_ids])
     print("entity labels\t", [x.shape for x in all_entity_labels])
 
-
-    # else:
-    #     print('Use embeddings in', settings['embedding'])
-    #     index_lookup, vectors = read_embedding_file(settings['embedding'])
-    #     model = build_model(numpy.array(vectors), shape, settings)
-    #     print('Processing text')
-    #     for texts in (train_texts1, train_texts2, dev_texts1, dev_texts2):
-    #         Xs.append(get_word_ids_from_lookup(list(nlp.pipe(texts, n_threads=20, batch_size=20000)),
-    #                                            index_lookup,
-    #                                            max_length=shape[0]))
 
     train_X1, train_X2,\
         dev_X1, dev_X2, \
@@ -166,7 +148,7 @@ def load_test_data(path):
             ents_test_ids1, ents_test_ids2, \
             test_claim_ids, test_ev_ids
 
-def compute_inputs_with_NER(input_X1, input_X2,
+def compute_inputs_with_NE(input_X1, input_X2,
                             ents_input_ids1, ents_input_ids2,
                             ents_input_labels1, ents_input_labels2):
 
@@ -179,8 +161,7 @@ def compute_inputs_with_NER(input_X1, input_X2,
     return inputs
 
 
-
-def train(train_loc, dev_loc, shape, settings, find_lr=False):
+def train(train_loc, dev_loc, shape, settings, test_train=False):
     preprocessed_data_path = settings['preprocess_data_dir']
 
     train_X1,           train_X2,           \
@@ -206,9 +187,14 @@ def train(train_loc, dev_loc, shape, settings, find_lr=False):
         devs   = [dev_X1,           dev_X2, \
                   ents_dev_labels1, ents_dev_labels2]
 
+    if test_train:
+        trains = [x[:10] for x in trains]
+        devs = [x[:10] for x in devs]
+        train_labels = train_labels[:10]
+        dev_labels = dev_labels[:10]
+
     print("train\t", [x.shape for x in trains])
     print("dev\t", [x.shape for x in devs])
-
 
     print('Loading spaCy')
     spacy_model = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/en_core_web_lg/en_core_web_lg-2.0.0'
@@ -235,24 +221,29 @@ def train(train_loc, dev_loc, shape, settings, find_lr=False):
             metrics=['accuracy'])
     else:
         model = build_model(embed_vectors, shape, settings)
+        model_dir.mkdir()
 
-
-    filepath= model_dir / "weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5"
+    filepath= str(model_dir / "weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5")
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
-    callbacks_list = [checkpoint]
 
     model.fit(
         trains,
         train_labels,
         validation_data=(devs, dev_labels),
         epochs=settings['nr_epoch'],
-        callbacks=callbacks_list,
-        verbose=0,
+        callbacks=[checkpoint],
+        batch_size=settings['batch_size'])
+
+
+
+    model.fit(
+        trains,
+        train_labels,
+        validation_data=(devs, dev_labels),
+        epochs=settings['nr_epoch'],
         batch_size=settings['batch_size'])
 
     model_dir = Path(settings['model_dir'])
-    if model_dir is None:
-        model_dir = Path(id_generator())
 
     if not model_dir.exists():
         model_dir.mkdir()
@@ -270,11 +261,9 @@ def evaluate_model(test_loc, shape, settings):
         ents_test_ids1, ents_test_ids2, \
         test_claim_ids, test_ev_ids = load_test_data(settings['preprocess_data_dir'])
 
-    # no_evidence_found_ids = load_no_evidence_found_id()
-
     model_dir = Path(settings['model_dir'])
 
-    prediction_file = model_dir / 'prediction_score.npy'
+    prediction_file = model_dir / 'prediction_scores.npy'
 
     if prediction_file.is_file():
         predictions = numpy.load(prediction_file)
@@ -282,6 +271,7 @@ def evaluate_model(test_loc, shape, settings):
         # apply this PR if receiving errors
         # https://github.com/keras-team/keras/pull/8031
         print("Initializing model from", model_dir)
+
         model = model_from_json(open(model_dir / 'config.json').read())
         weights = pickle.load(open(model_dir / 'model', "rb"))
         model.set_weights(weights)
@@ -293,46 +283,15 @@ def evaluate_model(test_loc, shape, settings):
 
         tests = [test_X1, test_X2]
         if settings['use_ent']:
-            tests = compute_inputs_with_NER(test_X1, test_X2,
-                                            ents_test_labels1, ents_test_labels2,
-                                            ents_test_ids1, ents_test_ids2)
+            tests = compute_inputs_with_NE(test_X1, test_X2,
+                                           ents_test_labels1, ents_test_labels2,
+                                           ents_test_ids1, ents_test_ids2)
 
-        print("Predict")
-        predictions = model.predict(tests)
-        print("predictions", predictions)
-
-        numpy.save(settings['model_dir'] / 'prediction_score.npy', predictions)
+        predictions = model.predict(tests, verbose=1)
+        print("Save prediction vectors to ", prediction_file)
+        numpy.save(prediction_file, predictions)
 
     write_prediction_files(test_claim_ids, test_ev_ids, predictions, test_loc, model_dir)
-
-    # outfile = settings['model_dir'] + '/prediction.jsonl'
-    # write_prediction_files(test_X1, test_X2, test_ev_ids, test_claim_ids, \
-    #                        predictions, outfile, test_loc, \
-    #                        no_evidence_found_ids=no_evidence_found_ids)
-    # print("Result written to", outfile)
-
-
-# LABELS = {'entailment': 0, 'contradiction': 1, 'neutral': 2}
-LABELS = {'SUPPORTS': 0, 'REFUTES': 1, 'NOT ENOUGH INFO': 2}
-def read_snli(path):
-    texts1 = []
-    texts2 = []
-    labels = []
-    ids = []
-    with path.open() as file_:
-        for line in tqdm(file_):
-            try:
-                eg = json.loads(line)
-            except:
-                print(line, type(line))
-            label = eg['gold_label']
-            if label == '-':
-                continue
-            texts1.append(eg['sentence1'])
-            texts2.append(eg['sentence2'])
-            labels.append(LABELS[label])
-            # ids.append(eg['id'])
-    return texts1, texts2, to_categorical(numpy.asarray(labels, dtype='int32')), ids
 
 
 def sample_random_sentences(total_sent_count, sentences, ids):
@@ -343,7 +302,9 @@ def sample_random_sentences(total_sent_count, sentences, ids):
         rand_ids.append(ids[i])
     return rand_sents, rand_ids
 
+
 def read_fever(path, blind=False):
+    LABELS = {'SUPPORTS': 0, 'REFUTES': 1, 'NOT ENOUGH INFO': 2}
     texts1 = []
     texts2 = []
     labels = []
@@ -394,19 +355,13 @@ def read_fever(path, blind=False):
                     label = content["label"]
                     labels.append(LABELS[label])
 
-    if blind:
-        with open("no_evidence_found_id", "w") as f:
-            f.write("\n".join([str(x) for x in no_evidence_found]))
-            f.close()
     if not blind:
         labels = to_categorical(numpy.asarray(labels, dtype='int32'))
     return texts1, texts2, labels, evidence_ids, claim_ids
 
-def load_no_evidence_found_id():
-    with open("no_evidence_found_id", "r") as f:
-        ids = list(f.read().split("\n"))
-        return ids
 
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 @plac.annotations(
@@ -426,10 +381,8 @@ def load_no_evidence_found_id():
     tree_truncate=("Truncate sentences by tree distance", "flag", "T", bool),
     gru_encode=("Encode sentences with bidirectional GRU", "flag", "E", bool),
     embedding=("Path to embedding to use", "option", 'M', str),
-    model_dir=("Name of the directory to save model to/load model from", "option", None, str),
-    find_lr=("Whether train to find lr", "flag", None, bool)
+    model_dir=("Name of the directory to save model to/load model from", "option", None, str)
 )
-
 
 def main(mode, train_loc, dev_loc, test_loc,
          preprocess_data_dir='preprocessed_data_coref/',
@@ -445,12 +398,15 @@ def main(mode, train_loc, dev_loc, test_loc,
         embedding="default",
         ent_max_length=25,
         model_dir=None,
-        find_lr=False
          ):
     if use_ent:
         shape = (text_max_length+(2*ent_max_length), nr_hidden, 3)
     else:
         shape = (text_max_length, nr_hidden, 3)
+
+    if model_dir is None:
+        model_dir = id_generator()
+
     settings = {
         'lr': learn_rate,
         'dropout': dropout,
@@ -458,24 +414,23 @@ def main(mode, train_loc, dev_loc, test_loc,
         'nr_epoch': nr_epoch,
         'tree_truncate': tree_truncate,
         'gru_encode': gru_encode,
-        'embedding': embedding,
         'model_dir': model_dir,
         'text_max_length': text_max_length,
         'ent_max_length': ent_max_length,
         'use_ent': use_ent,
         'preprocess_data_dir':preprocess_data_dir
     }
+
     if mode == 'train':
-        train(train_loc, dev_loc, shape, settings, find_lr=find_lr)
+        train(train_loc, dev_loc, shape, settings)
     elif mode == 'evaluate':
-        assert test_loc != None, 'evaluate model requires test data (use `-test-loc`)'
+        assert test_loc is not None, 'evaluate model requires test data (use `-test-loc`)'
         evaluate_model(test_loc, shape, settings)
     elif mode == 'preprocess':
         preprocess(train_loc, dev_loc, test_loc, settings)
     elif mode =='test':
-        for i in [True, False]:
-            settings['gru_encode'] = i
-            test_build_model(settings,shape)
+        test_build_model(settings,shape)
+        train(train_loc, dev_loc, shape, settings, test_train=True)
     else:
         demo()
 
