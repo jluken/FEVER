@@ -71,7 +71,9 @@ public class FEVER_OSU {
 	static Map<String, Map<String, Float>> correlationMap;
 	static Map<String, ArrayList<String>> disambiguationMap;
 	static Map<String, String> lowercaseMap;
-	
+
+    static IDictionary synonymDict = new Dictionary (new URL ("file", null , "dict" ) ;) ;
+
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
@@ -81,7 +83,9 @@ public class FEVER_OSU {
 	    System.out.println("CoreNLP pipeline established. Time: "+dtf.format(LocalDateTime.now()));	    
 	    compileWikiMaps();
 		System.out.println("wikiMaps compiled. Time: "+dtf.format(LocalDateTime.now()));
-		
+
+        synonymDict.open ();
+
 		int claimCount =0;
 		try {
 			Scanner claimReader = new Scanner(new FileReader(claimsFileName));
@@ -538,13 +542,10 @@ public class FEVER_OSU {
         return lemmas;
     }
 	
-	private static List<String> getSynonyms (StanfordCoreNLP pipeline, String word, POS pos){
+	private static List<String> getSynonyms (StanfordCoreNLP pipeline, String word, POS pos, IDictionary dict){
 		List<String> syns = new ArrayList<String>();
 		String lemma = word;
 		try {
-			 URL url = new URL ("file", null , "dict" ) ;
-			 IDictionary dict = new Dictionary ( url ) ;
-			 dict.open () ;
 			 lemma = lemmatize(pipeline, word).get(0);
 			 IIndexWord idxWord = dict.getIndexWord (lemma, pos) ;
 			 IWordID wordID = idxWord.getWordIDs().get(0) ;
@@ -785,7 +786,7 @@ public class FEVER_OSU {
 		boolean contains = false;
 		String[] ignoredLemmas = {"have", "do", "be"};
 		List<String> sentLemmas = lemmatize(pipeline, sentence);
-		List<String> syns = getSynonyms(pipeline, word, pos);
+		List<String> syns = getSynonyms(pipeline, word, pos, synonymDict);
 		for(String syn : syns) {
 			if(sentLemmas.contains(syn) && !Arrays.asList(ignoredLemmas).contains(syn)) {
 				contains = true;
