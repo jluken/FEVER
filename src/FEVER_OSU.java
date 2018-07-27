@@ -68,7 +68,6 @@ public class FEVER_OSU {
 
 	
 	static Map<String, Map<String, Object>> wikiMap;
-	static Map<String, Map<String, Float>> correlationMap;
 	static Map<String, ArrayList<String>> disambiguationMap;
 	static Map<String, String> lowercaseMap;
 
@@ -168,8 +167,7 @@ public class FEVER_OSU {
 	
 	
 	private static Map<String, Object> findDocuments(String claim, SemanticGraph dependencyGraph, Tree constituencyTree, ArrayList<String[]> namedEntities){
-		ArrayList<String> claimTopics = getProperTerms(claim, namedEntities);
-		claimTopics.addAll(getAllTopics(claim, dependencyGraph, constituencyTree));
+		ArrayList<String> claimTopics = getAllTopics(claim, dependencyGraph, constituencyTree, namedEntities);
 		claimTopics = (ArrayList<String>) claimTopics.stream().map(topic -> StringUtils.capitalize(topic)).distinct().collect(Collectors.toList());
 		claimTopics = removeSubsets(claimTopics);
 		ArrayList<Map<String, String>> primaryDocs = getDocsFromTopics(claimTopics);
@@ -293,7 +291,7 @@ public class FEVER_OSU {
 		return filtered;
 	}
 	
-	private static ArrayList<String> getAllTopics(String claimSentence, SemanticGraph dependencyGraph, Tree constituencyTree) {
+	private static ArrayList<String> getAllTopics(String claimSentence, SemanticGraph dependencyGraph, Tree constituencyTree, ArrayList<String[]> namedEntities) {
 		GrammaticalRelation[] subjectObjectRelations = {UniversalEnglishGrammaticalRelations.SUBJECT, UniversalEnglishGrammaticalRelations.CLAUSAL_PASSIVE_SUBJECT, 
 	    		UniversalEnglishGrammaticalRelations.CLAUSAL_SUBJECT, UniversalEnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT, 
 	    		UniversalEnglishGrammaticalRelations.NOMINAL_SUBJECT, UniversalEnglishGrammaticalRelations.DIRECT_OBJECT,
@@ -332,7 +330,7 @@ public class FEVER_OSU {
     		}
 	    }
 
-	    ArrayList<String> topicPhrases = new ArrayList<String>();
+	    ArrayList<String> topicPhrases = getProperTerms(claimSentence, namedEntities);
 	    for(int h = 0; h < topicList.size(); h++) {
 	    	IndexedWord topicWord = topicList.get(h);
 	    	String compoundPhrase = getCompoundPhrase(topicWord, dependencyGraph);
