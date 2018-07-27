@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.Normalizer;
@@ -62,12 +65,15 @@ public class FEVER_OSU {
 	static int numClaimsToTest = 20;
 	static int claimBatchSize = 100;
 	static boolean testAll = false;
+
 	
 	static Map<String, Map<String, Object>> wikiMap;
 	static Map<String, Map<String, Float>> correlationMap;
 	static Map<String, ArrayList<String>> disambiguationMap;
 	static Map<String, String> lowercaseMap;
-	
+
+    static IDictionary synonymDict;
+
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
@@ -75,9 +81,11 @@ public class FEVER_OSU {
 		
 		StanfordCoreNLP pipeline = establishPipeline();
 	    System.out.println("CoreNLP pipeline established. Time: "+dtf.format(LocalDateTime.now()));	    
-	    getWikiMaps(wikiDirName);;
+	    getWikiMaps(wikiDirName);
 		System.out.println("wikiMaps compiled. Time: "+dtf.format(LocalDateTime.now()));
+		getSynDict();
 		
+
 		int claimCount =0;
 		try {
 			Scanner claimReader = new Scanner(new FileReader(claimsFileName));
@@ -144,6 +152,18 @@ public class FEVER_OSU {
 	    props.put("ner.model", "english.conll.4class.distsim.crf.ser.gz");
 	    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 		return pipeline;
+	}
+	
+	private static void getSynDict() {
+		try {
+			synonymDict = new Dictionary (new URL ("file", null , "dict"));
+			synonymDict.open();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
 	}
 	
 	
@@ -459,13 +479,10 @@ public class FEVER_OSU {
         return lemmas;
     }
 	
-	private static List<String> getSynonyms (StanfordCoreNLP pipeline, String word, POS pos){
+	private static List<String> getSynonyms (StanfordCoreNLP pipeline, String word, POS pos, IDictionary dict){
 		List<String> syns = new ArrayList<String>();
 		String lemma = word;
 		try {
-			 URL url = new URL ("file", null , "dict" ) ;
-			 IDictionary dict = new Dictionary ( url ) ;
-			 dict.open () ;
 			 lemma = lemmatize(pipeline, word).get(0);
 			 IIndexWord idxWord = dict.getIndexWord (lemma, pos) ;
 			 IWordID wordID = idxWord.getWordIDs().get(0) ;
@@ -695,7 +712,7 @@ public class FEVER_OSU {
 		boolean contains = false;
 		String[] ignoredLemmas = {"have", "do", "be"};
 		List<String> sentLemmas = lemmatize(pipeline, sentence);
-		List<String> syns = getSynonyms(pipeline, word, pos);
+		List<String> syns = getSynonyms(pipeline, word, pos, synonymDict);
 		for(String syn : syns) {
 			if(sentLemmas.contains(syn) && !Arrays.asList(ignoredLemmas).contains(syn)) {
 				contains = true;
