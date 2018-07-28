@@ -1,15 +1,14 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.Normalizer;
@@ -63,14 +62,17 @@ public class FEVER_OSU {
 	static String outputFileName = "dev_predicted_evidence.jsonl";
 	static String wikiDirName = "wiki-dump";
 
-	static int numClaimsToTest = 0;
-	static int claimBatchSize = 10;
+	static int numClaimsToTest = 20;
+	static int claimBatchSize = 100;
 	static boolean testAll = false;
+
 	
 	static Map<String, Map<String, Object>> wikiMap;
-	static Map<String, Map<String, Float>> correlationMap;
 	static Map<String, ArrayList<String>> disambiguationMap;
-	
+	static Map<String, String> lowercaseMap;
+
+    static IDictionary synonymDict;
+
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
@@ -78,11 +80,11 @@ public class FEVER_OSU {
 		
 		StanfordCoreNLP pipeline = establishPipeline();
 	    System.out.println("CoreNLP pipeline established. Time: "+dtf.format(LocalDateTime.now()));	    
-	    compileWikiMaps();
+	    getWikiMaps(wikiDirName);
 		System.out.println("wikiMaps compiled. Time: "+dtf.format(LocalDateTime.now()));
-//		compileCorrelationMap();
-//		System.out.println("correlationMap compiled. Time: "+dtf.format(LocalDateTime.now()));
+		getSynDict();
 		
+
 		int claimCount =0;
 		try {
 			Scanner claimReader = new Scanner(new FileReader(claimsFileName));
@@ -95,13 +97,12 @@ public class FEVER_OSU {
 			
 			while(claimReader.hasNext() && (testAll || claimCount < numClaimsToTest)) {
 				claimCount++;
-				System.out.println("Finding sentences for claim "+ claimCount + ". Time: " + dtf.format(LocalDateTime.now()));
 				try {
 					String claimInfo = claimReader.nextLine();
 					JSONObject claimJson = new JSONObject(claimInfo);
 					String claim = Normalizer.normalize(claimJson.getString("claim"), Normalizer.Form.NFC);   
 					int id = claimJson.getInt("id");
-					System.out.println("Claim: "+claim);
+					System.out.println("Claim " + claimCount + ": " +claim + " Time: " + dtf.format(LocalDateTime.now()));
 					
 					CoreDocument document = new CoreDocument(claim);
 					pipeline.annotate(document);
@@ -110,21 +111,12 @@ public class FEVER_OSU {
 					SemanticGraph dependencyGraph = claimDoc.dependencyParse();
 					String formattedClaim = formatSentence(claim);
 					ArrayList<String[]> claimNE = getNamedEntities(formattedClaim, pipeline);
-					System.out.print("claim entities: ");
-					for(String[] ne : claimNE) {
-						System.out.print(ne[0] + "(" + ne[1] + ")");
-					}
-					System.out.println();
 					Map<String, Object> documents = findDocuments(claim, dependencyGraph, constituencyTree, claimNE);
 					ArrayList<Map<String, String>> primaryDocuments = (ArrayList<Map<String, String>>) documents.get("primary");
 					ArrayList<String> backupDocumentKeys = (ArrayList<String>) documents.get("backup");
-					List<String> primaryDocumentKeys = primaryDocuments.stream().map(doc -> doc.get("id")).collect(Collectors.toList());
-					System.out.println("Primary documents found: " + primaryDocumentKeys.toString());
 					
 					Map<String, ArrayList<Object[]>> evidenceSentences = findSentences(pipeline, claim, dependencyGraph, constituencyTree, claimNE, primaryDocuments);
 				    if (evidenceSentences.isEmpty()){
-				    	System.out.println("No evidence sentences found in primary documents.");
-				    	System.out.println("Backup documents: " + backupDocumentKeys.toString());
 				    	ArrayList<Map<String, String>> backupDocuments = getBackupDocs(backupDocumentKeys);
 				    	evidenceSentences = findSentences(pipeline, claim, dependencyGraph, constituencyTree, claimNE, backupDocuments);
 				    }
@@ -161,64 +153,23 @@ public class FEVER_OSU {
 		return pipeline;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private static void compileWikiMaps() {
+	private static void getSynDict() {
 		try {
-	         FileInputStream fileIn = new FileInputStream("wikiMap.ser");
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         System.out.println("Attempting to read wikiMap object");
-	         wikiMap = (Map<String, Map<String, Object>>) in.readObject();
-	         in.close();
-	         fileIn.close();
-	         fileIn = new FileInputStream("disambiguationMap.ser");
-	         in = new ObjectInputStream(fileIn);
-	         System.out.println("Attempting to read disambiguationMap object");
-	         disambiguationMap = (Map<String, ArrayList<String>>) in.readObject();
-	         in.close();
-	         fileIn.close();
-	    } catch (Exception e) {
-	         System.out.println("Unable to read wikiMap object. Generating new object.");
-	         getWikiMap(wikiDirName);
-			 try {
-		         FileOutputStream fileOut = new FileOutputStream("wikiMap.ser");
-		         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-		         out.writeObject(wikiMap);
-		         out.close();
-		         fileOut.close();
-		         fileOut = new FileOutputStream("disambiguationMap.ser");
-		         out = new ObjectOutputStream(fileOut);
-		         out.writeObject(disambiguationMap);
-		         out.close();
-		         fileOut.close();
-		      } catch (IOException io) {
-		         io.printStackTrace();
-		      }
-	    }
-		
-	}	
+			synonymDict = new Dictionary (new URL ("file", null , "dict"));
+			synonymDict.open();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+	}
 	
-//	@SuppressWarnings("unchecked")
-//	private static void compileCorrelationMap() {
-//		try {
-//		     FileInputStream fileIn = new FileInputStream("rootCorrelations.ser");
-//		     ObjectInputStream in = new ObjectInputStream(fileIn);
-//		     correlationMap = (Map<String, Map<String, Float>>) in.readObject();
-//		     in.close();
-//		     fileIn.close();
-//		  } catch (Exception e) {
-//			  e.printStackTrace();
-//			  correlationMap = new HashMap<String, Map<String, Float>>();
-//		  } 
-//
-//	}
 	
 	private static Map<String, Object> findDocuments(String claim, SemanticGraph dependencyGraph, Tree constituencyTree, ArrayList<String[]> namedEntities){
-		ArrayList<String> claimTopics = getProperTerms(claim, namedEntities);
-		claimTopics.addAll(getAllTopics(claim, dependencyGraph, constituencyTree));
-		System.out.println("initial all topics: " + claimTopics.toString());
+		ArrayList<String> claimTopics = getAllTopics(claim, dependencyGraph, constituencyTree, namedEntities);
 		claimTopics = (ArrayList<String>) claimTopics.stream().map(topic -> StringUtils.capitalize(topic)).distinct().collect(Collectors.toList());
 		claimTopics = removeSubsets(claimTopics);
-		System.out.println("search: " + claimTopics.toString());
 		ArrayList<Map<String, String>> primaryDocs = getDocsFromTopics(claimTopics);
 		ArrayList<String> backupDocs = getBackupDocKeys(claimTopics, primaryDocs);
 		Map<String, Object> allDocs = new HashMap<String, Object>();
@@ -237,17 +188,14 @@ public class FEVER_OSU {
 			String wikiName = Normalizer.normalize(wiki.get("id"), Normalizer.Form.NFC);
 			String wikiTitle = formatSentence(wikiName.replace("_", " ")).toLowerCase();
 			List<String[]> nane = getNounsAndNamedEntities(wikiTitle, constituencyTree, namedEntities);
-			System.out.println("Sentences added from wiki " + wikiName + ":");
 			for(int i = 0; i < wikiLines.length; i++) {
 				String sentence = getSentenceTextFromWikiLines(wikiLines[i]);
-				//System.out.println("sentence: " + sentence);
 				if(containsNamedEntities(sentence, claim, nane, wikiTitle, pipeline, root) || 
 						containsValidRoot(sentence, root, pipeline)) {
 					Object[] evidence = new Object[2];
 					evidence[0] = i;
 					evidence[1] = sentence;
 					wikiSents.add(evidence);
-					System.out.println("added");
 				}	
 			}
 			if(!wikiSents.isEmpty()) {
@@ -328,24 +276,11 @@ public class FEVER_OSU {
 			}
 		}
 		properTerms.addAll(withoutDets);
-		List<String> fixedCase = new ArrayList<String>();
-		for(String phrase : properTerms) {
-			String fixed = phrase;
-			for(String lower : lowerWords) {
-				fixed = fixed.replace(StringUtils.capitalize(lower), lower);
-			}
-			if(!fixed.equals(phrase)) {
-				fixedCase.add(fixed);
-			}
-		}
-		properTerms.addAll(fixedCase);
-		System.out.println("Possible proper terms:" + properTerms.toString());
 		properTerms = properTerms.stream().map(phrase -> StringUtils.capitalize(phrase)).map(phrase -> removeEndPunct(phrase)).distinct()
 				.filter(phrase -> !isInt(phrase)).filter(phrase -> !dets.contains(phrase)).filter(phrase -> isValidWiki(phrase))
 				.collect(Collectors.toList());		
 		properTerms = removeSubsets(properTerms);
 		properTerms = removeNationalities(properTerms, namedEntities);
-		System.out.println("Proper terms:" + properTerms.toString());
 		return (ArrayList<String>) properTerms;
 	}
 	
@@ -356,7 +291,7 @@ public class FEVER_OSU {
 		return filtered;
 	}
 	
-	private static ArrayList<String> getAllTopics(String claimSentence, SemanticGraph dependencyGraph, Tree constituencyTree) {
+	private static ArrayList<String> getAllTopics(String claimSentence, SemanticGraph dependencyGraph, Tree constituencyTree, ArrayList<String[]> namedEntities) {
 		GrammaticalRelation[] subjectObjectRelations = {UniversalEnglishGrammaticalRelations.SUBJECT, UniversalEnglishGrammaticalRelations.CLAUSAL_PASSIVE_SUBJECT, 
 	    		UniversalEnglishGrammaticalRelations.CLAUSAL_SUBJECT, UniversalEnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT, 
 	    		UniversalEnglishGrammaticalRelations.NOMINAL_SUBJECT, UniversalEnglishGrammaticalRelations.DIRECT_OBJECT,
@@ -395,7 +330,7 @@ public class FEVER_OSU {
     		}
 	    }
 
-	    ArrayList<String> topicPhrases = new ArrayList<String>();
+	    ArrayList<String> topicPhrases = getProperTerms(claimSentence, namedEntities);
 	    for(int h = 0; h < topicList.size(); h++) {
 	    	IndexedWord topicWord = topicList.get(h);
 	    	String compoundPhrase = getCompoundPhrase(topicWord, dependencyGraph);
@@ -542,13 +477,10 @@ public class FEVER_OSU {
         return lemmas;
     }
 	
-	private static List<String> getSynonyms (StanfordCoreNLP pipeline, String word, POS pos){
+	private static List<String> getSynonyms (StanfordCoreNLP pipeline, String word, POS pos, IDictionary dict){
 		List<String> syns = new ArrayList<String>();
 		String lemma = word;
 		try {
-			 URL url = new URL ("file", null , "dict" ) ;
-			 IDictionary dict = new Dictionary ( url ) ;
-			 dict.open () ;
 			 lemma = lemmatize(pipeline, word).get(0);
 			 IIndexWord idxWord = dict.getIndexWord (lemma, pos) ;
 			 IWordID wordID = idxWord.getWordIDs().get(0) ;
@@ -603,12 +535,21 @@ public class FEVER_OSU {
 	
 	private static boolean isValidWiki(String title) {
 		boolean valid = false;
-		String wikiKey = title.replaceAll(" ", "_").replace("(", "-LRB-").replace(")", "-RRB-").replace("]", "-RSB-").replace("[", "-LSB-");
+		String wikiKey = title.replace(" ", "_").replace("(", "-LRB-").replace(")", "-RRB-").replace("]", "-RSB-").replace("[", "-LSB-");
 		wikiKey = StringUtils.capitalize(wikiKey);
-		if(wikiMap.containsKey(wikiKey) || disambiguationMap.containsKey(wikiKey)) {
+		if(wikiMap.containsKey(wikiKey) || disambiguationMap.containsKey(wikiKey) || lowercaseMap.containsKey(wikiKey.toLowerCase())) {
 			valid = true;
 	    }
 		return valid;
+	}
+	
+	private static String formatWiki(String title) {
+		String wikiKey = title.replace(" ", "_").replace("(", "-LRB-").replace(")", "-RRB-").replace("]", "-RSB-").replace("[", "-LSB-");
+		wikiKey = StringUtils.capitalize(wikiKey);
+		if(!wikiMap.containsKey(wikiKey) && !disambiguationMap.containsKey(wikiKey) && lowercaseMap.containsKey(wikiKey.toLowerCase())) {
+			wikiKey = lowercaseMap.get(wikiKey.toLowerCase());
+		}
+		return wikiKey;
 	}
 	
 	private static boolean isInt(String str) {
@@ -658,7 +599,7 @@ public class FEVER_OSU {
 	}
 
 	private static ArrayList<String> getNouns(String wikiTitle, Tree constituencyTree) {
-		String[] ignoredNouns = {"something", "anything", "thing", "there", "name"};
+		String[] ignoredNouns = {"something", "anything", "thing", "there", "name", "part"};
 		List<String> ignoredNounsList = Arrays.asList(ignoredNouns);
 		List<Tree> leaves = constituencyTree.getLeaves();
 	    int wordNum = 0;
@@ -719,8 +660,6 @@ public class FEVER_OSU {
 				entityToBeSwapped = ne.clone();
 			}
 			else if(!evidenceSentence.toLowerCase().contains(ne[0])) {
-				System.out.println("sentence: " + evidenceSentence);
-				System.out.println("double missing");
 				validSentence = false;
 			}	
 		}
@@ -728,31 +667,22 @@ public class FEVER_OSU {
 			//both sentences need to be noun complements, have at least 2 other matching entities
 			//or the evidence needs to have a synonym of the missing noun
 			if(!isNounComplement(claim) || !isNounComplement(evidenceSentence)) {
-				validSentence = containsSynonym(entityToBeSwapped[0], POS.NOUN, evidenceSentence, pipeline);				
+				validSentence = containsSynonym(entityToBeSwapped[0], POS.NOUN, evidenceSentence, pipeline);
+				if(!validSentence) {
+				}
 			}
 		}	
-		if(validSentence && entityToBeSwapped[1] == "NOUN" && claimNE.size() >= 3) {
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("excused because of matching");
-		}
 		
 		List<String[]> evidenceEntities = null;
 		if(validSentence && entityToBeSwapped[1] != "NOUN" && entityToBeSwapped[1] != null) {
 			if(isVerb(root, pipeline) && !(evidenceSentence.contains(root) || containsSynonym(root, POS.VERB, evidenceSentence, pipeline))) {
 				//if the evidence is missing a root verb and a named entity, then the evidence needs to have a synonym of the missing root
 				validSentence = false;
-				System.out.println("sentence: " + evidenceSentence);
-				System.out.println("missing root verb");
 			}
 			else {
 				//otherwise the entity can be swapped out for one of the same type
 				evidenceEntities = getNamedEntities(evidenceSentence, pipeline).stream().filter(arr -> !wikiTitle.contains(arr[0]))
 						.collect(Collectors.toList());
-				System.out.print("sentence entities: ");
-				for(String[] ne : evidenceEntities) {
-					System.out.print(ne[0] + "(" + ne[1] + ")");
-				}
-				System.out.println();
 				validSentence = false;
 				String alternative = altMap.get(entityToBeSwapped[1]);
 				for(String[] ne: evidenceEntities) {
@@ -780,65 +710,31 @@ public class FEVER_OSU {
 		boolean contains = false;
 		String[] ignoredLemmas = {"have", "do", "be"};
 		List<String> sentLemmas = lemmatize(pipeline, sentence);
-		List<String> syns = getSynonyms(pipeline, word, pos);
+		List<String> syns = getSynonyms(pipeline, word, pos, synonymDict);
 		for(String syn : syns) {
 			if(sentLemmas.contains(syn) && !Arrays.asList(ignoredLemmas).contains(syn)) {
 				contains = true;
-				System.out.println("SYN: ");
-				System.out.println("sentence lemmas: " + sentLemmas);
-				System.out.println("syn: " + syn);
 			}
 		}
 		return contains;
 	}
 	
 	private static boolean isNounComplement(String sentence) {
-		String[] NCTags = {" is a ", " is an " , " was a " , " was an "};
-		boolean isNC = false;
-		for(String tag : NCTags) {
-			if(sentence.contains(tag)) {
-				isNC = true;
+		String[] bes = {" is", " was"};
+		String[] adverbs = {" ", " only ", " always ", " never ", " not ", };
+		String[] dets = {"a ", "an ", "the "};
+		for(String verb : bes) {
+			for(String adverb : adverbs) {
+				for(String det : dets) {
+					String ncTag = verb + adverb + det;
+					if(sentence.contains(ncTag)) {
+						return true;
+					}
+				}
 			}
 		}
-		return isNC;
+		return false;
 	}
-	
-//	private static boolean containsCorrelatedWord(String sentence, String root, String wikiTitle) {
-//		ArrayList<String> words = getWords(wikiTitle, sentence.toLowerCase());
-//		boolean correlated = false;
-//		if(correlationMap.containsKey(root)) {
-//			Map<String, Float> correlations = correlationMap.get(root);	
-//			for(String word: words) {
-//				if(correlations.containsKey(word)) {
-//					System.out.println("Sentence: " + sentence);
-//					System.out.println("Added via correlation of root " + root + " to word " + word + ". correlation score: " + correlations.get(word));
-//					correlated = true;
-//				}
-//			}
-//		}
-//		return correlated;
-//	}
-	
-//	private static ArrayList<String> getWords(String wikiTitle, String claim) {
-//		String[] words = claim.split(" |\\t");
-//		
-//	    ArrayList<String> wordList = new ArrayList<String>();
-//	    String[] skipWords = {"a", "an", "the", "at", "by", "down", "for", "from", "in", "into", "like", "near", "of", "off", "on", "onto", "onto", "over", 
-//				"past", "to", "upon", "with", "and", "&", "as", "but", "for", "if", "nor", "once", "or", "so", "than", "that", "till", "when", "yet", "'s", "'",
-//				"be", "is", "am", "are", "was", "were", "been", "being", "has", "have", "had", "having", "do", "does", "did",
-//				"he", "his", "him", "she", "her", "hers", "it", "its", "they", "theirs",
-//				".","!","?",",",";",":", "-rrb-", "-lrb-", "-rsb-", "-lsb-", "", "0", "``", "''", "--", "-"};
-//	    
-//	    for(int i = 0; i < words.length; i++) {
-//	    	String word = words[i];
-//	    	if(!Arrays.asList(skipWords).contains(word) && !wikiTitle.contains(word)) {
-//	    		wordList.add(word);
-//	    	} 
-//	    }
-//
-//	    wordList = (ArrayList<String>) wordList.stream().distinct().collect(Collectors.toList());
-//	    return wordList;
-//	}
 	
 	private static boolean containsValidRoot(String sentence, String root, StanfordCoreNLP pipeline) {
 		String[] isWords = {"is", "was", "be", "are", "were", "has", "had", "have"};
@@ -847,10 +743,6 @@ public class FEVER_OSU {
 		if(isVerb(root, pipeline) && !Arrays.asList(isWords).contains(root) && 
 				(sentence.toLowerCase().contains(rootAlone) || sentence.toLowerCase().startsWith(root))) {
 			validRoot = true;
-		}
-		if(validRoot) {
-			System.out.println("Sentence: " + sentence);
-			System.out.println("valid root: " + root);
 		}
 		return validRoot;
 	}
@@ -927,12 +819,11 @@ public class FEVER_OSU {
 	private static ArrayList<Map<String, String>> getDocsFromTopics(ArrayList<String> possibleTopics) {
 		ArrayList<Map<String, String>> wikiDocs = new ArrayList<Map<String, String>>();
 		for(String topic: possibleTopics) {
-			String urlTitle = StringUtils.capitalize(topic.replace(' ', '_')).replace("(", "-LRB-").replace(")", "-RRB-");
+			String urlTitle = formatWiki(topic);
 			Map<String, String> wikiDoc = new HashMap<String, String>();
 			boolean emptyDisam = false;
 			if (!topic.isEmpty() && wikiMap.containsKey(urlTitle)){
 				Map<String, Object> fileInfo = wikiMap.get(urlTitle);
-//				String wikiListName = wikiDirName + "/" + fileInfo.get("fileName");
 				Path wikiDirPath = Paths.get(wikiDirName);
 				Path wikiListPath =  wikiDirPath.resolve(Paths.get((String)fileInfo.get("fileName")));
 				String wikiListName = wikiListPath.toString();
@@ -993,7 +884,6 @@ public class FEVER_OSU {
 			try {
 				Map<String, String> backupDoc = new HashMap<String, String>();
 				Map<String, Object> fileInfo = wikiMap.get(key);
-//				String wikiListName = wikiDirName + "\\" + fileInfo.get("fileName");
                 Path wikiDirPath = Paths.get(wikiDirName);
                 Path wikiListPath =  wikiDirPath.resolve(Paths.get((String)fileInfo.get("fileName")));
                 String wikiListName = wikiListPath.toString();
@@ -1058,9 +948,10 @@ public class FEVER_OSU {
 		return disambiguationChildren;
 	}
 	
-	private static void getWikiMap(String wikiDirName) {
+	private static void getWikiMaps(String wikiDirName) {
 		wikiMap = new HashMap<String, Map <String, Object>>();
 		disambiguationMap = new HashMap<String, ArrayList<String>>();
+		lowercaseMap = new HashMap<String, String>();
 		
 		File wikiDir = new File(wikiDirName);
 		File[] wikiEntries = wikiDir.listFiles();
@@ -1081,6 +972,7 @@ public class FEVER_OSU {
 					    	docLocation.put("fileName", fileName);
 					    	docLocation.put("offset", byteOffset);
 							wikiMap.put(id, docLocation);
+							lowercaseMap.put(id.toLowerCase(), id);
 							
 							int paren = id.indexOf("-LRB-");
 							if(paren > 0 && !id.contains("disambiguation")) {
@@ -1116,5 +1008,4 @@ public class FEVER_OSU {
 		}
 	}
 	
-
 }
