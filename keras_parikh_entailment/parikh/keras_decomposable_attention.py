@@ -79,14 +79,13 @@ def build_model(vectors, shape, settings):
     # Now that we have the input/output, we can construct the Model object...
     model = Model(inputs=inputs, outputs=[scores])
 
-    model.summary()
-
     # ...Compile it...
     model.compile(
-        optimizer=Adam(lr=settings['lr']),
+        optimizer=Adam(lr=settings['lr'], decay=0.001),
         loss='categorical_crossentropy',
         metrics=['accuracy'])
     # ...And return it for training.
+
     return model
 
 
@@ -147,7 +146,14 @@ class _EntityEmbedding(object):
                                  input_length=max_length,
                                  name='ent_embed',
                                  trainable=True))
-        self.embed.add(TimeDistributed(Dense(output_dim)))
+        self.embed.add(TimeDistributed(Dense(output_dim,
+                                             activation='sigmoid',
+                                             kernel_regularizer=l2(0.001))))
+        # self.embed = Embedding(20,
+        #                        output_dim,
+        #                        input_length=max_length,
+        #                        name='ent_embed',
+        #                        trainable=True)
 
     def __call__(self, sentence):
         def get_output_shape(shapes):
