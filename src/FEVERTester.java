@@ -82,8 +82,8 @@ public class FEVERTester {
 					JSONArray resultSet = resultEvidence.getJSONArray(i);
 					JSONArray primarySentence = resultSet.getJSONArray(0);
 					if(!primarySentence.get(2).equals(null)) {
-						String wikiName = primarySentence.get(2).toString();
-						Integer sentNum = primarySentence.getInt(3);
+						String wikiName = primarySentence.get(0).toString();
+						Integer sentNum = primarySentence.getInt(1);
 						Object[] answerArr = {wikiName, sentNum};
 						if(!ArrayIsInList(foundEvidence, answerArr)) {
 							foundEvidence.add(answerArr);
@@ -138,6 +138,7 @@ public class FEVERTester {
 				claimVals.put("incorrect sentences", wrongSentences);
 				
 				writer.append(new JSONObject(claimVals).toString());
+				writer.append("\n");
 
 			}
 

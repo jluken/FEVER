@@ -1,32 +1,42 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.mit.jwi.Dictionary;
+import edu.mit.jwi.IDictionary;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.IWord;
+import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.POS;
 import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
@@ -43,13 +53,19 @@ import edu.stanford.nlp.util.CoreMap;
 public class SentenceFinder {
 	
 	static String claimsFileName = "shared_task_dev.jsonl";
-	static String sentenceResultsFileName = "sentence_results.jsonl";
+	static String outputFileName = "found_sentences.jsonl";
 	static String wikiDirName = "wiki-dump";
-	static int numClaimsToTest = 100;
+
+	static int numClaimsToTest = 10;
+	static int claimBatchSize = 100;
+	static boolean testAll = false;
+
 	
 	static Map<String, Map<String, Object>> wikiMap;
-	static Map<String, Map<String, Float>> correlationMap;
 	//static Map<String, ArrayList<String>> disambiguationMap;
+	//static Map<String, String> lowercaseMap;
+
+    static IDictionary synonymDict;
 
 	public static void main(String[] args) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
@@ -57,36 +73,54 @@ public class SentenceFinder {
 		
 		StanfordCoreNLP pipeline = establishPipeline();
 	    System.out.println("CoreNLP pipeline established. Time: "+dtf.format(LocalDateTime.now()));	    
-	    compileWikiMaps();
-		System.out.println("wikiMap compiled. Time: "+dtf.format(LocalDateTime.now()));
-		compileCorrelationMap();
-		System.out.println("correlationMap compiled. Time: "+dtf.format(LocalDateTime.now()));
+	    getWikiMaps(wikiDirName);
+		System.out.println("wikiMaps compiled. Time: "+dtf.format(LocalDateTime.now()));
+		getSynDict();
 		
+
 		int claimCount =0;
 		try {
 			Scanner claimReader = new Scanner(new FileReader(claimsFileName));
-			File oldFile = new File(sentenceResultsFileName);
+			File oldFile = new File(outputFileName);
 			if(oldFile.exists()) {
 				oldFile.delete();
 			}
-			BufferedWriter writer = new BufferedWriter(new FileWriter(sentenceResultsFileName, true));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName, true));
 			
 			
-			while(claimReader.hasNext() && claimCount < numClaimsToTest) {
+			while(claimReader.hasNext() && (testAll || claimCount < numClaimsToTest)) {
 				claimCount++;
-				System.out.println("Finding sentences for claim "+ claimCount + ". Time: " + dtf.format(LocalDateTime.now()));
 				try {
-					String claimInfo = claimReader.nextLine();	
-				    String sentenceResults = findSentencesFromWiki(pipeline, claimInfo);		    
-				    writer.append(sentenceResults);
+					String claimInfo = claimReader.nextLine();
+					JSONObject claimJson = new JSONObject(claimInfo);
+					String claim = Normalizer.normalize(claimJson.getString("claim"), Normalizer.Form.NFC);   
+					int id = claimJson.getInt("id");
+					System.out.println("Claim " + claimCount + ": " +claim + " Time: " + dtf.format(LocalDateTime.now()));
+					
+					CoreDocument document = new CoreDocument(claim);
+					pipeline.annotate(document);
+					CoreSentence claimDoc = document.sentences().get(0);
+					Tree constituencyTree = claimDoc.constituencyParse();
+					SemanticGraph dependencyGraph = claimDoc.dependencyParse();
+					String formattedClaim = formatSentence(claim);
+					ArrayList<String[]> claimNE = getNamedEntities(formattedClaim, pipeline);
+					ArrayList<Map<String, String>> documents = findGivenDoc(claimInfo);
+					//Map<String, Object> documents = findDocuments(claim, dependencyGraph, constituencyTree, claimNE);
+					
+					Map<String, ArrayList<Object[]>> evidenceSentences = findSentences(pipeline, claim, dependencyGraph, constituencyTree, claimNE, documents);
+				    
+				    
+				    String JSONStr = evidenceToLine(id, claim, evidenceSentences);
+				    writer.append(JSONStr);
 				    writer.append("\n");
 				}catch(Exception e){
 					e.printStackTrace();
-					System.out.println("Something went wrong with processeing claim " + claimCount + ". returning null and skipping");
-					String[] wikiSentences = {};
-					ArrayList<Object[]> evidenceSets = new ArrayList<Object[]>();
-					writer.append(sentenceResults(0, "", "", wikiSentences, evidenceSets));
+					System.out.println("Something went wrong with processeing claim " + claimCount + ". Skipping");
 				    writer.append("\n");
+				}
+				if(claimCount % claimBatchSize == 0) {
+					writer.close();
+					writer = new BufferedWriter(new FileWriter(outputFileName, true));
 				}
 			    
 			}
@@ -95,102 +129,131 @@ public class SentenceFinder {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+
+		
 	}
-
-
-
-	private static String findSentencesFromWiki(StanfordCoreNLP pipeline, String claimInfo) throws JSONException, IOException {
-		JSONObject claimJson = new JSONObject(claimInfo);
-		String claim = Normalizer.normalize(claimJson.getString("claim"), Normalizer.Form.NFC);   
-		String label = claimJson.getString("label");
-		int id = claimJson.getInt("id");
-		JSONArray answerEvidence = (JSONArray) claimJson.get("evidence");
-		System.out.println("Claim: "+claim);
-		String wikiName = answerEvidence.getJSONArray(0).getJSONArray(0).get(2).toString();
-		wikiName = Normalizer.normalize(wikiName, Normalizer.Form.NFC);
-		if(wikiName.equals("null")) {
-			String[] wikiSentences = {};
-			ArrayList<Object[]> evidenceSets = new ArrayList<Object[]>();
-			return sentenceResults(id, claim, label, wikiSentences, evidenceSets);
-		}
-		
-		CoreDocument document = new CoreDocument(claim);
-		pipeline.annotate(document);
-		CoreSentence claimDoc = document.sentences().get(0);
-		Tree constituencyTree = claimDoc.constituencyParse();
-		SemanticGraph dependencyGraph = claimDoc.dependencyParse();
-		String root = dependencyGraph.getFirstRoot().originalText().toLowerCase();
-		String formattedClaim = formatSentence(claim);
-		ArrayList<String[]> claimNE = getNamedEntities(formattedClaim, pipeline);
-		
-		ArrayList<Object[]> evidenceSets = new ArrayList<Object[]>();
-		String[] wikiSentences = {};
-		ArrayList<String> wikiArrayList= new ArrayList<String>();
-		wikiArrayList.add(wikiName.toLowerCase());
-		ArrayList<Map<String, String>> wikiDocs = getDocsFromTopics(wikiArrayList);
-		if(wikiDocs.size() == 0 || !hasSoloEvidence(answerEvidence)) {
-			return sentenceResults(id, claim, label, wikiSentences, evidenceSets);
-		}
-		List<String> wikiSentencesLines = Arrays.asList(wikiDocs.get(0).get("lines").split("\n"));
-		wikiSentences = (String[]) wikiSentencesLines.stream()
-                                                     .map(i -> getWikiSentencefromLine(i))
-                                                     .collect(Collectors.toList())
-                                                     .toArray(new String[wikiSentencesLines.size()]);
-
-		
-		String wikiTitle = formatSentence(wikiName.replace("_", " ")).toLowerCase();
-		System.out.println("wikiTitle: " + wikiTitle);
-		ArrayList<String[]> claimNANE = getNounsAndNamedEntities(wikiTitle, constituencyTree, claimNE);
-		
-		for(int j = 0; j < wikiSentences.length; j++) {
-			String sentence = getSentenceTextFromWikiLines(wikiSentences[j]); //TODO: deal with duplicates
-			if(containsNamedEntities(sentence, claim, claimNANE, wikiTitle, pipeline, root) ||
-					 containsCorrelatedWord(sentence, root, wikiTitle) ||
-					 containsValidRoot(sentence, root, pipeline)) {
-				Object[] evidence = new Object[3];
-				evidence[0] = wikiName;
-				evidence[1] = sentence;
-				evidence[2] = j;
-				evidenceSets.add(evidence);
-			}	
-		}
-
-		System.out.println();
-			
-		return sentenceResults(id, claim, label, wikiSentences, evidenceSets);
+	
+	private static StanfordCoreNLP establishPipeline() {
+		Properties props = new Properties();
+		props.setProperty("annotators", "tokenize, ssplit, pos, parse, depparse, lemma, ner");
+	    props.setProperty("coref.algorithm", "neural");
+	    props.put("ner.model", "english.conll.4class.distsim.crf.ser.gz");
+	    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		return pipeline;
 	}
-
-	private static boolean hasSoloEvidence(JSONArray answerEvidence) {
-		boolean isAlone = false;
+	
+	private static void getSynDict() {
 		try {
-			for(int i = 0; i < answerEvidence.length(); i++) {
-				JSONArray evidenceSet;
-			
-				evidenceSet = answerEvidence.getJSONArray(i);
-				if(evidenceSet.length() == 1) {
-					isAlone = true;
-				}
+			synonymDict = new Dictionary (new URL ("file", null , "dict"));
+			synonymDict.open();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+	}
+	
+	private static ArrayList<Map<String, String>> findGivenDoc(String answerInfo){
+		ArrayList<Map<String, String>> docMap = new ArrayList<Map<String, String>>();
+		JSONObject answerJson;
+		try {
+			answerJson = new JSONObject(answerInfo);
+			JSONArray answerEvidence = (JSONArray) answerJson.get("evidence");
+			String wikiName = answerEvidence.getJSONArray(0).getJSONArray(0).get(2).toString();
+			wikiName = Normalizer.normalize(wikiName, Normalizer.Form.NFC);
+			if(wikiName.equals("null")) {
+				return docMap;
 			}
+			ArrayList<String> wikiArrayList= new ArrayList<String>();
+			wikiArrayList.add(wikiName);
+			docMap = getBackupDocs(wikiArrayList);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return isAlone;
+		return docMap;
 	}
-
-
-	private static String sentenceResults(int id, String claim, String label,
-			String[] wikiSentences, ArrayList<Object[]> evidenceSets) throws JSONException {
-		Map<String, Object> claimJsonMap = new LinkedHashMap<String, Object>();
-		claimJsonMap.put("id", id);
-		claimJsonMap.put("claim", claim);
-		claimJsonMap.put("label", label);
-		claimJsonMap.put("sentences", wikiSentences);
-		claimJsonMap.put("evidence", evidenceSets.toArray(new Object[evidenceSets.size()]));
-		return new JSONObject(claimJsonMap).toString();
+	
+	private static Map<String, ArrayList<Object[]>> findSentences(StanfordCoreNLP pipeline, String claim, SemanticGraph dependencyGraph, 
+			Tree constituencyTree, ArrayList<String[]> namedEntities, ArrayList<Map<String, String>> wikis){
+		Map<String, ArrayList<Object[]>> evidenceSentences = new HashMap<String, ArrayList<Object[]>>();
+		String root = dependencyGraph.getFirstRoot().originalText().toLowerCase();
+		for(Map<String, String> wiki : wikis) {
+			ArrayList<Object[]> wikiSents = new ArrayList<Object[]>();
+			String[] wikiLines = wiki.get("lines").split("\\n\\d*\\t");
+			String wikiName = Normalizer.normalize(wiki.get("id"), Normalizer.Form.NFC);
+			String wikiTitle = formatSentence(wikiName.replace("_", " ")).toLowerCase();
+			List<String[]> nane = getNounsAndNamedEntities(wikiTitle, constituencyTree, namedEntities);
+			for(int i = 0; i < wikiLines.length; i++) {
+				String sentence = getSentenceTextFromWikiLines(wikiLines[i]);
+				if(containsNamedEntities(sentence, claim, nane, wikiTitle, pipeline, root) || 
+						containsValidRoot(sentence, root, pipeline)) {
+					Object[] evidence = new Object[2];
+					evidence[0] = i;
+					evidence[1] = sentence;
+					wikiSents.add(evidence);
+				}	
+			}
+			if(!wikiSents.isEmpty()) {
+				evidenceSentences.put(wikiName, wikiSents);
+			}
+		}
+		return evidenceSentences;
 	}
+	
+	private static String evidenceToLine(int id, String claim, Map<String, ArrayList<Object[]>> evidenceSentences) {
+		ArrayList<JSONArray> evidenceSentencesJSON = new ArrayList<JSONArray>();
+		for(String wiki: evidenceSentences.keySet()) {
+			ArrayList<Object[]> evidenceSets = evidenceSentences.get(wiki);
+			for(Object[] evidenceSet : evidenceSets) {
+				Object[] evidenceArr = {wiki, evidenceSet[0], evidenceSet[1]};
+				ArrayList<JSONArray> evidenceSetJSON = new ArrayList<JSONArray>();
+				evidenceSetJSON.add(new JSONArray(Arrays.asList(evidenceArr)));
+				evidenceSentencesJSON.add(new JSONArray(evidenceSetJSON));
+			}
+		}
+		JSONArray evidence = new JSONArray(evidenceSentencesJSON);
+		Map<String, Object> evidenceMap = new HashMap<String, Object>();
+		evidenceMap.put("id", id);
+		evidenceMap.put("claim", claim);
+		evidenceMap.put("evidence", evidence);
+		return new JSONObject(evidenceMap).toString();
+	}
+	
+	private static List<String> lemmatize(StanfordCoreNLP pipeline, String text) {
+        List<String> lemmas = new ArrayList<String>();
+        Annotation document = new Annotation(text);
+        pipeline.annotate(document);
 
+        List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+        for(CoreMap sentence: sentences) {
+            for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
+                lemmas.add(token.get(LemmaAnnotation.class));
+            }
+        }
 
-
+        return lemmas;
+    }
+	
+	private static List<String> getSynonyms (StanfordCoreNLP pipeline, String word, POS pos, IDictionary dict){
+		List<String> syns = new ArrayList<String>();
+		String lemma = word;
+		try {
+			 lemma = lemmatize(pipeline, word).get(0);
+			 IIndexWord idxWord = dict.getIndexWord (lemma, pos) ;
+			 IWordID wordID = idxWord.getWordIDs().get(0) ;
+			 IWord iword = dict.getWord(wordID);
+			 ISynset synset = iword.getSynset();
+			 for (IWord syn : synset.getWords()) {
+				 syns.add(syn.getLemma().replace("_", " "));
+		        }
+		}catch(Exception e){
+			syns.add(lemma);
+		}
+		 return syns;
+	}
+	
+	
 	private static String getSentenceTextFromWikiLines(String sentenceInfo) {
 		String sentence;
 		String[] tabs = sentenceInfo.split("\\t");
@@ -201,112 +264,6 @@ public class SentenceFinder {
 		}
 		return sentence;
 	}
-
-
-
-	private static StanfordCoreNLP establishPipeline() {
-		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize, ssplit, pos, parse, depparse, lemma, ner");
-	    props.setProperty("coref.algorithm", "neural");
-	    props.put("ner.model", "english.conll.4class.distsim.crf.ser.gz");
-	    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		return pipeline;
-	}
-	
-	private static void compileWikiMaps() {
-		try {
-	         FileInputStream fileIn = new FileInputStream("wikiMap.ser");
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         System.out.println("Attempting to read wikiMap object");
-	         wikiMap = (Map<String, Map<String, Object>>) in.readObject();
-	         in.close();
-	         fileIn.close();
-	    } catch (Exception e) {
-	         System.out.println("Unable to read wikiMap object. Generating new object.");
-	         getWikiMap(wikiDirName);
-			 try {
-		         FileOutputStream fileOut = new FileOutputStream("wikiMap.ser");
-		         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-		         out.writeObject(wikiMap);
-		         out.close();
-		         fileOut.close();
-		      } catch (IOException io) {
-		         io.printStackTrace();
-		      }
-		}
-	}	
-	
-	private static void compileCorrelationMap() {
-		try {
-		     FileInputStream fileIn = new FileInputStream("rootCorrelations.ser");
-		     ObjectInputStream in = new ObjectInputStream(fileIn);
-		     correlationMap = (Map<String, Map<String, Float>>) in.readObject();
-		     in.close();
-		     fileIn.close();
-		  } catch (Exception e) {
-			  e.printStackTrace();
-			  correlationMap = new HashMap<String, Map<String, Float>>();
-		  } 
-
-	}
-	
-	public static void getWikiMap(String wikiDirName) {
-		wikiMap = new HashMap<String, Map <String, Object>>();
-		//disambiguationMap = new HashMap<String, ArrayList<String>>();
-		
-		File wikiDir = new File(wikiDirName);
-		File[] wikiEntries = wikiDir.listFiles();
-		int filesProcessed = 0;
-		if (wikiEntries != null){
-			for (File wikiEntryList : wikiEntries) {
-				try {
-					System.out.print("*");
-					Scanner s = new Scanner(wikiEntryList);
-					long byteOffset = 0;
-						while(s.hasNextLine()) {
-							String wikiEntry = Normalizer.normalize(s.nextLine(), Normalizer.Form.NFD);
-						    JSONObject wikiJson = new JSONObject(wikiEntry);
-						    String id = wikiJson.getString("id").toLowerCase();
-						    if(!id.isEmpty()) {
-						    	String fileName = wikiEntryList.getName();
-						    	Map<String, Object> docLocation = new HashMap<String, Object>();
-						    	docLocation.put("fileName", fileName);
-						    	docLocation.put("offset", byteOffset);
-								wikiMap.put(id, docLocation);
-								
-//								int paren = id.indexOf("-lrb-");
-//								if(paren > 0) {
-//									String base = id.substring(0, paren-1).toLowerCase();
-//									ArrayList<String> disambiguationChildren = new ArrayList<String>();
-//									if(disambiguationMap.containsKey(base)) {
-//										disambiguationChildren = disambiguationMap.get(base);
-//										disambiguationChildren.add(id);
-//										disambiguationMap.put(base, disambiguationChildren);
-//									}
-//									else {
-//										disambiguationChildren.add(id);
-//										disambiguationMap.put(base, disambiguationChildren);
-//									}
-//								}
-						    }
-						    byteOffset += wikiEntry.getBytes().length;
-							byteOffset += 1;
-						}
-						filesProcessed++;
-						if(filesProcessed % 10 == 0 || filesProcessed == 109) {
-							System.out.println("\nWiki processing "+filesProcessed+"/109 done.");
-						}
-						
-					s.close();
-				} catch (FileNotFoundException e) {
-					System.out.println("Could not open file  "+wikiEntryList.getName());
-					e.printStackTrace();
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 	
 	private static String formatSentence(String sentence) {
 		String newSent = sentence.replace(",", " ,").replace(".", " .").replace(";", " ;").replace(":", " :").replace("'s", " 's").replace("' ", " ' ");
@@ -314,71 +271,6 @@ public class SentenceFinder {
 		newSent = newSent.replace("(", "-LRB- ").replace(")", " -RRB-").replace("]", " -RSB-").replace("[", " -LSB-");
 		return newSent;
 	}
-	
-	private static ArrayList<Map<String, String>> getDocsFromTopics(ArrayList<String> possibleTopics) {
-		ArrayList<Map<String, String>> wikiDocs = new ArrayList<Map<String, String>>();
-		for(String topic: possibleTopics) {
-			String urlTitle = topic.replace(' ', '_').toLowerCase();
-			Map<String, String> wikiDoc = new HashMap<String, String>();
-//			boolean emptyDisam = false;
-			if (!topic.isEmpty() && wikiMap.containsKey(urlTitle)){
-				Map<String, Object> fileInfo = wikiMap.get(urlTitle);
-				String wikiListName = wikiDirName + "/" + fileInfo.get("fileName");
-				try {
-					BufferedReader reader = new BufferedReader(new FileReader(wikiListName)); 
-					Long byteOffset = (Long) fileInfo.get("offset");
-					reader.skip(byteOffset);
-					String wikiEntry = Normalizer.normalize(reader.readLine(), Normalizer.Form.NFC);
-				    JSONObject wikiJson = new JSONObject(wikiEntry);
-//				    if (wikiJson.getString("text").toLowerCase().contains((topic+" may refer to : "))) {
-//			    		ArrayList<Map<String, String>> disambiguationChildren = findDisambiguationChildren(wikiJson);
-//			    		wikiDocs.addAll(disambiguationChildren);
-//			    		if(disambiguationChildren.isEmpty()) {
-//			    			emptyDisam = true;
-//			    		}
-//			    	}
-//				    else {
-//					    wikiDoc.put("id", wikiJson.getString("id"));
-//					    wikiDoc.put("text", wikiJson.getString("text"));
-//					    wikiDoc.put("lines", wikiJson.getString("lines"));
-//					    wikiDocs.add(wikiDoc);
-//				    }
-				    wikiDoc.put("id", wikiJson.getString("id"));
-				    wikiDoc.put("text", wikiJson.getString("text"));
-				    wikiDoc.put("lines", wikiJson.getString("lines"));
-				    wikiDocs.add(wikiDoc);
-				    reader.close();
-				}
-				
-				catch (FileNotFoundException e) {
-					System.out.println("Could not open file  "+fileInfo.get("fileName"));
-					e.printStackTrace();
-				} catch (JSONException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-			}
-			
-//			if (!topic.isEmpty() && disambiguationMap.containsKey(urlTitle)){
-//				//System.out.println("disambiguation found: " + urlTitle+". Time: "+dtf.format(LocalDateTime.now()));
-//				if(emptyDisam) {
-//					ArrayList<String> disambiguations = disambiguationMap.get(urlTitle);
-//					ArrayList<String> unchecked = new ArrayList<String>(disambiguations);
-//					for(Map<String, String> wiki: wikiDocs) {
-//						if(disambiguations.contains(wiki.get("id").toLowerCase())) {
-//							unchecked.remove(wiki.get("id"));
-//						}
-//					}
-//					wikiDocs.addAll(getDocsFromTopics(unchecked));
-//				}
-//			}
-			//System.out.println("Topic " + topic + " done. Time: " + dtf.format(LocalDateTime.now()));
-		}
-		return wikiDocs;
-	}
-
 	
 	private static boolean isVerb(String word, StanfordCoreNLP pipeline) {
 		CoreDocument document = new CoreDocument(word);
@@ -399,17 +291,20 @@ public class SentenceFinder {
 	}
 
 	private static ArrayList<String> getNouns(String wikiTitle, Tree constituencyTree) {
+		String[] ignoredNouns = {"something", "anything", "thing", "there", "name", "part"};
+		List<String> ignoredNounsList = Arrays.asList(ignoredNouns);
 		List<Tree> leaves = constituencyTree.getLeaves();
 	    int wordNum = 0;
 
 	    ArrayList<String> wordList = new ArrayList<String>();
-	    String[] nounsTags = {"NN", "NNS", "NNP", "NNPS", "NP"};//, "CD", "JJ"}; 
+	    String[] nounsTags = {"NN", "NNS", "NNP", "NNPS", "NP"};
 	    while(wordNum < leaves.size()) {
 	    	Tree word = leaves.get(wordNum);
 	    	Tree type = word.parent(constituencyTree);
-	    	String wordStr = word.toString().toLowerCase();
-	    	if(Arrays.asList(nounsTags).contains(type.label().toString()) && !wikiTitle.contains(wordStr)) {
-	    		wordList.add(wordStr);
+	    	String wordStr = word.toString();
+	    	if(Arrays.asList(nounsTags).contains(type.label().toString()) && !wikiTitle.contains(wordStr.toLowerCase()) 
+	    			&& !ignoredNounsList.contains(wordStr)) {
+	    		wordList.add(wordStr.toLowerCase());
 	    	} 
 	    	wordNum++;
 	    }
@@ -421,11 +316,6 @@ public class SentenceFinder {
 		ArrayList<String> nouns = getNouns(wikiTitle, constituencyTree);
 	    List<String[]> filteredNamedEntities = namedEntities.stream().filter(arr -> !wikiTitle.contains(arr[0]))
 				.collect(Collectors.toList());
-	    System.out.println("claim named entities: ");
-	    for(String[] ne : filteredNamedEntities) {
-	    	System.out.print(ne[0] + "(" + ne[1] + "), ");
-	    }
-	    System.out.println();
 			
 	    ArrayList<String[]> nounsAndNamedEntities = new ArrayList<String[]>(filteredNamedEntities);
 		for(String noun: nouns) {
@@ -444,110 +334,122 @@ public class SentenceFinder {
 		return nounsAndNamedEntities;
 	}
 
-	private static boolean containsNamedEntities(String evidenceSentence, String claim, ArrayList<String[]> claimNE, String wikiTitle, StanfordCoreNLP pipeline, String root) {
-		boolean containsEntities = true;
-		//unnecessary if statements are included here for the benefit of a descriptive text log
-		if(evidenceSentence.isEmpty()) {
-			containsEntities = false;
-		}
-		else if(claimNE.isEmpty()) {
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("contains no entities.");
-			containsEntities = false;
-		}
+	private static boolean containsNamedEntities(String evidenceSentence, String claim, List<String[]> claimNE, String wikiTitle, StanfordCoreNLP pipeline, String root) {
+		Map<String, String> altMap = new HashMap<String, String>();
+		altMap.put("NATIONALITY", "COUNTRY");
+		altMap.put("COUNTRY", "NATIONALITY");
+		altMap.put("DATE", "SET");
+		altMap.put("SET", "DATE");
 		
-		String[] entityToBeSwapped = null;
+		boolean validSentence = true;
+		if(evidenceSentence.isEmpty() || claimNE.isEmpty()) {
+			return false;
+		}
+
+		String[] entityToBeSwapped = {null, null};
 		for(String[] ne: claimNE) {
-			if(!evidenceSentence.toLowerCase().contains(ne[0]) && entityToBeSwapped == null) {
+			if(!evidenceSentence.toLowerCase().contains(ne[0]) && entityToBeSwapped[1] == null) {
 				entityToBeSwapped = ne.clone();
 			}
-			else if(!evidenceSentence.toLowerCase().contains(ne[0]) && containsEntities) {
-				System.out.println("sentence: " + evidenceSentence);
-				System.out.println("Missing both: \"" + ne[0] + "\" and \"" + entityToBeSwapped[0] + "\"");
-				containsEntities = false;
+			else if(!evidenceSentence.toLowerCase().contains(ne[0])) {
+				validSentence = false;
+			}	
+		}
+		if(validSentence && entityToBeSwapped[1] == "NOUN" && claimNE.size() < 3) {
+			//both sentences need to be noun complements, have at least 2 other matching entities
+			//or the evidence needs to have a synonym of the missing noun
+			if(!isNounComplement(claim) || !isNounComplement(evidenceSentence)) {
+				validSentence = containsSynonym(entityToBeSwapped[0], POS.NOUN, evidenceSentence, pipeline);
+				if(!validSentence) {
+				}
 			}
-			
-		}
-		if(entityToBeSwapped == null) {
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("contains all entites");
-		}
-		if(containsEntities && entityToBeSwapped != null && entityToBeSwapped[1] == "NOUN") {
-			System.out.println("sentence: " + evidenceSentence);
-			if(isNounComplement(claim) && isNounComplement(evidenceSentence)) {
-				System.out.println("The only remaining entity is a generic noun, and it's a 'is a' sentence.");
-			} else {
-				System.out.println("The only remaining entity is a generic noun, which can't be reliably replaced.");
-				containsEntities = false;
+		}	
+		
+		List<String[]> evidenceEntities = null;
+		if(validSentence && entityToBeSwapped[1] != "NOUN" && entityToBeSwapped[1] != null) {
+			if(isVerb(root, pipeline) && !(evidenceSentence.contains(root) || containsSynonym(root, POS.VERB, evidenceSentence, pipeline))) {
+				//if the evidence is missing a root verb and a named entity, then the evidence needs to have a synonym of the missing root
+				validSentence = false;
 			}
-		}
-		boolean missingRootVerb = false;
-		if(isVerb(root, pipeline) && !evidenceSentence.contains(root)) {
-			missingRootVerb = true;
-		}
-		if(containsEntities && entityToBeSwapped != null && entityToBeSwapped[1] != "NOUN" && missingRootVerb) {
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("The entity cannot be swapped because the root word is a verb which is missing.");
-			containsEntities = false;
-		}
-		if(containsEntities && entityToBeSwapped != null && entityToBeSwapped[1] != "NOUN" && !missingRootVerb) {
-			List<String[]> evidenceEntities = getNamedEntities(evidenceSentence, pipeline).stream().filter(arr -> !wikiTitle.contains(arr[0]))
-					.collect(Collectors.toList());
-			System.out.println("sentence: " + evidenceSentence);
-			System.out.println("entity " + entityToBeSwapped[0] + "(" + entityToBeSwapped[1] + ") is missing. Attempting to find replacement");
-			System.out.print("sentence named entities: ");
-		    for(String[] ne : evidenceEntities) {
-		    	System.out.print(ne[0] + "(" + ne[1] + "), ");
-		    }
-		    System.out.println();
-			containsEntities = false;
-			for(String[] ne: evidenceEntities) {
-				if(!containsEntities && ne[1].equals(entityToBeSwapped[1])) {
-					containsEntities = true;
-					System.out.println("Swap successful: " + ne[0] + " for " + entityToBeSwapped[0]);
+			else {
+				//otherwise the entity can be swapped out for one of the same type
+				evidenceEntities = getNamedEntities(evidenceSentence, pipeline).stream().filter(arr -> !wikiTitle.contains(arr[0]))
+						.collect(Collectors.toList());
+				validSentence = false;
+				String alternative = altMap.get(entityToBeSwapped[1]);
+				for(String[] ne: evidenceEntities) {
+					if(ne[1].equals(entityToBeSwapped[1]) || (alternative != null && alternative.equals(ne[1]))) {
+						validSentence = true;
+					}
 				}
 			}
 		}
-		
-		return containsEntities;
+
+		if(!validSentence &&  evidenceSentence.contains("-LRB-") && 
+				(claim.contains("born") || claim.contains("died") || claim.contains("dead"))) {
+			//if the sentence relates to birth or death, we can check to see if the sentence has wikipedia-formatted birth/death info 
+			if(evidenceEntities == null) {
+				evidenceEntities = getNamedEntities(evidenceSentence, pipeline).stream().filter(arr -> !wikiTitle.contains(arr[0]))
+					.collect(Collectors.toList());
+			}
+			validSentence = wikiBirthDeath(claim, evidenceEntities, evidenceSentence);
+		}
+
+		return validSentence;
+	}
+	
+	private static boolean containsSynonym(String word, POS pos, String sentence, StanfordCoreNLP pipeline) {
+		boolean contains = false;
+		String[] ignoredLemmas = {"have", "do", "be"};
+		List<String> sentLemmas = lemmatize(pipeline, sentence);
+		List<String> syns = getSynonyms(pipeline, word, pos, synonymDict);
+		for(String syn : syns) {
+			if(sentLemmas.contains(syn) && !Arrays.asList(ignoredLemmas).contains(syn)) {
+				contains = true;
+			}
+		}
+		return contains;
 	}
 	
 	private static boolean isNounComplement(String sentence) {
-		String[] NCTags = {" is a ", " is an " , " was a " , " was an "};
-		boolean isNC = false;
-		for(String tag : NCTags) {
-			if(sentence.contains(tag)) {
-				isNC = true;
-			}
-		}
-		return isNC;
-	}
-	private static boolean containsCorrelatedWord(String sentence, String root, String wikiTitle) {
-		ArrayList<String> words = getWords(wikiTitle, sentence.toLowerCase());
-		boolean correlated = false;
-		if(correlationMap.containsKey(root)) {
-			Map<String, Float> correlations = correlationMap.get(root);	
-			for(String word: words) {
-				if(correlations.containsKey(word)) {
-					System.out.println("Sentence: " + sentence);
-					System.out.println("Added via correlation of root " + root + " to word " + word);
-					correlated = true;
+		String[] bes = {" is", " was"};
+		String[] adverbs = {" ", " only ", " always ", " never ", " not ", };
+		String[] dets = {"a ", "an ", "the "};
+		for(String verb : bes) {
+			for(String adverb : adverbs) {
+				for(String det : dets) {
+					String ncTag = verb + adverb + det;
+					if(sentence.contains(ncTag)) {
+						return true;
+					}
 				}
 			}
 		}
-		return correlated;
+		return false;
 	}
 	
 	private static boolean containsValidRoot(String sentence, String root, StanfordCoreNLP pipeline) {
-		String[] isWords = {"is", "was", "be", "are", "were"};
+		String[] isWords = {"is", "was", "be", "are", "were", "has", "had", "have"};
 		String rootAlone = " " + root + " ";
 		boolean validRoot = false;
-		if(isVerb(root, pipeline) && !Arrays.asList(isWords).contains(root) && sentence.toLowerCase().contains(rootAlone)) {
-			System.out.println("Sentence: " + sentence);
-			System.out.println("Added via presence of root " + root);
+		if(isVerb(root, pipeline) && !Arrays.asList(isWords).contains(root) && 
+				(sentence.toLowerCase().contains(rootAlone) || sentence.toLowerCase().startsWith(root))) {
 			validRoot = true;
 		}
 		return validRoot;
+	}
+	
+	private static boolean wikiBirthDeath(String claim, List<String[]> SentNameEntities, String sentence) {
+		boolean edgeCase = false;
+		List<String> dates = SentNameEntities.stream().filter(ne -> ne[1].equals("DATE")).map(ne -> ne[0]).collect(Collectors.toList());
+		for(String date : dates) {
+			boolean parenDate = Pattern.compile("lrb(.*)" + date + "(.*)rrb").matcher(sentence.toLowerCase()).find();
+			if(parenDate) {
+				edgeCase = true;
+			}
+		}
+		
+		return edgeCase;
 	}
 	
 	private static ArrayList<String[]> getNamedEntities(String sentence, StanfordCoreNLP pipeline){
@@ -606,38 +508,97 @@ public class SentenceFinder {
 	    return tokens;
 	}
 	
-	private static ArrayList<String> getWords(String wikiTitle, String claim) {
-		String[] words = claim.split(" |\\t");
-		
-	    ArrayList<String> wordList = new ArrayList<String>();
-	    String[] skipWords = {"a", "an", "the", "at", "by", "down", "for", "from", "in", "into", "like", "near", "of", "off", "on", "onto", "onto", "over", 
-				"past", "to", "upon", "with", "and", "&", "as", "but", "for", "if", "nor", "once", "or", "so", "than", "that", "till", "when", "yet", "'s", "'",
-				"be", "is", "am", "are", "was", "were", "been", "being", "has", "have", "had", "having", "do", "does", "did",
-				"he", "his", "him", "she", "her", "hers", "it", "its", "they", "theirs",
-				".","!","?",",",";",":", "-rrb-", "-lrb-", "-rsb-", "-lsb-", "", "0", "``", "''", "--", "-"};
-	    
-	    for(int i = 0; i < words.length; i++) {
-	    	String word = words[i];
-	    	if(!Arrays.asList(skipWords).contains(word) && !wikiTitle.contains(word)) {
-	    		wordList.add(word);
-	    	} 
-	    }
+	
+	private static ArrayList<Map<String, String>> getBackupDocs(ArrayList<String> backupDocumentKeys){
+		ArrayList<Map<String, String>> backupDocs = new ArrayList<Map<String, String>>();
+		for(String key : backupDocumentKeys) {
+			try {
+				Map<String, String> backupDoc = new HashMap<String, String>();
+				Map<String, Object> fileInfo = wikiMap.get(key);
+                Path wikiDirPath = Paths.get(wikiDirName);
+                Path wikiListPath =  wikiDirPath.resolve(Paths.get((String)fileInfo.get("fileName")));
+                String wikiListName = wikiListPath.toString();
 
-	    wordList = (ArrayList<String>) wordList.stream().distinct().collect(Collectors.toList());
-	    return wordList;
+				BufferedReader reader = new BufferedReader(new FileReader(wikiListName));
+				Long byteOffset = (Long) fileInfo.get("offset");
+				reader.skip(byteOffset);
+			    String wikiEntry = reader.readLine();
+			    JSONObject wikiJson = new JSONObject(wikiEntry);
+			    backupDoc.put("id", wikiJson.getString("id"));
+			    backupDoc.put("text", wikiJson.getString("text"));
+			    backupDoc.put("lines", wikiJson.getString("lines"));
+			    backupDocs.add(backupDoc);
+			    reader.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("Could not open file  "+ key);
+				e.printStackTrace();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return backupDocs;
 	}
-
-    /**
-     * get the wiki sentence from a tab-separated line in wiki dump
-     * @param line
-     * @return the sentence text from the line
-     */
-    private static String getWikiSentencefromLine(String line) {
-        String[] tabs = line.split("\t");
-        if (tabs.length < 2) {
-            return "";
-        }
-        return tabs[1];
-    }
-
+	
+	private static void getWikiMaps(String wikiDirName) {
+		wikiMap = new HashMap<String, Map <String, Object>>();
+//		disambiguationMap = new HashMap<String, ArrayList<String>>();
+//		lowercaseMap = new HashMap<String, String>();
+		
+		File wikiDir = new File(wikiDirName);
+		File[] wikiEntries = wikiDir.listFiles();
+		int filesProcessed = 0;
+		if (wikiEntries != null){
+			for (File wikiEntryList : wikiEntries) {
+				try {
+					System.out.print("*");
+					Scanner s = new Scanner(wikiEntryList);
+					long byteOffset = 0;
+					while(s.hasNextLine()) {
+						String wikiEntry = Normalizer.normalize(s.nextLine(), Normalizer.Form.NFC);
+					    JSONObject wikiJson = new JSONObject(wikiEntry);
+					    String id = wikiJson.getString("id");
+					    if(!id.isEmpty()) {
+					    	String fileName = wikiEntryList.getName();
+					    	Map<String, Object> docLocation = new HashMap<String, Object>();
+					    	docLocation.put("fileName", fileName);
+					    	docLocation.put("offset", byteOffset);
+							wikiMap.put(id, docLocation);
+//							lowercaseMap.put(id.toLowerCase(), id);
+//							
+//							int paren = id.indexOf("-LRB-");
+//							if(paren > 0 && !id.contains("disambiguation")) {
+//								String base = id.substring(0, paren-1);
+//								ArrayList<String> disambiguationChildren = new ArrayList<String>();
+//								if(disambiguationMap.containsKey(base)) {
+//									disambiguationChildren = disambiguationMap.get(base);
+//									disambiguationChildren.add(id);
+//									disambiguationMap.put(base, disambiguationChildren);
+//								}
+//								else {
+//									disambiguationChildren.add(id);
+//									disambiguationMap.put(base, disambiguationChildren);
+//								}
+//							}
+					    }
+					    byteOffset += wikiEntry.getBytes().length;
+						byteOffset += 1;
+					}
+					filesProcessed++;
+					if(filesProcessed % 10 == 0 || filesProcessed == 109) {
+						System.out.println("\nWiki processing "+filesProcessed+"/109 done.");
+					}
+						
+					s.close();
+				} catch (FileNotFoundException e) {
+					System.out.println("Could not open file  "+wikiEntryList.getName());
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 }
