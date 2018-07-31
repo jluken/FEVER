@@ -4,46 +4,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.HashMap;
-//import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Scanner;
-//import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-//import com.google.common;
-//import com.google.common.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.text.Normalizer;
-
-import edu.stanford.nlp.pipeline.CoreDocument;
-import edu.stanford.nlp.pipeline.CoreSentence;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.semgraph.SemanticGraph;
-import edu.stanford.nlp.trees.Tree;
-
 public class DocFinderTester {
-		
 	static String answersFileName = "shared_task_dev.jsonl";
-	static String resultsFileName = "results.jsonl";
-	static String analysisFileName = "analysis.jsonl";
-	static int numClaimsTested = 200;
+	static String resultsFileName = "found_documents.jsonl";
+	static String analysisFileName = "document_analysis.jsonl";
 	
 	public static void main(String[] args) {
 		try {
-			Properties props = new Properties();
-			props.setProperty("annotators", "tokenize,ssplit,pos,parse,depparse");
-		    props.setProperty("coref.algorithm", "neural");
-		    StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 			Scanner answersReader = new Scanner(new FileReader(answersFileName));
 			Scanner resultsReader = new Scanner(new FileReader(resultsFileName));
 			File oldFile = new File(analysisFileName);
@@ -51,89 +28,166 @@ public class DocFinderTester {
 				oldFile.delete();
 			}
 			BufferedWriter writer = new BufferedWriter(new FileWriter(analysisFileName, true));
-			int countCorrect = 0;
-			int countNull = 0;
-			
-			int totalWikis = 0;
-			int backups = 0;
-			writer.append("Erroneous retrieved wiki articles:\n\n");
+			double countCorrect = 0;
+			double countPrimaryCorrect = 0;
+			double countWrong = 0;
+			double countPrimaryWrong = 0;
+			double countMissed = 0;
+			double countPrimaryMissed = 0;
+			int claimCount = 0;
+			int verifiableClaimCount = 0;
+
 			while(resultsReader.hasNext()) {
-				String result = Normalizer.normalize(resultsReader.nextLine(), Normalizer.Form.NFD);
-				String answer = Normalizer.normalize(answersReader.nextLine(), Normalizer.Form.NFD);
-				JSONObject resultJson = new JSONObject(result);
+				claimCount++;
+				String answer = Normalizer.normalize(answersReader.nextLine(), Normalizer.Form.NFC);	
 				JSONObject answerJson = new JSONObject(answer);
-				//JSONObject wikiJson = (JSONObject) resultJson.get("wiki info");
-				String wikiJson = resultJson.get("wiki info").toString();
-				Type wikiMapType = new TypeToken<Map<String, Map<String, Object>>>(){}.getType();  
-				Map<String, Object> wikiInfo = new Gson().fromJson(wikiJson, wikiMapType);
-				JSONArray backupWikiJSON = (JSONArray) resultJson.get("backup wikis");
-				totalWikis += wikiInfo.size();
-				backups += backupWikiJSON.length();
-				
-				//Set<String> docsFound = new HashSet<String>();
-//				for(String wiki: wikiJson.keySet()) {
-//					
-//				}
-//				
-//				 = wikiJson.keys();
-				String claim = (String) resultJson.get("claim");
 				JSONArray answerEvidence = (JSONArray) answerJson.get("evidence");
-				JSONArray answerEvidence1 = (JSONArray) answerEvidence.get(0);
-				JSONArray answerEvidence2 = (JSONArray) answerEvidence1.get(0);
-				Object answerWiki =  answerEvidence2.get(2);
-				ArrayList<String> backupWikis = new ArrayList<String>();
-				for(int i = 0; i < backupWikiJSON.length(); i++){
-					backupWikis.add(backupWikiJSON.getString(i));
-				}
-				if(answerWiki.equals(null)) {
-					countNull++;
-				}
-				else if(wikiInfo.keySet().contains(answerWiki) || backupWikis.contains(answerWiki.toString().toLowerCase())) {
-					countCorrect++;
-				}
-				else {
-					writer.append("Claim: \"" + claim+"\"\n");
-					writer.append("Correct document: " + answerWiki + "\n");
-					writer.append("Found Documents: \n");
-					for(String wiki: wikiInfo.keySet()) {
-						writer.append(wiki + "\n");
+				String label = answerJson.getString("label");
+				ArrayList<Object[]> correctEvidence = new ArrayList<Object[]>();
+				for(int i = 0; i < answerEvidence.length(); i++) {
+					JSONArray evidenceSet = answerEvidence.getJSONArray(i);
+					JSONArray primarySentence = evidenceSet.getJSONArray(0);
+					if(!primarySentence.get(2).equals(null) && evidenceSet.length() == 1) {
+						String wikiName = primarySentence.get(2).toString();
+						Integer sentNum = primarySentence.getInt(3);
+						Object[] answerArr = {wikiName, sentNum};
+						if(!DocIsInList(correctEvidence, answerArr)) {
+							correctEvidence.add(answerArr);
+						}
 					}
-					writer.append("Backup Documents: \n");
-					for(int i = 0; i < backupWikis.size(); i++) {
-						writer.append(backupWikis.get(i) + "\n");
+					else if(!primarySentence.get(2).equals(null) && evidenceSet.length() != 1) {
+						//multi sentence answer, which we always miss
+						Object[] answerArr = {"multi", 0};
+						correctEvidence.add(answerArr);
 					}
-					
-					String claimSentence = claim;
-					CoreDocument document = new CoreDocument(claimSentence);
-				    pipeline.annotate(document);
-				    CoreSentence claimSen = document.sentences().get(0);
-				    SemanticGraph claimDependencyParse = claimSen.dependencyParse();
-				    Tree claimConstituencyParse = claimSen.constituencyParse();
-				    writer.append("Constituency Tree: " + claimConstituencyParse+"\n");
-				    writer.append("Dependency Graph: " + claimDependencyParse+"\n\n");
-				    
 				}
+
+				String result = resultsReader.nextLine();
+				JSONObject resultJson = new JSONObject(result);
+				String claim = Normalizer.normalize(resultJson.getString("claim"), Normalizer.Form.NFC);
 				
+				JSONArray resultEvidence = (JSONArray) resultJson.get("evidence");
+
+				ArrayList<Object[]> foundEvidence = new ArrayList<Object[]>();
+				for(int i = 0; i < resultEvidence.length(); i++) {
+					JSONArray resultSet = resultEvidence.getJSONArray(i);
+					JSONArray primarySentence = resultSet.getJSONArray(0);
+					if(!primarySentence.get(2).equals(null)) {
+						String wikiName = primarySentence.get(0).toString();
+						Integer sentNum = primarySentence.getInt(1);
+						Object[] answerArr = {wikiName, sentNum};
+						if(!DocIsInList(foundEvidence, answerArr)) {
+							foundEvidence.add(answerArr);
+						}
+					}
+				}
+
+				ArrayList<Object[]> correctDocs = new ArrayList<Object[]>();
+				ArrayList<Object[]> wrongDocs = new ArrayList<Object[]>();
+				ArrayList<Object[]> missedDocs = new ArrayList<Object[]>();
+
+				for(Object[] foundSent : foundEvidence) {
+					if(DocIsInList(correctEvidence, foundSent)) {
+						correctDocs.add(foundSent);
+						countCorrect++;
+						if((int)foundSent[1] == 0) {
+							countPrimaryCorrect++;
+						}
+					}
+					else{
+						countWrong++;
+						wrongDocs.add(foundSent);
+						if((int)foundSent[1] == 0) {
+							countPrimaryWrong++;
+						}
+					}
+				}
+				boolean missed = false;
+				if (!label.equals("NOT ENOUGH INFO")) {
+					verifiableClaimCount++;
+					for(Object[] correctSent : correctEvidence) {
+						if(!missed && !correctSent[0].equals("multi")) {
+							if(!DocIsInList(foundEvidence, correctSent)) {
+								missed = true;
+								missedDocs.add(correctSent);
+								countMissed++;
+							}
+							if(!DocIsInPrimaryList(foundEvidence, correctSent)) {
+								missed = true;
+								countPrimaryMissed++;
+							}
+						}
+					}
+				} 
+
+
+				
+				Map<String, Object> claimVals = new HashMap<String, Object>();
+
+				claimVals.put("claim", claim);
+				claimVals.put("label", label);
+				claimVals.put("missed docs", missedDocs);
+				claimVals.put("correct docs", correctDocs);
+				claimVals.put("incorrect docs", wrongDocs);
+				
+				writer.append(new JSONObject(claimVals).toString());
+				writer.append("\n");
 
 			}
-			writer.append("Correct documents found: " + countCorrect+"/"+(numClaimsTested-countNull)+"\n");
-			writer.append("Total primary documents found: " + totalWikis+"\n");
-			writer.append("Backup documents found: " + backups+"\n");
+
+			double totalPrecision = countCorrect / (countCorrect + countWrong);
+			double totalRecall = countCorrect / (countCorrect + countMissed);
+			double primaryPrecision = countPrimaryCorrect / (countPrimaryCorrect + countPrimaryWrong);
+			double primaryRecall = countCorrect / (countPrimaryCorrect + countPrimaryMissed);
+			writer.append("\n\n\n\n");
+			writer.append("Number of verifiable claims with a correct document found: " + countCorrect+"/"+verifiableClaimCount+"\n");
+			writer.append("Number of verifiable claims with a correct document found in primary: " + countPrimaryCorrect+"/"+verifiableClaimCount+"\n");
+			writer.append("Number of sentences where the correct document was not found: " + countMissed+"/"+claimCount+"\n");
+			writer.append("Number of incorrect documents found: " + countWrong+"\n");
+			writer.append("Number of incorrect documents found in primary: " + countPrimaryWrong+"\n");
+            writer.append("Precision: " + totalPrecision + ", Recall: " + totalRecall + ", f1: " + f1(totalPrecision, totalRecall) + "\n");
+            writer.append("Primary Precision: " + primaryPrecision + ", Primary Recall: " + primaryRecall + ", Primary f1: " + f1(primaryPrecision, primaryRecall) + "\n");
+
 			answersReader.close();
 			resultsReader.close();
 			writer.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
 	}
 	
+	private static boolean DocIsInList(ArrayList<Object[]> list, Object[] arr) {
+		boolean inside = false;
+		for(Object[] listArr : list) {
+			if(listArr[0].equals(arr[0])) {
+				inside = true;
+			}
+		}
+		return inside;
+	}
+	
+	private static boolean DocIsInPrimaryList(ArrayList<Object[]> list, Object[] arr) {
+		boolean inside = false;
+		for(Object[] listArr : list) {
+			if(listArr[0].equals(arr[0]) && (int)listArr[1] == 0) {
+				inside = true;
+			}
+		}
+		return inside;
+	}
+
+	 private static double f1(double precision, double recall) {
+	    if (precision + recall == 0) {
+	        return 0;
+        }
+	    return 2 * precision * recall / (precision + recall);
+
+     }
+
 }
