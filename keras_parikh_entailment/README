@@ -1,0 +1,1 @@
+This directory contains a modified implementation of the entailment prediction model described by [Parikh et al. (2016)](https://arxiv.org/pdf/1606.01933.pdf). Most of the code were written by [Matthew Honnibal](https://github.com/explosion/spaCy/tree/master/examples/keras_parikh_entailment).
