@@ -9,7 +9,6 @@ import numpy
 import keras
 from keras import backend as K
 from keras.callbacks import ModelCheckpoint
-from keras.utils.np_utils import to_categorical
 from keras.models import model_from_json
 from keras.optimizers import *
 import random, string
@@ -21,19 +20,6 @@ from tqdm import tqdm
 from util import *
 from spacy_hook import *
 from keras_decomposable_attention import build_model, test_build_model, test_fit_model
-
-
-def compute_inputs_with_NE(input_X1, input_X2,
-                            ents_input_ids1, ents_input_ids2,
-                            ents_input_labels1, ents_input_labels2):
-
-    input_X1 = numpy.column_stack((input_X1, ents_input_ids1))
-    input_X2 = numpy.column_stack((input_X2, ents_input_ids2))
-
-    inputs = [input_X1,           input_X2, \
-              ents_input_labels1, ents_input_labels2]
-
-    return inputs
 
 
 def train(train_loc, dev_loc, shape, settings, test_train=False):
@@ -53,11 +39,11 @@ def train(train_loc, dev_loc, shape, settings, test_train=False):
     devs = [dev_X1, dev_X2]
     if settings['use_ent']:
         trains = compute_inputs_with_NE(train_X1, train_X2,
-                                        train_ents_labels1, train_ents_labels2,
-                                        train_ents_ids1,    train_ents_ids2)
+                                        train_ents_ids1,    train_ents_ids2,
+                                        train_ents_labels1, train_ents_labels2)
         devs = compute_inputs_with_NE(dev_X1, dev_X2,
-                                      dev_ents_labels1, dev_ents_labels2,
-                                      dev_ents_ids1,    dev_ents_ids2)
+                                      dev_ents_ids1,    dev_ents_ids2,
+                                      dev_ents_labels1, dev_ents_labels2)
 
     if test_train:
         trains = [x[:10] for x in trains]
@@ -68,46 +54,29 @@ def train(train_loc, dev_loc, shape, settings, test_train=False):
     print("train\t", [x.shape for x in trains])
     print("dev\t", [x.shape for x in devs])
 
-    # print('Loading spaCy')
-    # try:
-    #     nlp = spacy.load('en_core_web_lg')
-    # except:
-    #     spacy_model = '/Users/nanjiang/.pyenv/versions/3.6.6/lib/python3.6/site-packages/en_core_web_lg-2.0.0'
-    #     nlp = spacy.load(spacy_model)
+    print('Loading spaCy')
+    nlp = spacy.load('en_core_web_lg')
 
-    # if (nlp.vocab.vectors_length == 0):
-    #     logging.error("spaCy model has vocab vector length 0")
-    #     exit(1)
-
-
-    # print('Compiling network')
-    # embed_vectors = get_embeddings(nlp.vocab)
+    print('Compiling network')
+    embed_vectors = get_embeddings(nlp.vocab)
 
     model_dir = Path(settings['model_dir'])
-    # model = build_model(embed_vectors, shape, settings)
-    previous_model = model_dir / 'adadelta-weights-improvement-01-0.69.hdf5'
+    model = build_model(embed_vectors, shape, settings)
     if model_dir.is_dir():
-        model = model_from_json(open(model_dir / 'config.json').read())
-        if Path(previous_model).exists():
-            print('\nLoad previous weights', previous_model)
-            model.load_weights(previous_model)
-        else:
-            print("Initializing model from", model_dir)
-            model = model_from_json(open(model_dir / 'config.json').read())
-            weights = pickle.load(open(model_dir / 'model', "rb"))
-            model.set_weights(weights)
+        print("Initializing model from", model_dir)
+        weights = pickle.load(open(model_dir / 'model', "rb"))
+        model.set_weights(weights)
 
         model.compile(
-            # optimizer=Adam(lr=settings['lr']),
-            # optimizer=SGD(lr=settings['lr'], momentum=0.2, decay=0.02, nesterov=True),
-            optimizer=Nadam(),
+            optimizer=Adam(),
             loss='categorical_crossentropy',
             metrics=['accuracy'])
     else:
         model_dir.mkdir()
+        model = build_model(embed_vectors, shape, settings)
 
 
-    filepath= str(model_dir / "nadam-weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5")
+    filepath= str(model_dir / "weights-improvement-{epoch:02d}-{val_acc:.2f}.hdf5")
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 
     model.fit(
@@ -127,52 +96,48 @@ def train(train_loc, dev_loc, shape, settings, test_train=False):
 
 
 def evaluate_model(test_loc, shape, settings):
+    test_data = load_preprocessed_vectors('test', Path(settings['preprocessed_data_dir']))
+    print([x.shape for x in test_data])
     [test_X1, test_X2,
      ents_test_labels1, ents_test_labels2,
      ents_test_ids1, ents_test_ids2,
-     test_claim_ids, test_ev_ids] = load_preprocessed_vectors('test', Path(settings['preprocessed_data_dir']))
+     test_claim_ids, test_ev_ids] = test_data
 
     model_dir = Path(settings['model_dir'])
-
     prediction_file = model_dir / 'prediction_scores.npy'
+    print("Initializing model from", model_dir)
 
-    if prediction_file.is_file():
-        predictions = numpy.load(prediction_file)
-    else:
-        # apply this PR if receiving errors
-        # https://github.com/keras-team/keras/pull/8031
-        print("Initializing model from", model_dir)
 
+    print('Compiling network')
+    try:
         model = model_from_json(open(model_dir / 'config.json').read())
-        model.load_weights(model_dir / 'model.hdf5')
+    except:
+        print('Loading spaCy')
+        nlp = spacy.load('en_core_web_lg')
+        embed_vectors = get_embeddings(nlp.vocab)
 
-        model.compile(
-            optimizer=Adam(lr=settings['lr']),
-            loss='categorical_crossentropy',
-            metrics=['accuracy'])
+        model = build_model(embed_vectors, shape, settings)
+    weights = pickle.load(open(model_dir / 'model', "rb"))
+    model.set_weights(weights)
 
-        tests = [test_X1, test_X2]
-        if settings['use_ent']:
-            tests = compute_inputs_with_NE(test_X1, test_X2,
-                                           ents_test_labels1, ents_test_labels2,
-                                           ents_test_ids1, ents_test_ids2)
+    model.compile(
+        optimizer=Adam(lr=settings['lr']),
+        loss='categorical_crossentropy',
+        metrics=['accuracy'])
 
-        predictions = model.predict(tests,
-                                    batch_size=settings['batch_size'],
-                                    verbose=1)
-        print("Save prediction vectors to ", prediction_file)
-        numpy.save(prediction_file, predictions)
+    tests = [test_X1, test_X2]
+    if settings['use_ent']:
+        tests = compute_inputs_with_NE(test_X1, test_X2,
+                                       ents_test_ids1, ents_test_ids2,
+                                       ents_test_labels1, ents_test_labels2)
+
+    predictions = model.predict(tests,
+                                batch_size=settings['batch_size'],
+                                verbose=1)
+    print("Save prediction vectors to ", prediction_file)
+    numpy.save(prediction_file, predictions)
 
     write_prediction_files(test_claim_ids, test_ev_ids, predictions, test_loc, model_dir)
-
-
-def sample_random_sentences(total_sent_count, sentences, ids):
-    rand_sents = []
-    rand_ids = []
-    for i in random.sample(range(0,total_sent_count), 5):
-        rand_sents.append(sentences[i])
-        rand_ids.append(ids[i])
-    return rand_sents, rand_ids
 
 
 
@@ -234,7 +199,7 @@ def main(mode, train_loc, dev_loc, test_loc,
         'text_max_length': text_max_length,
         'ent_max_length': ent_max_length,
         'use_ent': use_ent,
-        'preprocessed_data_dir':preprocessed_data_dir
+        'preprocessed_data_dir':preprocessed_data_dir,
     }
 
     if mode == 'train':

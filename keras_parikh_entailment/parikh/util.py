@@ -5,6 +5,13 @@ from pathlib import Path, PosixPath
 import spacy
 from tqdm import tqdm
 from spacy_hook import *
+from os import listdir
+import codecs
+import unicodedata
+from keras.utils.np_utils import to_categorical
+
+def norm(x):
+  return unicodedata.normalize('NFC', x)
 
 def preprocess_(loc, name, nlp, settings):
     def save_numpy(dir, name, subname, vector):
@@ -45,7 +52,7 @@ def preprocess_(loc, name, nlp, settings):
         all_entity_ids.append(ents_ids)
 
 
-    preprocessed_data_dir = Path(settings['preprocess_data_dir'])
+    preprocessed_data_dir = Path(settings['preprocessed_data_dir'])
 
     # for all data, save texts1/2, ents_labels1/2, ents_ids1/2
     save_numpy(preprocessed_data_dir, name, '_texts', Xs)
@@ -114,25 +121,25 @@ def read_fever(path, blind=False):
         start_idx = 0
 
     evidence_count = 0
-
-    # list of ids with no evidence found
-    no_evidence_found = []
-
+    print("Processing", path)
     with path.open() as file_:
         for i, line in tqdm(enumerate(file_)):
             content = json.loads(line)
             claim = content["claim"]
-            if len(content["evidence"]) == 0: # sentencefinder output no evidence
-                if blind:
-                    no_evidence_found.append(content["id"])
-                    continue
-                else:
-                    rand_sents, rand_ids = sample_random_sentences(evidence_count, texts1, evidence_ids)
+            if len(content["evidence"]) == 0 \
+               or ("label" in content.keys() and \
+                   content["label"] == "NOT ENOUGH INFO" ):
+                # if our system's output did not find any evidence, sample evidence
+                if not blind:
+                    rand_sents, rand_ids = sample_random_sentences(file_.read().split("\n"),
+                                                                   start_idx)
                     texts1 += rand_sents
                     texts2 += [claim for x in range(5)]
                     claim_ids += [content["id"] for x in range(5)]
                     evidence_ids += rand_ids
                     evidence_count += 5
+                    label = content["label"]
+                    labels.append(LABELS[label])
                 continue
             for evidence_set in content["evidence"]:
                 coref_sents = []
@@ -151,7 +158,9 @@ def read_fever(path, blind=False):
                     label = content["label"]
                     labels.append(LABELS[label])
 
+
     if not blind:
+        print(labels)
         labels = to_categorical(numpy.asarray(labels, dtype='int32'))
     print ([len(x) for x in [texts1, texts2, labels, evidence_ids, claim_ids]])
     return texts1, texts2, labels, evidence_ids, claim_ids
@@ -179,6 +188,7 @@ def aggregate_classifier_result(ids, evids, predictions):
                                            'score': list(map(float, list(pred))),
                                            'evidence_id' : evid
                                            })
+        result_by_claim[num] = data
     return result_by_claim
 
 def write_fever_prediction(result_by_claim, infile, model_dir, max_evidence=5):
@@ -230,13 +240,8 @@ def write_fever_prediction(result_by_claim, infile, model_dir, max_evidence=5):
                     end_label = LABELS[int(score_sum.argmax())]
                     debug_content['predicted_label'] = end_label
 
-                    # Remove evidences with label different from end_label
-                    # consistent_evidences = [x for x in non_nei_evidences if x['prediction'] == end_label]
-                    # inconsistent_evidences = [x for x in non_nei_evidences if x['prediction'] != end_label]
-                    # discarded_evidences += inconsistent_evidences
-
                     # Choose top 5 evidences with highest score
-                    top_scored_evidences = sorted(consistent_evidences, key=lambda k: max(k['score']))[:max_evidence]
+                    top_scored_evidences = sorted(non_nei_evidences, key=lambda k: max(k['score']))[:max_evidence]
                     debug_content["predicted_evidence"] = format_evidence(top_scored_evidences, debug=True)
                     debug_content['discarded_evidence'] = format_evidence(discarded_evidences, debug=True)
 
@@ -258,3 +263,37 @@ def write_fever_prediction(result_by_claim, infile, model_dir, max_evidence=5):
     f.close()
     f_debug.close()
     print("Write files:", predict_file, debug_file)
+
+
+def compute_inputs_with_NE(input_X1, input_X2,
+                            ents_input_ids1, ents_input_ids2,
+                            ents_input_labels1, ents_input_labels2):
+
+    input_X1 = numpy.column_stack((input_X1, ents_input_ids1))
+    input_X2 = numpy.column_stack((input_X2, ents_input_ids2))
+
+    inputs = [input_X1,           input_X2, \
+              ents_input_labels1, ents_input_labels2]
+
+    return inputs
+
+def sample_random_sentences(file_, start_idx):
+    rand_sents = []
+    rand_ids = []
+    total_line_count = len(file_)
+    while len(rand_sents) < 5:
+        i = random.randint(0, total_line_count-1)
+        content = json.loads(file_[i])
+        if (content["label"] == "NOT ENOUGH INFO"):
+            continue
+
+        coref_sents = []
+        evidence_set = content["evidence"][0]
+        for ev in evidence_set:
+            coref_sents.append(expand_pageid(ev[start_idx], ev[start_idx+2]))
+
+        ev_id = ".".join(["~".join([ev[start_idx], str(ev[start_idx+1])]) for ev in evidence_set])
+        ev_sent = " ".join(coref_sents)
+        rand_sents.append(ev_sent)
+        rand_ids.append(ev_id)
+    return rand_sents, rand_ids

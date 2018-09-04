@@ -140,28 +140,16 @@ class _StaticEmbedding(object):
 class _EntityEmbedding(object):
     def __init__(self, max_length, entity_dim=10, output_dim=200, dropout=0.0):
         self.max_length = max_length
-        self.embed = Sequential()
-        self.embed.add(Embedding(20,
-                                 entity_dim,
-                                 input_length=max_length,
-                                 name='ent_embed',
-                                 trainable=True))
-        self.embed.add(TimeDistributed(Dense(output_dim,
-                                             activation='sigmoid',
-                                             kernel_regularizer=l2(0.001))))
-        # self.embed = Embedding(20,
-        #                        output_dim,
-        #                        input_length=max_length,
-        #                        name='ent_embed',
-        #                        trainable=True)
+        self.embed = Embedding(20,
+                               output_dim,
+                               input_length=max_length,
+                               name='ent_embed',
+                               trainable=True)
 
     def __call__(self, sentence):
         def get_output_shape(shapes):
             return shapes[0]
-
-        # print(self.embed.input_dim, self.embed.output_dim, self.embed.input_length)
         return self.embed(sentence)
-
 
 
 class _BiRNNEncoding(object):

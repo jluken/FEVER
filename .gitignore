@@ -1,5 +1,6 @@
 model/
 bin/
+*DS_Store
 
 ## Java gitignore
 ## https://github.com/github/gitignore/blob/master/Java.gitignore
